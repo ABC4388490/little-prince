@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
+  <title>Hand-drawn wrench (transparent) v2</title>
+  <defs>
+    <filter id="pencilWobble" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="19" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="pencilWobbleFine" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="1" seed="23" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <!-- ôK6„iÅ‚ráX + {®Br -->
+    <linearGradient id="warmFill" x1="300" y1="220" x2="730" y2="860" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E8B79B" stop-opacity="0.28"/>
+      <stop offset="0.55" stop-color="#D79B7B" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#C88568" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="warmFillSoft" x1="260" y1="260" x2="760" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EFD0B9" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#C88568" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ÌoÅØ6sK -->
+  <g transform="translate(512 512) rotate(-28) translate(-512 -512)">
+    <!-- {‚rôÏÂş4èŒ>èôÍÄèôá	 -->
+    <path
+      d="M 336 250
+         C 286 302, 278 374, 316 430
+         C 334 456, 358 478, 384 496
+         L 408 512
+         C 424 524, 430 544, 422 562
+         L 310 794
+         C 292 832, 310 872, 350 884
+         C 372 890, 396 884, 414 870
+         L 616 716
+         C 634 702, 658 706, 672 722
+         L 692 744
+         C 734 792, 812 794, 860 746
+         C 908 698, 906 620, 856 574
+         L 834 554
+         C 818 540, 812 518, 824 500
+         L 932 346
+         C 946 326, 942 298, 924 282
+         C 874 238, 802 238, 754 282
+         L 726 308
+         C 714 318, 696 318, 684 308
+         L 654 284
+         C 602 242, 530 244, 478 286
+         L 450 310
+         C 438 320, 420 320, 406 312
+         L 382 298
+         C 366 288, 364 266, 378 254
+         C 396 238, 316 272, 336 250 Z"
+      fill="url(#warmFill)"
+      filter="url(#pencilWobble)"
+    />
+    <path
+      d="M 346 286
+         C 316 324, 316 364, 342 396
+         C 360 418, 404 446, 436 468
+         C 452 480, 456 500, 446 518
+         L 350 736
+         C 340 760, 354 778, 378 784
+         C 402 790, 430 780, 450 766
+         L 604 650
+         C 622 636, 642 638, 656 654
+         L 682 682
+         C 708 710, 770 714, 804 680
+         C 838 646, 836 586, 804 556
+         L 776 530
+         C 758 514, 754 492, 768 472
+         L 858 346
+         C 874 324, 870 306, 854 296
+         C 826 280, 790 288, 762 312
+         L 732 338
+         C 716 352, 694 354, 676 340
+         L 646 316
+         C 614 290, 568 292, 538 318
+         L 512 340"
+      fill="url(#warmFillSoft)"
+      filter="url(#pencilWobbleFine)"
+    />
+
+    <!-- nÓô—ôÅ -->
+    <path
+      d="M 336 250
+         C 286 302, 278 374, 316 430
+         C 334 456, 358 478, 384 496
+         L 408 512
+         C 424 524, 430 544, 422 562
+         L 310 794
+         C 292 832, 310 872, 350 884
+         C 372 890, 396 884, 414 870
+         L 616 716
+         C 634 702, 658 706, 672 722
+         L 692 744
+         C 734 792, 812 794, 860 746
+         C 908 698, 906 620, 856 574
+         L 834 554
+         C 818 540, 812 518, 824 500
+         L 932 346
+         C 946 326, 942 298, 924 282
+         C 874 238, 802 238, 754 282
+         L 726 308
+         C 714 318, 696 318, 684 308
+         L 654 284
+         C 602 242, 530 244, 478 286
+         L 450 310
+         C 438 320, 420 320, 406 312
+         L 382 298
+         C 366 288, 364 266, 378 254
+         C 396 238, 362 222, 336 250 Z"
+      stroke="#1E1C19"
+      stroke-opacity="0.55"
+      stroke-width="10.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      filter="url(#pencilWobble)"
+    />
+    <path
+      d="M 336 250
+         C 286 302, 278 374, 316 430
+         C 334 456, 358 478, 384 496
+         L 408 512
+         C 424 524, 430 544, 422 562
+         L 310 794
+         C 292 832, 310 872, 350 884
+         C 372 890, 396 884, 414 870
+         L 616 716
+         C 634 702, 658 706, 672 722
+         L 692 744
+         C 734 792, 812 794, 860 746
+         C 908 698, 906 620, 856 574
+         L 834 554
+         C 818 540, 812 518, 824 500
+         L 932 346
+         C 946 326, 942 298, 924 282
+         C 874 238, 802 238, 754 282
+         L 726 308
+         C 714 318, 696 318, 684 308
+         L 654 284
+         C 602 242, 530 244, 478 286
+         L 450 310
+         C 438 320, 420 320, 406 312
+         L 382 298
+         C 366 288, 364 266, 378 254
+         C 396 238, 362 222, 336 250 Z"
+      stroke="#4B4741"
+      stroke-opacity="0.44"
+      stroke-width="4.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      filter="url(#pencilWobbleFine)"
+    />
+
+    <!-- Äè…ùıôÏÂş„ı	 -->
+    <path
+      d="M 452 556
+         C 430 598, 400 658, 376 704
+         C 356 742, 372 766, 402 770
+         C 440 776, 474 756, 506 732
+         L 620 646
+         C 646 626, 658 600, 648 578
+         C 636 552, 600 548, 566 568
+         L 520 594
+         C 498 606, 482 596, 492 578
+         L 512 546"
+      stroke="#2F2C28"
+      stroke-opacity="0.36"
+      stroke-width="6.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      filter="url(#pencilWobbleFine)"
+    />
+
+    <!-- …±ï + …è¹b -->
+    <path
+      d="M 730 712
+         C 710 734, 710 770, 734 792
+         C 760 816, 798 816, 820 792
+         C 842 770, 842 734, 820 712
+         C 798 690, 754 690, 730 712 Z"
+      stroke="#1E1C19"
+      stroke-opacity="0.5"
+      stroke-width="8.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      filter="url(#pencilWobbleFine)"
+    />
+    <path
+      d="M 748 736
+         L 772 724
+         L 798 736
+         L 806 762
+         L 790 786
+         L 764 786
+         L 748 762 Z"
+      stroke="#2F2C28"
+      stroke-opacity="0.42"
+      stroke-width="5.4"
+      stroke-linejoin="round"
+      filter="url(#pencilWobbleFine)"
+    />
+
+    <!-- Ï¢r‘¹Mn`ÑÂş4èÄè>è	 -->
+    <g fill="#6E2E22" fill-opacity="0.52">
+      <circle cx="456" cy="308" r="5.2"/>
+      <circle cx="486" cy="350" r="3.8"/>
+      <circle cx="520" cy="628" r="3.6"/>
+      <circle cx="548" cy="706" r="4.2"/>
+      <circle cx="702" cy="742" r="3.6"/>
+    </g>
+  </g>
+</svg>

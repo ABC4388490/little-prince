@@ -1,0 +1,3995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand-drawn Rose - Little Prince</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #8b9b7a;
+            --secondary-color: #d4c5b9;
+            --accent-color: #c4a69d;
+            --text-dark: #2c2c2c;
+            --text-light: #6b6b6b;
+            --bg-light: #f5f3f0;
+            --bg-white: #fefdfb;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Segoe Print', 'Brush Script MT', 'Microsoft YaHei', cursive;
+            background-color: #f4f1ea;
+            color: var(--text-dark);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* 纸张质感：微小噪点 + 纤维 */
+        .paper-texture {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.2px),
+                radial-gradient(circle at 78% 66%, rgba(126, 120, 108, 0.08) 0 0.8px, transparent 1.1px),
+                radial-gradient(circle at 34% 72%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.2px),
+                repeating-linear-gradient(102deg, rgba(130, 122, 108, 0.018) 0 1px, transparent 1px 7px),
+                repeating-linear-gradient(12deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 8px);
+            background-size: 140px 140px, 160px 160px, 180px 180px, 12px 12px, 14px 14px;
+            opacity: 0.55;
+            filter: contrast(120%) brightness(100%);
+        }
+
+        /* 纸张折痕 + 翘边内阴影 */
+        .paper-creases {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            box-shadow:
+                inset 0 0 0 1px rgba(175, 164, 142, 0.08),
+                inset 0 0 36px rgba(110, 100, 80, 0.05);
+            background:
+                linear-gradient(132deg, rgba(124, 112, 90, 0.13), transparent 44%) top left / 130px 130px no-repeat,
+                linear-gradient(228deg, rgba(124, 112, 90, 0.11), transparent 45%) top right / 130px 130px no-repeat,
+                linear-gradient(42deg, rgba(124, 112, 90, 0.11), transparent 45%) bottom left / 130px 130px no-repeat,
+                linear-gradient(-42deg, rgba(124, 112, 90, 0.13), transparent 44%) bottom right / 130px 130px no-repeat;
+            opacity: 0.28;
+        }
+
+        /* 透气感水印：极低透明大符号 */
+        .paper-watermarks {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .paper-watermark {
+            position: absolute;
+            user-select: none;
+            line-height: 1;
+            opacity: 0.03;
+            color: #8f8572;
+            filter: blur(1.1px);
+            transform-origin: center;
+            white-space: nowrap;
+        }
+
+        .paper-watermark--rose {
+            left: 6%;
+            top: 12%;
+            font-size: clamp(120px, 18vw, 220px);
+            transform: rotate(-14deg);
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+        }
+
+        .paper-watermark--b612 {
+            right: 4%;
+            bottom: 10%;
+            font-size: clamp(110px, 16vw, 210px);
+            transform: rotate(11deg);
+            font-family: 'Long Cang', 'Ma Shan Zheng', serif;
+            letter-spacing: 0.08em;
+        }
+
+        header,
+        nav a,
+        .logo,
+        .scene-card,
+        .scene-title,
+        .timeline-card,
+        .timeline-card h3,
+        .read-more,
+        .b612-mailbox__input-wrap {
+            transition: color 2.5s ease, border-color 2.5s ease, background-color 2.5s ease, box-shadow 2.5s ease;
+        }
+
+        header {
+            background: rgba(255, 253, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139, 155, 122, 0.1);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-flight-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            margin: -0.25rem 0 -0.25rem 0.25rem;
+            padding: 0;
+            border: 1px solid rgba(139, 155, 122, 0.25);
+            border-radius: 50%;
+            background: rgba(255, 253, 251, 0.9);
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .nav-flight-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 155, 122, 0.15);
+        }
+
+        .nav-flight-btn svg {
+            display: block;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 400;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            padding-bottom: 3.25rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            inset: 0.35rem 0.45rem 0.35rem 0.45rem;
+            border-radius: 10px;
+            pointer-events: none;
+            box-shadow:
+                inset 0 0 26px rgba(108, 96, 76, 0.045),
+                inset 0 0 0 1px rgba(156, 142, 118, 0.05);
+            z-index: 0;
+        }
+
+        /* 页面右下角：折角线 + 极淡「未完待续」 */
+        .page-corner-fold {
+            position: absolute;
+            right: 0.65rem;
+            bottom: 0.5rem;
+            width: 58px;
+            height: 58px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .page-corner-fold__svg {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 58px;
+            height: 58px;
+            overflow: visible;
+        }
+
+        .page-corner-fold__hint {
+            position: absolute;
+            right: 0.05rem;
+            bottom: 1.65rem;
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.56rem;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            color: rgba(82, 78, 70, 0.26);
+            white-space: nowrap;
+            transform: rotate(-9deg);
+            transform-origin: 100% 100%;
+        }
+
+        /* 右下角：星际收藏盒入口（简笔画木盒） */
+        .memory-trigger {
+            position: fixed;
+            right: 1.05rem;
+            bottom: 0.95rem;
+            z-index: 260;
+            width: 54px;
+            height: 54px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            color: rgba(96, 88, 74, 0.62);
+            transition: transform 0.25s ease, color 0.25s ease, filter 0.25s ease;
+        }
+
+        .memory-trigger:hover {
+            color: rgba(86, 98, 74, 0.86);
+            transform: translateY(-2px) rotate(-1.5deg);
+            filter: drop-shadow(0 6px 14px rgba(86, 78, 60, 0.14));
+        }
+
+        .memory-trigger svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* 星际收藏盒：遮罩 + 毛边纸卡片 */
+        .memory-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2400;
+            background: rgba(32, 30, 26, 0.26);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 5vh 1.25rem;
+            box-sizing: border-box;
+        }
+
+        .memory-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .memory-card {
+            position: relative;
+            width: min(860px, 92vw);
+            max-height: 86vh;
+            overflow: hidden;
+            background: #f3efe4;
+            color: rgba(56, 52, 46, 0.88);
+            padding: 2.1rem 2.2rem 2rem;
+            box-shadow: 0 26px 80px rgba(0, 0, 0, 0.28);
+            clip-path: polygon(
+                1.5% 3%,
+                5% 1.2%,
+                12% 2%,
+                18% 0.8%,
+                28% 2.2%,
+                36% 1%,
+                48% 2.6%,
+                58% 1.4%,
+                70% 2.4%,
+                82% 1.2%,
+                95% 2.2%,
+                98.5% 6%,
+                97.2% 14%,
+                99.2% 24%,
+                97.6% 34%,
+                99% 46%,
+                97.3% 58%,
+                99.1% 70%,
+                97.6% 82%,
+                99% 92%,
+                95.8% 98%,
+                86% 97.2%,
+                74% 98.6%,
+                62% 97.4%,
+                48% 98.4%,
+                34% 97.1%,
+                20% 98.8%,
+                10% 97.6%,
+                3% 98.4%,
+                1% 94%,
+                2.2% 82%,
+                0.8% 70%,
+                2.4% 58%,
+                1.1% 46%,
+                2.6% 34%,
+                1.3% 22%,
+                2.3% 12%
+            );
+        }
+
+        .memory-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(120% 80% at 35% 10%, rgba(255, 255, 255, 0.52), transparent 55%),
+                radial-gradient(140% 110% at 82% 76%, rgba(140, 120, 82, 0.07), transparent 56%),
+                repeating-linear-gradient(95deg, rgba(120, 110, 92, 0.02) 0 1px, transparent 1px 8px);
+            opacity: 0.9;
+        }
+
+        .memory-close {
+            position: absolute;
+            top: 1.05rem;
+            right: 1.1rem;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: rgba(88, 80, 68, 0.7);
+            z-index: 2;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .memory-close:hover {
+            color: rgba(60, 56, 48, 0.9);
+            transform: rotate(-6deg);
+        }
+
+        .memory-close svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .memory-heading {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 1.25rem;
+            font-family: 'Ma Shan Zheng', 'Long Cang', 'Noto Serif SC', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.16em;
+            color: rgba(70, 64, 54, 0.78);
+            transform: rotate(-1.2deg);
+        }
+
+        .memory-stage {
+            position: relative;
+            z-index: 1;
+            height: min(520px, 56vh);
+            overflow: visible;
+        }
+
+        .memory-item {
+            position: absolute;
+            width: 210px;
+            transform: rotate(var(--tilt, 3deg));
+            transform-origin: center;
+            cursor: pointer;
+            filter: grayscale(1) saturate(0.1) contrast(1.05);
+            transition: transform 220ms ease, filter 260ms ease;
+            overflow: visible;
+        }
+
+        .memory-item:hover {
+            filter: grayscale(0) saturate(0.9) contrast(1.02);
+            animation: memoryJitter 0.55s ease-in-out infinite;
+        }
+
+        @keyframes memoryJitter {
+            0% { transform: rotate(var(--tilt, 3deg)) translate(0, 0); }
+            40% { transform: rotate(calc(var(--tilt, 3deg) + 0.5deg)) translate(0.6px, -0.4px); }
+            70% { transform: rotate(calc(var(--tilt, 3deg) - 0.4deg)) translate(-0.4px, 0.5px); }
+            100% { transform: rotate(var(--tilt, 3deg)) translate(0, 0); }
+        }
+
+        .memory-object {
+            position: relative;
+            width: 100%;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 10px 26px rgba(92, 86, 70, 0.12);
+            padding: 0.95rem 0.95rem 0.9rem;
+            box-sizing: border-box;
+        }
+
+        .memory-caption {
+            margin-top: 0.45rem;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 12px;
+            color: #999;
+            letter-spacing: 0.06em;
+            transform: rotate(-1.2deg);
+        }
+
+        .memory-bubble {
+            position: absolute;
+            left: 50%;
+            top: auto;
+            bottom: -10px;
+            transform: translate(-50%, 100%);
+            padding: 0.5rem 0.65rem;
+            border-radius: 14px;
+            background: rgba(254, 252, 246, 0.92);
+            border: 1px solid rgba(142, 151, 121, 0.28);
+            color: rgba(56, 52, 46, 0.86);
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 0.82rem;
+            line-height: 1.75;
+            letter-spacing: 0.06em;
+            white-space: normal;
+            width: max-content;
+            max-width: 18em;
+            box-shadow: 0 10px 22px rgba(60, 54, 46, 0.12);
+            opacity: 0;
+            animation: bubbleIn 260ms ease forwards;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .memory-bubble--above {
+            top: -10px;
+            bottom: auto;
+            transform: translate(-50%, -100%);
+        }
+
+        @keyframes bubbleIn {
+            from { opacity: 0; transform: translate(-50%, 88%); }
+            to { opacity: 1; transform: translate(-50%, 100%); }
+        }
+
+        .memory-bubble--above {
+            animation: bubbleInAbove 260ms ease forwards;
+        }
+
+        @keyframes bubbleInAbove {
+            from { opacity: 0; transform: translate(-50%, -88%); }
+            to { opacity: 1; transform: translate(-50%, -100%); }
+        }
+
+        .memory-bubble.is-fading {
+            opacity: 0;
+            transition: opacity 900ms ease;
+        }
+
+        /* 物件：种子 */
+        .seed-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #4b2f1f;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset;
+            display: inline-block;
+            margin-right: 8px;
+            transform: translateY(1px);
+        }
+
+        .seed-row {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .seed-pair-img {
+            width: 100%;
+            height: 92px;
+            display: block;
+            object-fit: contain;
+            opacity: 0.92;
+            filter: contrast(1.03);
+        }
+
+        .seed-img {
+            width: 86px;
+            height: 86px;
+            display: block;
+            object-fit: contain;
+            filter: contrast(1.05);
+            opacity: 0.95;
+        }
+
+        .memory-item .seed-img {
+            background:
+                radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.55), rgba(243, 239, 228, 0.28) 62%, transparent 100%),
+                repeating-linear-gradient(95deg, rgba(120, 110, 92, 0.012) 0 1px, transparent 1px 8px);
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .seed-drop {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+        }
+
+        /* 物件：扳手 */
+        .wrench-svg {
+            width: 100%;
+            height: 74px;
+            display: block;
+        }
+
+        /* 扳手照片“融进纸面” */
+        .memory-object--wrench {
+            position: relative;
+            border-radius: 12px;
+            background:
+                radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.55), rgba(243, 239, 228, 0.22) 62%, transparent 100%),
+                repeating-linear-gradient(95deg, rgba(120, 110, 92, 0.012) 0 1px, transparent 1px 8px);
+            padding: 10px;
+            box-sizing: border-box;
+            height: 98px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .memory-object--wrench::after {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border-radius: 10px;
+            pointer-events: none;
+            opacity: 0.22;
+            background:
+                repeating-linear-gradient(
+                    102deg,
+                    rgba(255, 255, 255, 0.18) 0 1px,
+                    rgba(233, 227, 210, 0.05) 1px 3px,
+                    transparent 3px 7px
+                ),
+                radial-gradient(circle at 18% 40%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.2px),
+                radial-gradient(circle at 62% 68%, rgba(165, 154, 132, 0.1) 0 1px, transparent 1.3px);
+            mix-blend-mode: multiply;
+        }
+
+        .wrench-photo {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            /* 统一纸面白与铅笔灰 */
+            filter: grayscale(0.22) saturate(0.88) brightness(1.02) contrast(0.86);
+            opacity: 0.86;
+            mix-blend-mode: multiply;
+            /* 柔边：像纸纤维散开，而不是硬切 */
+            -webkit-mask-image: radial-gradient(closest-side, #000 60%, transparent 100%);
+            mask-image: radial-gradient(closest-side, #000 60%, transparent 100%);
+            transform: rotate(-90deg) scale(0.92);
+            transform-origin: center center;
+        }
+
+        /* 物件：星图 */
+        .map-card {
+            position: relative;
+            width: 100%;
+            height: 92px;
+            border-radius: 10px;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(70, 54, 36, 0.18), transparent 22%),
+                radial-gradient(circle at 86% 14%, rgba(70, 54, 36, 0.14), transparent 26%),
+                radial-gradient(circle at 92% 88%, rgba(70, 54, 36, 0.12), transparent 28%),
+                linear-gradient(180deg, rgba(255, 252, 245, 0.9), rgba(245, 238, 224, 0.88));
+            box-shadow: 0 0 0 1px rgba(140, 126, 98, 0.16) inset;
+            overflow: hidden;
+        }
+
+        .map-card::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(70, 54, 36, 0.22), transparent 38%),
+                radial-gradient(circle at 100% 0%, rgba(70, 54, 36, 0.18), transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(70, 54, 36, 0.2), transparent 42%),
+                radial-gradient(circle at 0% 100%, rgba(70, 54, 36, 0.18), transparent 40%);
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .map-lines {
+            position: absolute;
+            inset: 10px 12px;
+        }
+
+        .map-lines svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .map-lines circle {
+            fill: rgba(92, 86, 74, 0.62);
+        }
+
+        .map-lines path {
+            fill: none;
+            stroke: rgba(92, 86, 74, 0.55);
+            stroke-width: 1.2;
+            stroke-linecap: round;
+            stroke-dasharray: 4 6 2 7;
+        }
+
+        /* 物件：玻璃罩 */
+        .dome {
+            position: relative;
+            width: 100%;
+            height: 92px;
+            border-radius: 18px;
+            background:
+                radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.12) 52%, rgba(120, 110, 92, 0.06) 100%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(210, 198, 170, 0.08));
+            box-shadow:
+                inset 0 0 0 1px rgba(140, 126, 98, 0.18),
+                0 10px 22px rgba(92, 86, 70, 0.1);
+            overflow: hidden;
+        }
+
+        .dome::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 12px;
+            width: 34px;
+            height: 64px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.22);
+            transform: rotate(-12deg);
+        }
+
+        .dome-base {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 10px;
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(120, 98, 72, 0.22);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+        }
+
+        /* 物件：小铃铛 */
+        .bell-svg {
+            width: 100%;
+            height: 86px;
+            display: block;
+        }
+
+        /* 物件：黄围巾 */
+        .scarf {
+            position: relative;
+            width: 100%;
+            height: 86px;
+        }
+
+        .scarf svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* 背景星空层：落定的小星 */
+        .star-field {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: auto;
+            overflow: hidden;
+        }
+
+        .star-field__star {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            transform: translate(-50%, -50%);
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            outline: none;
+            animation: starTwinkle 5.8s ease-in-out infinite;
+            --star-opacity: 0.86;
+        }
+
+        .star-field__shape {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 40% 33%, #fffce6 0%, #ffe878 36%, #d5a929 78%, #c18f17 100%);
+            clip-path: polygon(49% 3%, 62% 33%, 97% 36%, 68% 54%, 74% 92%, 50% 72%, 26% 94%, 31% 55%, 3% 36%, 39% 33%);
+            transform: rotate(-8deg);
+            box-shadow:
+                0 0 10px rgba(255, 220, 130, 0.55),
+                0 0 22px rgba(255, 200, 88, 0.3);
+            opacity: var(--star-opacity);
+        }
+
+        .star-field__shape::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            clip-path: polygon(48% 6%, 61% 34%, 94% 37%, 66% 54%, 73% 88%, 50% 71%, 28% 90%, 32% 55%, 6% 36%, 38% 34%);
+            border: 1px solid rgba(108, 89, 38, 0.45);
+            opacity: 0.38;
+            transform: rotate(4deg);
+        }
+
+        /* 新种下的星：落成极小的 * / · 符号（历史记录仍用立体星） */
+        .star-field__shape--glyph {
+            background: none !important;
+            clip-path: none !important;
+            box-shadow: 0 0 12px rgba(255, 210, 130, 0.45) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Kalam', Georgia, 'Times New Roman', serif;
+            font-size: 12px;
+            line-height: 1;
+            font-weight: 400;
+            color: rgba(255, 228, 160, 0.95);
+            text-shadow:
+                0 0 8px rgba(255, 200, 90, 0.75),
+                0 0 18px rgba(255, 190, 70, 0.35);
+            transform: rotate(-6deg);
+        }
+
+        .star-field__shape--glyph::before {
+            display: none;
+        }
+
+        .star-field__bubble {
+            position: absolute;
+            left: 18px;
+            top: -12px;
+            max-width: 230px;
+            padding: 0.5rem 0.65rem;
+            border-radius: 12px;
+            background: rgba(254, 252, 246, 0.84);
+            border: 1px solid rgba(142, 151, 121, 0.35);
+            color: rgba(50, 50, 45, 0.92);
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.8rem;
+            line-height: 1.55;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(92, 101, 77, 0.18);
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity 0.22s ease, transform 0.24s ease;
+            z-index: 2;
+        }
+
+        .star-field__bubble::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 14px;
+            width: 10px;
+            height: 10px;
+            background: rgba(254, 252, 246, 0.84);
+            border-left: 1px solid rgba(142, 151, 121, 0.35);
+            border-bottom: 1px solid rgba(142, 151, 121, 0.35);
+            transform: rotate(45deg);
+        }
+
+        .star-field__star:hover .star-field__bubble,
+        .star-field__star:focus-visible .star-field__bubble {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 1; filter: brightness(1); }
+            50% { opacity: 0.82; filter: brightness(1.08); }
+        }
+
+        /* 飞星：文字收束为光点 */
+        .star-shoot {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 200;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .star-shoot__text {
+            display: block;
+            max-width: 240px;
+            padding: 0.15rem 0.35rem;
+            font-family: 'Noto Serif SC', 'Songti SC', 'Microsoft YaHei', serif;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            color: rgba(42, 40, 36, 0.92);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 0 14px rgba(255, 240, 180, 0.45);
+            transform-origin: center center;
+            transition: opacity 0.55s ease, transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .star-shoot__core {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 12px;
+            height: 12px;
+            margin: -6px 0 0 -6px;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0);
+            background: radial-gradient(circle at 35% 30%, #fffef5 0%, #ffe566 48%, #c99810 100%);
+            box-shadow:
+                0 0 18px 6px rgba(255, 215, 100, 0.9),
+                0 0 36px 12px rgba(255, 200, 70, 0.28);
+            transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.35, 1.35, 0.5, 1);
+        }
+
+        .star-shoot--glow .star-shoot__text {
+            opacity: 0;
+            transform: scale(0.06);
+        }
+
+        .star-shoot--glow .star-shoot__core {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* B612 投递箱 */
+        /* B612 页：手帐边注留白填充 */
+        #b612.page {
+            position: relative;
+            min-height: min(72vh, 680px);
+            padding-bottom: 2.5rem;
+        }
+
+        .b612-marginal {
+            position: absolute;
+            z-index: 0;
+            margin: 0;
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.7rem;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            line-height: 1.5;
+            color: rgba(82, 78, 70, 0.22);
+            max-width: 12em;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .b612-marginal--rose {
+            top: 1.25rem;
+            left: clamp(0rem, 2vw, 1.25rem);
+            transform: rotate(15deg);
+            transform-origin: left top;
+        }
+
+        .b612-marginal--desert {
+            top: clamp(14rem, 38vh, 22rem);
+            right: clamp(0rem, 1.5vw, 1rem);
+            text-align: right;
+            transform: rotate(14deg);
+            transform-origin: right top;
+        }
+
+        .b612-marginal--sunset {
+            bottom: clamp(5rem, 18vh, 9rem);
+            left: clamp(0.25rem, 3vw, 2rem);
+            transform: rotate(-12deg);
+            transform-origin: left bottom;
+        }
+
+        .b612-section {
+            position: relative;
+            z-index: 1;
+            max-width: 520px;
+            margin: 2.5rem auto 4rem;
+            padding: 0 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        /* 侧注：小字 + 星号，不居中 */
+        .b612-section__note {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.12rem;
+            align-self: flex-end;
+            margin-right: 6%;
+            margin-bottom: 1.35rem;
+            width: fit-content;
+        }
+
+        .b612-section__glyph {
+            font-family: 'Kalam', 'Segoe Print', 'Bradley Hand ITC', 'Apple Chancery', cursive;
+            font-size: 0.7rem;
+            line-height: 1;
+            color: rgba(100, 94, 78, 0.48);
+            transform: rotate(-11deg) translate(0.2em, 0.05em);
+            user-select: none;
+        }
+
+        .b612-section__tape {
+            position: relative;
+            display: inline-block;
+            padding: 0.22rem 0.5rem 0.32rem;
+            margin-top: 0.06rem;
+            transform: rotate(-2deg);
+        }
+
+        .b612-section__tape::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: -7px;
+            right: -7px;
+            top: -3px;
+            bottom: -5px;
+            background: linear-gradient(188deg, rgba(255, 248, 212, 0.5), rgba(248, 236, 195, 0.38));
+            clip-path: polygon(
+                4% 0%,
+                94% 0%,
+                100% 6%,
+                98% 20%,
+                100% 38%,
+                97% 54%,
+                100% 70%,
+                98% 86%,
+                99% 100%,
+                6% 100%,
+                0% 94%,
+                2% 78%,
+                0% 58%,
+                3% 42%,
+                0% 24%,
+                2% 8%,
+                4% 0%
+            );
+            box-shadow: 0 1px 2px rgba(70, 64, 48, 0.05);
+        }
+
+        .b612-section__tape h2 {
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: rgba(90, 86, 72, 0.62);
+            letter-spacing: 0.28em;
+            margin: 0;
+            text-align: left;
+            position: relative;
+            z-index: 0;
+        }
+
+        .b612-section__lead {
+            font-size: 0.9rem;
+            color: rgba(107, 105, 98, 0.72);
+            text-align: center;
+            margin: 0 auto 2rem;
+            max-width: 18em;
+            line-height: 2.5;
+            letter-spacing: 0.04em;
+        }
+
+        .b612-section__lead-line {
+            display: block;
+        }
+
+        .b612-mailbox {
+            text-align: center;
+        }
+
+        .b612-mailbox__label {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            color: rgba(60, 58, 52, 0.55);
+            margin-bottom: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .b612-mailbox__input-wrap {
+            position: relative;
+            padding: 0.35rem 0 1.1rem;
+            margin-bottom: 1.25rem;
+            text-align: left;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            backdrop-filter: none;
+            border-radius: 0;
+        }
+
+        /* 稿纸感：输入区下方几条长短不一的淡横线 */
+        .b612-mailbox__input-wrap::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 5.5rem;
+            pointer-events: none;
+            background-repeat: no-repeat;
+            background-image:
+                linear-gradient(to right, rgba(120, 115, 100, 0.2) 0 72%, transparent 72%),
+                linear-gradient(to right, rgba(120, 115, 100, 0.14) 0 94%, transparent 94%),
+                linear-gradient(to right, rgba(120, 115, 100, 0.17) 0 58%, transparent 58%),
+                linear-gradient(to right, rgba(120, 115, 100, 0.13) 0 86%, transparent 86%),
+                linear-gradient(to right, rgba(120, 115, 100, 0.16) 0 79%, transparent 79%);
+            background-size:
+                100% 1px,
+                100% 1px,
+                100% 1px,
+                100% 1px,
+                100% 1px;
+            background-position:
+                0 0.2rem,
+                0 1.35rem,
+                0 2.5rem,
+                0 3.65rem,
+                0 4.8rem;
+        }
+
+        .b612-mailbox textarea {
+            width: 100%;
+            min-height: 108px;
+            border: none;
+            outline: none;
+            resize: vertical;
+            background: transparent;
+            box-shadow: none;
+            font-family: 'Noto Serif SC', 'Songti SC', 'Microsoft YaHei', serif;
+            font-size: 0.98rem;
+            line-height: 1.75;
+            color: rgba(136, 136, 136, 0.6);
+        }
+
+        .b612-mailbox textarea::placeholder {
+            color: rgba(136, 136, 136, 0.6);
+            opacity: 1;
+            font-style: italic;
+        }
+
+        .b612-mailbox textarea::-webkit-input-placeholder {
+            color: rgba(136, 136, 136, 0.6);
+            opacity: 1;
+        }
+
+        .b612-mailbox textarea::-moz-placeholder {
+            color: rgba(136, 136, 136, 0.6);
+            opacity: 1;
+        }
+
+        .b612-mailbox textarea.b612-message-input--flying {
+            opacity: 0.2;
+            transition: opacity 0.55s ease;
+            pointer-events: none;
+        }
+
+        .b612-mailbox__btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.95rem 1.85rem;
+            margin-top: 0.15rem;
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.12em;
+            color: rgba(61, 69, 56, 0.88);
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            cursor: pointer;
+            transition: color 0.35s ease, transform 0.35s ease;
+        }
+
+        .b612-mailbox__btn-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 手绘圈：略扁、断续、带轻微毛刺（SVG filter） */
+        .b612-mailbox__btn-ring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: calc(100% + 28px);
+            height: calc(100% + 14px);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            overflow: visible;
+            color: rgba(88, 82, 68, 0.42);
+        }
+
+        .b612-mailbox__btn-ring path {
+            stroke: currentColor;
+            stroke-width: 1.35;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 18 5 9 6 14 4 22 5 11 7;
+        }
+
+        .b612-mailbox__btn:hover:not(:disabled) {
+            color: rgba(61, 82, 52, 0.92);
+            transform: translateY(-1px);
+        }
+
+        .b612-mailbox__btn:hover:not(:disabled) .b612-mailbox__btn-ring {
+            color: rgba(107, 122, 88, 0.55);
+            animation: b612-ring-ritual 0.52s ease-in-out infinite alternate;
+        }
+
+        @keyframes b612-ring-ritual {
+            0% {
+                transform: translate(-50%, -50%) rotate(-1.4deg);
+            }
+            35% {
+                transform: translate(calc(-50% + 1px), calc(-50% - 0.5px)) rotate(1.2deg);
+            }
+            70% {
+                transform: translate(calc(-50% - 0.5px), calc(-50% + 0.5px)) rotate(-1deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(1.5deg);
+            }
+        }
+
+        .b612-mailbox__btn:focus-visible {
+            outline: 2px solid rgba(139, 155, 122, 0.5);
+            outline-offset: 5px;
+            border-radius: 2px;
+        }
+
+        .b612-mailbox__btn:focus-visible .b612-mailbox__btn-ring {
+            color: rgba(107, 122, 88, 0.65);
+        }
+
+        .b612-mailbox__btn:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
+
+        .b612-mailbox__btn:disabled .b612-mailbox__btn-ring {
+            animation: none;
+            color: rgba(88, 82, 68, 0.22);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .b612-mailbox__btn:hover:not(:disabled) .b612-mailbox__btn-ring {
+                animation: none;
+            }
+        }
+
+        .b612-mailbox__toast {
+            margin-top: 1.15rem;
+            min-height: 1.5rem;
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.88rem;
+            color: rgba(90, 118, 86, 0.92);
+            letter-spacing: 0.04em;
+            transition: opacity 0.4s ease;
+        }
+
+        .b612-mailbox__toast:empty {
+            opacity: 0;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* HOME PAGE — 手帐：主标题胶带 + 卡片胶带 + 诗句式引用 + 边注 */
+        #home.page {
+            position: relative;
+            padding-top: 0.25rem;
+        }
+
+        /* 板块连接：手绘地图风虚线路径 */
+        .section-flow {
+            position: relative;
+            height: 66px;
+            margin-top: 1rem;
+            pointer-events: none;
+            opacity: 0.72;
+        }
+
+        .section-flow svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            overflow: visible;
+        }
+
+        .section-flow__path {
+            fill: none;
+            stroke: rgba(122, 114, 98, 0.42);
+            stroke-width: 1.35;
+            stroke-linecap: round;
+            stroke-dasharray: 5 8 2 9;
+        }
+
+        .section-flow__arrow,
+        .section-flow__star {
+            fill: none;
+            stroke: rgba(118, 110, 94, 0.52);
+            stroke-width: 1.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .section-flow__note {
+            position: absolute;
+            right: 2.2rem;
+            bottom: -0.1rem;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 0.64rem;
+            letter-spacing: 0.06em;
+            color: rgba(126, 118, 104, 0.42);
+            transform: rotate(-3deg);
+            white-space: nowrap;
+        }
+
+        .home-page__intro {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .home-page__tape {
+            --tape-tilt: -2deg;
+            position: relative;
+            display: inline-block;
+            padding: 0.45rem 1.35rem 0.58rem;
+            margin: 0 auto 0.15rem;
+            transform: rotate(var(--tape-tilt));
+            isolation: isolate;
+        }
+
+        .home-page__tape::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: -12px;
+            right: -12px;
+            top: -4px;
+            bottom: -12px;
+            background: linear-gradient(192deg, rgba(235, 230, 215, 0.72), rgba(228, 222, 206, 0.62));
+            backdrop-filter: blur(2px);
+            clip-path: polygon(
+                3% 0%,
+                94% 0%,
+                100% 8%,
+                97.5% 22%,
+                100% 37%,
+                97% 52%,
+                99.5% 69%,
+                96.5% 84%,
+                99% 100%,
+                7% 100%,
+                0% 92%,
+                2.8% 80%,
+                0.5% 64%,
+                3% 49%,
+                0% 33%,
+                2.2% 16%,
+                3% 0%
+            );
+            box-shadow:
+                0 1px 3px rgba(72, 64, 48, 0.08),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+        }
+
+        /* 和纸纤维：极轻噪点与细丝纹理 */
+        .home-page__tape::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: -12px;
+            right: -12px;
+            top: -4px;
+            bottom: -12px;
+            clip-path: inherit;
+            pointer-events: none;
+            opacity: 0.22;
+            background:
+                repeating-linear-gradient(
+                    102deg,
+                    rgba(255, 255, 255, 0.2) 0 1px,
+                    rgba(233, 227, 210, 0.06) 1px 3px,
+                    transparent 3px 7px
+                ),
+                repeating-linear-gradient(
+                    -78deg,
+                    rgba(182, 171, 148, 0.08) 0 1px,
+                    transparent 1px 5px
+                ),
+                radial-gradient(circle at 18% 40%, rgba(255, 255, 255, 0.2) 0 1px, transparent 1.2px),
+                radial-gradient(circle at 62% 68%, rgba(165, 154, 132, 0.12) 0 1px, transparent 1.3px),
+                radial-gradient(circle at 82% 30%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.2px);
+            background-size: auto, auto, 24px 24px, 30px 30px, 28px 28px;
+            mix-blend-mode: multiply;
+        }
+
+        .home-page__heading {
+            margin: 0;
+            font-size: 1.65rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            letter-spacing: 0.04em;
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', 'Songti SC', serif;
+            transform: rotate(2deg);
+        }
+
+        .home-marginal {
+            position: absolute;
+            z-index: 0;
+            margin: 0;
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.68rem;
+            font-style: italic;
+            color: rgba(82, 78, 70, 0.2);
+            max-width: 9em;
+            line-height: 1.45;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .home-marginal--tl {
+            top: 0.2rem;
+            left: 0;
+            transform: rotate(13deg);
+            transform-origin: left top;
+        }
+
+        .home-marginal--tr {
+            top: 0.5rem;
+            right: 0;
+            text-align: right;
+            transform: rotate(-11deg);
+            transform-origin: right top;
+        }
+
+        .home-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .scene-card {
+            --card-tilt: 0deg;
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(139, 155, 122, 0.1);
+            transform: rotate(var(--card-tilt));
+        }
+
+        .scene-card--overflow {
+            overflow: visible;
+        }
+
+        .scene-overflow-note {
+            position: absolute;
+            right: -12px;
+            bottom: -14px;
+            margin: 0;
+            font-size: 0.62rem;
+            color: rgba(138, 130, 116, 0.44);
+            transform: rotate(-7deg);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .scene-card:hover {
+            transform: translateY(-4px) rotate(var(--card-tilt));
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary-color);
+        }
+
+        .home-grid .scene-card:nth-child(1) { --card-tilt: -0.8deg; }
+        .home-grid .scene-card:nth-child(2) { --card-tilt: 0.9deg; }
+        .home-grid .scene-card:nth-child(3) { --card-tilt: -0.5deg; }
+        .home-grid .scene-card:nth-child(4) { --card-tilt: 0.7deg; }
+
+        .scene-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #e8dfd5 0%, #f0e8df 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .scene-content {
+            padding: 1rem 0.95rem 1.15rem;
+            text-align: left;
+            background: linear-gradient(180deg, rgba(255, 252, 248, 0.97), rgba(255, 253, 250, 0.99));
+        }
+
+        .scene-title-tape {
+            --scene-tape-tilt: -2deg;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0.55rem;
+            transform: rotate(var(--scene-tape-tilt));
+        }
+
+        .scene-title-tape::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: -7px;
+            right: -7px;
+            top: -3px;
+            bottom: -6px;
+            background: linear-gradient(186deg, rgba(255, 246, 205, 0.46), rgba(242, 228, 178, 0.36));
+            clip-path: polygon(
+                4% 0%,
+                94% 0%,
+                100% 6%,
+                98% 20%,
+                100% 38%,
+                97% 54%,
+                100% 70%,
+                98% 86%,
+                99% 100%,
+                6% 100%,
+                0% 94%,
+                2% 78%,
+                0% 58%,
+                3% 42%,
+                0% 24%,
+                2% 8%,
+                4% 0%
+            );
+            box-shadow: 0 1px 2px rgba(70, 64, 48, 0.06);
+        }
+
+        .scene-title {
+            font-size: 1.05rem;
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 500;
+            font-family: 'Ma Shan Zheng', 'Noto Serif SC', 'Songti SC', serif;
+            position: relative;
+            z-index: 0;
+            letter-spacing: 0.02em;
+        }
+
+        .scene-quote {
+            font-size: 0.88rem;
+            color: rgba(107, 105, 98, 0.78);
+            font-style: italic;
+            line-height: 2.5;
+            letter-spacing: 0.02em;
+            max-width: 100%;
+        }
+
+        .scene-quote-line {
+            display: block;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-white);
+            border-radius: 16px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            /* 底图与遮罩由 JS 叠成多层 background，不用 ::before，避免在 overflow 容器里只盖住上半截 */
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 2;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: rgba(139, 155, 122, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-text {
+            color: #666666;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 1.06rem;
+            line-height: 2.05;
+            letter-spacing: 1.6px;
+            font-weight: 300;
+            opacity: 0.82;
+            text-align: left;
+            margin-bottom: 1rem;
+        }
+
+        /* JOURNEY PAGE */
+        .journey-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+
+        /* Journey 大标题：浅黄纸胶带 + 约 2° 随手贴感 */
+        .journey-intro__tape {
+            position: relative;
+            display: inline-block;
+            padding: 0.55rem 1.5rem 0.72rem;
+            margin-bottom: 1rem;
+            transform: rotate(-2deg);
+        }
+
+        .journey-intro__tape::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: -12px;
+            right: -12px;
+            top: -5px;
+            bottom: -14px;
+            background: linear-gradient(192deg, rgba(255, 248, 210, 0.52), rgba(246, 234, 188, 0.4));
+            clip-path: polygon(
+                4% 0%,
+                94% 0%,
+                100% 6%,
+                98% 20%,
+                100% 38%,
+                97% 54%,
+                100% 70%,
+                98% 86%,
+                99% 100%,
+                6% 100%,
+                0% 94%,
+                2% 78%,
+                0% 58%,
+                3% 42%,
+                0% 24%,
+                2% 8%,
+                4% 0%
+            );
+            box-shadow: 0 1px 3px rgba(72, 64, 48, 0.06);
+        }
+
+        .journey-intro__tape h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin: 0;
+            position: relative;
+            z-index: 0;
+        }
+
+        .journey-intro p {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 3rem 0;
+        }
+
+        .timeline-curves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .timeline-segment {
+            position: absolute;
+            width: 56px;
+            z-index: 1;
+        }
+
+        .timeline-svg {
+            width: 56px;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .timeline-svg path {
+            fill: none;
+            stroke: #c4a96b;
+            stroke-width: 2.5;
+            stroke-dasharray: 9 7 2 8;
+            stroke-linecap: round;
+            opacity: 1;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .timeline-svg .timeline-stitch-secondary {
+            stroke: rgba(125, 104, 68, 0.58);
+            stroke-width: 1.2;
+            stroke-dasharray: 2 9 4 8;
+            transform: translate(1.2px, -0.8px);
+        }
+
+        .timeline-svg.draw path {
+            opacity: 1;
+        }
+
+        .timeline-plane {
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .timeline-plane path {
+            fill: none;
+            stroke: #c4a96b;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd) {
+            margin-left: 0;
+            text-align: right;
+            padding-right: calc(50% + 30px);
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: calc(50% + 30px);
+            text-align: left;
+            padding-left: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background: #cfcfcf;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .timeline-card {
+            --note-tilt: 0deg;
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(122, 116, 103, 0.06) 0,
+                    rgba(122, 116, 103, 0.06) 1px,
+                    transparent 1px,
+                    transparent 30px
+                ),
+                linear-gradient(180deg, rgba(255, 255, 252, 0.38), rgba(255, 252, 248, 0.28));
+            padding: 1.25rem 1.1rem 1.15rem;
+            border-radius: 10px;
+            box-shadow: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+            transform: rotate(var(--note-tilt));
+        }
+
+        .timeline-item:nth-child(1) .timeline-card { --note-tilt: -0.7deg; }
+        .timeline-item:nth-child(2) .timeline-card { --note-tilt: 0.9deg; }
+        .timeline-item:nth-child(3) .timeline-card { --note-tilt: -0.4deg; }
+        .timeline-item:nth-child(4) .timeline-card { --note-tilt: 0.8deg; }
+        .timeline-item:nth-child(5) .timeline-card { --note-tilt: -0.6deg; }
+
+        .timeline-card--overflow {
+            overflow: visible;
+        }
+
+        .timeline-overflow-note {
+            position: absolute;
+            right: -10px;
+            bottom: -16px;
+            margin: 0;
+            font-size: 0.62rem;
+            color: rgba(138, 130, 116, 0.44);
+            transform: rotate(6deg);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .b612-overflow-note {
+            position: absolute;
+            right: -0.35rem;
+            bottom: -1.05rem;
+            margin: 0;
+            font-size: 0.64rem;
+            color: rgba(132, 124, 108, 0.46);
+            transform: rotate(-5deg);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* 拼贴细节：淡咖啡渍 + 轻微压花痕 */
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 84% 22%, rgba(157, 126, 79, 0.12) 0 16px, rgba(157, 126, 79, 0.03) 17px 30px, transparent 31px),
+                radial-gradient(circle at 16% 78%, rgba(157, 126, 79, 0.09) 0 12px, rgba(157, 126, 79, 0.02) 13px 24px, transparent 25px),
+                radial-gradient(ellipse 36px 14px at 72% 64%, rgba(128, 139, 106, 0.06) 0 55%, transparent 56%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 拼贴细节：右上折角 */
+        .timeline-card::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            background:
+                linear-gradient(135deg, rgba(236, 228, 205, 0.86) 0 50%, rgba(212, 196, 166, 0.72) 50% 100%);
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+            box-shadow: -1px 1px 0 rgba(122, 112, 90, 0.16);
+            opacity: 0.72;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-1px);
+        }
+
+        .timeline-card h3 {
+            color: #666666;
+            margin: 0;
+            font-size: 0.98rem;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-weight: 300;
+            opacity: 0.88;
+        }
+
+        .chapter-tape {
+            --tape-tilt: -4deg;
+            position: relative;
+            display: inline-block;
+            margin: 0.1rem 0 0.9rem;
+            padding: 0.42rem 0.88rem 0.58rem;
+            background: transparent;
+            border-radius: 0;
+            transform: rotate(var(--tape-tilt));
+            box-shadow: none;
+            z-index: 2;
+        }
+
+        /* 半透明和纸胶带：两头不规则撕裂（clip-path），无图片 */
+        .chapter-tape::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: -11px;
+            right: -11px;
+            top: -4px;
+            bottom: -13px;
+            background: linear-gradient(186deg, rgba(255, 246, 205, 0.48), rgba(242, 228, 178, 0.4));
+            clip-path: polygon(
+                4% 0%,
+                94% 0%,
+                100% 6%,
+                98% 20%,
+                100% 38%,
+                97% 54%,
+                100% 70%,
+                98% 86%,
+                99% 100%,
+                6% 100%,
+                0% 94%,
+                2% 78%,
+                0% 58%,
+                3% 42%,
+                0% 24%,
+                2% 8%,
+                4% 0%
+            );
+            box-shadow: 0 1px 2px rgba(70, 62, 48, 0.07);
+        }
+
+        .chapter-tape-note {
+            position: absolute;
+            right: 0.38rem;
+            bottom: 0.04rem;
+            font-family: 'Segoe Print', 'Comic Sans MS', 'Noto Serif SC', cursive;
+            font-size: 0.56rem;
+            font-weight: 400;
+            color: rgba(98, 90, 78, 0.72);
+            letter-spacing: 0.03em;
+            transform: rotate(2deg);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .timeline-card p {
+            color: #666666;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 1.06rem;
+            line-height: 2.05;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 1;
+            text-align: left;
+            letter-spacing: 1.6px;
+            font-weight: 300;
+            opacity: 0.82;
+        }
+
+        .timeline-card p.narrative {
+            text-align: left;
+            text-indent: 2em;
+        }
+
+        .timeline-card p.narrative.no-indent {
+            text-indent: 0;
+        }
+
+        .chapter-watermark {
+            position: absolute;
+            right: 0.55rem;
+            top: 50%;
+            transform: translateY(calc(-50% + var(--chapter-shift, 0px) * var(--wm-rate, 0.22)));
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(120px, 10vw, 150px);
+            font-weight: 500;
+            color: rgba(160, 160, 160, 0.18);
+            opacity: 0.05;
+            letter-spacing: 0.06em;
+            line-height: 0.9;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            transition: transform 0.08s linear;
+        }
+
+        .timeline-thought {
+            margin-bottom: 0.9rem;
+            font-size: 0.94rem;
+            line-height: 2;
+            color: #666666;
+            font-style: italic;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            letter-spacing: 1.6px;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
+        /* 荧光笔标注：不加粗，仅底色涂抹 */
+        .quote-highlight {
+            position: relative;
+            display: inline;
+            padding: 0 0.1em;
+            z-index: 1;
+            background:
+                linear-gradient(transparent 55%, rgba(252, 234, 115, 0.58) 55% 88%, transparent 88%);
+            border-radius: 4px;
+            box-decoration-break: clone;
+            -webkit-box-decoration-break: clone;
+        }
+
+        .quote-highlight.pink {
+            background:
+                linear-gradient(transparent 55%, rgba(245, 194, 212, 0.56) 55% 88%, transparent 88%);
+        }
+
+        /* FULLSCREEN FLIGHT LOG MODAL */
+        .flight-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+            background: #f2f0e9;
+            background-image:
+                linear-gradient(175deg, rgba(255, 255, 255, 0.38) 0%, transparent 45%),
+                radial-gradient(ellipse 85% 45% at 65% 12%, rgba(255, 255, 255, 0.22) 0%, transparent 52%);
+        }
+
+        .flight-modal.active {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .flight-modal__scroll {
+            position: relative;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding: 4.25rem 1.5rem 3.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .flight-modal__close {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 1110;
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(139, 155, 122, 0.14);
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .flight-modal__close:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        /* 纸上的收集品：可交互的小贴纸（Unicode 符号） */
+        .collectibles {
+            position: fixed;
+            inset: 0;
+            z-index: 1105;
+            pointer-events: none;
+        }
+
+        .collectible {
+            position: absolute;
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 12px;
+            line-height: 1;
+            letter-spacing: 0.02em;
+            color: rgba(88, 84, 74, 0.28);
+            opacity: 0.55;
+            transform: translateZ(0) rotate(var(--tilt, 0deg));
+            transform-origin: center;
+            transition: transform 220ms ease, opacity 220ms ease;
+            user-select: none;
+            pointer-events: auto;
+            cursor: default;
+        }
+
+        .collectible--soft {
+            opacity: 0.38;
+            color: rgba(88, 84, 74, 0.22);
+        }
+
+        .collectible:hover {
+            opacity: 0.78;
+            transform: translateY(-1px) rotate(var(--hover-tilt, 4deg));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .collectible {
+                transition: none;
+            }
+            .collectible:hover {
+                transform: rotate(var(--tilt, 0deg));
+            }
+        }
+
+        .flight-log-title {
+            position: relative;
+            display: block;
+            max-width: 28em;
+            margin: 0 auto 2.75rem;
+            font-family: 'Ma Shan Zheng', 'Long Cang', 'Noto Serif SC', serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.22em;
+            color: rgba(72, 68, 58, 0.62);
+            text-align: center;
+            padding-bottom: 0.55rem;
+        }
+
+        .flight-log-title-line {
+            display: block;
+            line-height: 1.55;
+        }
+
+        .flight-log-title-line + .flight-log-title-line {
+            margin-top: 0.2rem;
+        }
+
+        .flight-log-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: min(92%, 340px);
+            height: 8px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5 Q 35 2 70 5 T 130 4 T 198 5.5' fill='none' stroke='rgba(120,112,96,0.28)' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E")
+                center / 100% 100% no-repeat;
+            pointer-events: none;
+        }
+
+        .flight-log-marginal {
+            position: fixed;
+            z-index: 1104;
+            margin: 0;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 12px;
+            color: rgba(204, 204, 204, 0.62);
+            line-height: 1.55;
+            letter-spacing: 0.04em;
+            max-width: 14em;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .flight-log-marginal--l1 { left: 0.85rem; top: 20vh; transform: rotate(-8deg); }
+        .flight-log-marginal--l2 { left: 0.95rem; top: 42vh; transform: rotate(-5deg); }
+        .flight-log-marginal--l3 { left: 1.05rem; top: 66vh; transform: rotate(-7deg); }
+        .flight-log-marginal--r1 { right: 0.9rem; top: 28vh; transform: rotate(7deg); text-align: right; }
+        .flight-log-marginal--r2 { right: 0.95rem; top: 56vh; transform: rotate(6deg); text-align: right; }
+
+        .flight-timeline-wrap {
+            position: relative;
+            margin: 0 auto;
+            padding-bottom: 2rem;
+        }
+
+        .flight-center-line {
+            position: absolute;
+            left: 50%;
+            top: 0.5rem;
+            bottom: 2rem;
+            width: 28px;
+            transform: translateX(-50%);
+            z-index: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        .flight-center-line svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flight-node {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            margin-bottom: clamp(2.75rem, 8vw, 4.25rem);
+        }
+
+        .flight-node:last-of-type {
+            margin-bottom: 1rem;
+        }
+
+        .flight-node--left {
+            justify-content: flex-end;
+            padding-right: calc(50% + 22px);
+        }
+
+        .flight-node--right {
+            justify-content: flex-start;
+            padding-left: calc(50% + 22px);
+        }
+
+        .flight-node__marker {
+            position: absolute;
+            left: 50%;
+            top: 1.35rem;
+            width: 12px;
+            height: 12px;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.72;
+        }
+
+        .flight-node__inner {
+            max-width: 400px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem 1.15rem;
+            will-change: opacity, transform, filter;
+        }
+
+        .flight-node--left .flight-node__inner {
+            flex-direction: row;
+        }
+
+        .flight-node--right .flight-node__inner {
+            flex-direction: row-reverse;
+        }
+
+        /* 让图一（右侧节点）也做到“图文挨着”：插图在左、文字在右 */
+        .flight-node--right .flight-node__inner {
+            flex-direction: row;
+            gap: 0.4rem 0.45rem;
+            align-items: flex-start;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .flight-node__inner {
+                opacity: 0;
+                filter: blur(12px);
+                transition:
+                    opacity 1.2s cubic-bezier(0.22, 0.99, 0.35, 1),
+                    transform 1.25s cubic-bezier(0.22, 0.99, 0.35, 1),
+                    filter 1.35s cubic-bezier(0.25, 0.9, 0.35, 1);
+            }
+
+            .flight-node--left .flight-node__inner {
+                transform: translate(-22px, 36px);
+            }
+
+            .flight-node--right .flight-node__inner {
+                transform: translate(22px, 36px);
+            }
+
+            .flight-node__inner.flight-node__inner--visible {
+                opacity: 1;
+                filter: blur(0);
+                transform: translate(0, 0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .flight-node__inner {
+                opacity: 1;
+                filter: none;
+                transform: none;
+            }
+        }
+
+        .flight-node__sketch {
+            flex: 0 0 auto;
+            position: relative;
+            width: 150px;
+            padding: 0.65rem 0.4rem;
+            margin: 0.4rem 0.2rem 0 0;
+            border: none;
+            background: rgba(255, 253, 248, 0.55);
+            transform-origin: center center;
+        }
+
+        /* 图一：右侧节点插图更靠上，和标题更贴近 */
+        .flight-node--right .flight-node__sketch {
+            margin-top: 0.1rem;
+            margin-right: 0;
+        }
+
+        /* 半透明纸胶带：压在插图上方 */
+        .flight-node__sketch::before {
+            content: '';
+            position: absolute;
+            z-index: 3;
+            left: 6%;
+            width: 58%;
+            height: 12px;
+            top: -6px;
+            background: linear-gradient(95deg, rgba(255, 244, 198, 0.55), rgba(248, 232, 175, 0.42));
+            transform: rotate(-1.2deg);
+            clip-path: polygon(3% 0%, 97% 0%, 100% 45%, 97% 100%, 3% 100%, 0% 48%);
+            box-shadow: 0 1px 2px rgba(72, 62, 48, 0.07);
+            pointer-events: none;
+        }
+
+        /* 手绘感抖动边框（不规则圆角模拟笔误） */
+        .flight-node__sketch::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            z-index: 1;
+            border-radius: 10px;
+            box-shadow:
+                0 0 0 1px rgba(74, 68, 56, 0.18),
+                0 0 0 1px rgba(74, 68, 56, 0.06) inset;
+            pointer-events: none;
+            opacity: 0.45;
+        }
+
+        .flight-node--left .flight-node__sketch {
+            transform: rotate(-2.5deg);
+        }
+
+        .flight-node--right .flight-node__sketch {
+            transform: rotate(2.5deg);
+        }
+
+        .flight-node__sketch svg {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .flight-node__sketch img {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            filter: saturate(0.92) brightness(1.03) contrast(0.95);
+        }
+
+        /* 与上方一致的「纸片贴图」风格（用于第二张替换图） */
+        .flight-node__sketch--paper {
+            transform: rotate(-1.4deg) !important;
+            padding: 0.5rem 0.48rem 0.62rem;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255, 253, 248, 0.9), rgba(251, 248, 242, 0.86));
+            box-shadow: 0 4px 14px rgba(78, 72, 60, 0.08);
+        }
+
+        .flight-node__sketch--paper::before {
+            left: 10%;
+            width: 54%;
+            top: -7px;
+            transform: rotate(-2deg);
+            opacity: 0.95;
+        }
+
+        .flight-node__sketch--paper::after {
+            inset: 0;
+            border-radius: 12px;
+            box-shadow:
+                0 0 0 1px rgba(116, 106, 88, 0.16),
+                0 0 0 1px rgba(255, 255, 255, 0.45) inset;
+            opacity: 1;
+        }
+
+        .flight-node__sketch--paper img {
+            border-radius: 8px;
+            filter: saturate(0.88) brightness(1.02) contrast(0.92);
+        }
+
+        .flight-node__sketch-caption {
+            margin: 0.4rem 0.1rem 0;
+            font-family: 'Long Cang', 'Ma Shan Zheng', serif;
+            font-size: 0.72rem;
+            line-height: 1.65;
+            letter-spacing: 0.08em;
+            color: rgba(108, 100, 86, 0.62);
+            text-align: left;
+        }
+
+        .flight-node__sketch img {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        /* 「撒哈拉的坠落」专属：左图右文 40/60 + 拼贴感 */
+        .flight-node--collage .flight-node__inner {
+            position: relative;
+            width: min(760px, 84vw);
+            max-width: none;
+            display: grid;
+            grid-template-columns: 42% 58%;
+            column-gap: 18px;
+            align-items: start;
+            grid-auto-flow: row;
+            grid-auto-rows: min-content;
+        }
+
+        /* 图一（1930s）专属：强制图文贴合 */
+        .flight-node--cloud.flight-node--right.flight-node--collage .flight-node__inner {
+            grid-template-columns: 1fr min(340px, 42%);
+            column-gap: 18px;
+        }
+
+        .flight-node--cloud.flight-node--right.flight-node--collage .flight-node__sketch {
+            justify-self: start;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flight-node--cloud.flight-node--right.flight-node--collage .flight-node__body {
+            justify-self: stretch;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            isolation: isolate;
+        }
+
+        /* 这条改为整行拼贴，不走左右半栏时间轴 */
+        .flight-node--collage {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* 插画左右交替：right 节点把图放到右侧、文字在左侧 */
+        .flight-node--right.flight-node--collage .flight-node__sketch {
+            grid-column: 2;
+            justify-self: end;
+        }
+
+        .flight-node--right.flight-node--collage .flight-node__body {
+            grid-column: 1;
+            margin-top: -8px;
+            justify-self: end;
+        }
+
+        .flight-node--right.flight-node--collage .flight-node__bridge-note {
+            left: auto;
+            right: calc(34% + 8px);
+        }
+
+        .flight-node--collage .flight-node__sketch {
+            width: 100%;
+            margin: 0;
+            padding: 6px;
+            grid-row: 1;
+            border-radius: 14px;
+            background:
+                radial-gradient(140% 110% at 18% 6%, rgba(255, 255, 255, 0.72), rgba(244, 239, 230, 0.64)),
+                linear-gradient(168deg, rgba(241, 233, 219, 0.46), rgba(231, 224, 209, 0.34));
+            box-shadow: 0 8px 20px rgba(124, 112, 93, 0.08);
+            transform: rotate(-0.7deg);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 关键：文字永远压在贴纸/插图之上，避免遮挡标题 */
+        .flight-node--collage .flight-node__body {
+            position: relative;
+            z-index: 6;
+            isolation: isolate;
+        }
+
+        .flight-node--collage .flight-node__sketch {
+            z-index: 4;
+            transform: rotate(-0.7deg);
+            max-width: 320px;
+            justify-self: start;
+        }
+
+        .flight-node--collage .flight-node__sketch::before {
+            left: 14px;
+            top: -13px;
+            width: 82px;
+            height: 22px;
+            transform: rotate(-15deg);
+            clip-path: none;
+            border-radius: 3px;
+            background: linear-gradient(180deg, rgba(255, 252, 240, 0.38), rgba(238, 231, 208, 0.28));
+            border: 1px solid rgba(214, 202, 170, 0.28);
+            box-shadow: 0 1px 2px rgba(110, 100, 78, 0.08);
+        }
+
+        .flight-node--collage .flight-node__sketch::after {
+            inset: -4px;
+            border-radius: 18px 14px 20px 12px / 16px 20px 12px 18px;
+            box-shadow: 0 0 0 1px rgba(168, 152, 126, 0.2);
+            opacity: 0.58;
+        }
+
+        .flight-node--collage .flight-node__body h2 {
+            margin-top: -0.3rem;
+            margin-left: -6px;
+            position: relative;
+            z-index: 6;
+        }
+
+        .flight-node--collage .flight-node__body {
+            overflow-x: visible;
+            font-size: 0.97rem;
+            letter-spacing: 0.25px;
+            align-self: start;
+            margin-top: 0;
+            grid-row: 1;
+        }
+
+        .flight-node__overlap-note {
+            position: absolute;
+            left: -6px;
+            top: 0.1rem;
+            margin: 0;
+            padding: 0.38rem 0.85rem 0.42rem;
+            font-family: 'Long Cang', 'Ma Shan Zheng', 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+            color: rgba(84, 80, 72, 0.78);
+            transform: rotate(-5deg);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 6;
+            background: rgba(255, 252, 244, 0.82);
+            border: 1px solid rgba(160, 150, 132, 0.18);
+            border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(120, 110, 92, 0.1);
+            backdrop-filter: blur(1.5px);
+        }
+
+        /* 纸条下方留白：避免和标题/正文挤在一起 */
+        .flight-node__body--has-strip {
+            padding-top: 1.9rem;
+        }
+
+        .flight-node__bridge-note {
+            position: absolute;
+            left: calc(40% + 12px);
+            top: 52%;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            color: rgba(166, 158, 145, 0.42);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .flight-node__sketch-notes {
+            margin-top: 0.45rem;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 0.66rem;
+            line-height: 1.5;
+            color: rgba(126, 120, 108, 0.6);
+            letter-spacing: 0.04em;
+            transform: rotate(-2deg);
+        }
+
+        .flight-node__sketch-notes p {
+            margin: 0.15rem 0;
+        }
+
+        .flight-node__body {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            z-index: 0;
+            overflow-x: hidden;
+            overflow-y: visible;
+            font-family: 'Long Cang', 'Ma Shan Zheng', 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', serif;
+            font-size: 1.02rem;
+            line-height: 2.2;
+            letter-spacing: 1.5px;
+            color: rgba(58, 56, 52, 0.78);
+        }
+
+        /* 超大极淡年份水印 */
+        .flight-node__body[data-year-wm]::before {
+            content: attr(data-year-wm);
+            position: absolute;
+            left: 50%;
+            top: 42%;
+            transform: translate(-50%, -50%) rotate(-7deg);
+            font-family: 'Ma Shan Zheng', 'Long Cang', serif;
+            font-size: clamp(4.5rem, 26vw, 7.5rem);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: rgba(110, 102, 88, 0.045);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: -1;
+            user-select: none;
+        }
+
+        .flight-node__body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 手写年份 + 波浪下划线 + 旁注 */
+        .flight-node__date {
+            margin-bottom: 0.75rem;
+        }
+
+        .flight-node--right .flight-node__date {
+            text-align: right;
+        }
+
+        .flight-node__year-wrap {
+            display: inline-block;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .flight-node--right .flight-node__year-wrap {
+            margin-left: auto;
+        }
+
+        .flight-node__year {
+            font-family: 'Ma Shan Zheng', 'Long Cang', 'Noto Serif SC', serif;
+            font-size: 1.38rem;
+            font-weight: 400;
+            color: rgba(68, 64, 56, 0.88);
+            letter-spacing: 0.06em;
+        }
+
+        .flight-node__year-underline {
+            position: absolute;
+            left: -4px;
+            right: -6px;
+            bottom: 2px;
+            width: calc(100% + 10px);
+            height: 10px;
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .flight-node__year-underline path {
+            stroke: rgba(95, 88, 74, 0.38);
+            stroke-width: 1.15;
+            fill: none;
+            stroke-linecap: round;
+        }
+
+        .flight-node__whisper {
+            display: block;
+            margin-top: 0.42rem;
+            font-family: 'Long Cang', 'Ma Shan Zheng', serif;
+            font-size: 0.84rem;
+            letter-spacing: 0.14em;
+            color: rgba(95, 90, 82, 0.52);
+            line-height: 1.65;
+        }
+
+        .flight-node--right .flight-node__whisper {
+            text-align: right;
+        }
+
+        .flight-node__body h2 {
+            font-family: 'Ma Shan Zheng', 'Long Cang', 'Noto Serif SC', serif;
+            font-size: 1.12rem;
+            font-weight: 400;
+            color: rgba(48, 46, 42, 0.88);
+            margin-bottom: 1rem;
+            letter-spacing: 0.12em;
+            line-height: 1.65;
+        }
+
+        .flight-node__text {
+            margin: 0 0 1.1em;
+            text-align: justify;
+            text-justify: inter-ideograph;
+        }
+
+        .flight-node__aside {
+            position: relative;
+            margin: -0.15rem 0 1rem;
+            padding-left: 1.1rem;
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 0.74rem;
+            line-height: 1.8;
+            letter-spacing: 0.08em;
+            color: rgba(94, 90, 84, 0.42);
+            font-style: italic;
+        }
+
+        .flight-node__aside::before {
+            content: '↷';
+            position: absolute;
+            left: 0;
+            top: 0.02rem;
+            color: rgba(112, 106, 95, 0.26);
+            font-size: 0.86rem;
+            transform: rotate(-8deg);
+        }
+
+        .flight-node__aside span {
+            display: inline-block;
+            padding: 0.05rem 0.18rem;
+            border-radius: 999px;
+            background: rgba(255, 252, 245, 0.34);
+        }
+
+        /* 未干的墨迹：进入视口后从浅灰到 #5A5A5A */
+        .flight-node__ink-breath {
+            display: inline;
+            color: rgba(90, 90, 90, 0.22);
+            opacity: 0;
+            filter: blur(1.6px);
+            transition:
+                opacity 1.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+                filter 1.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+                color 1.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .flight-node__ink-breath.is-inked {
+            color: #5A5A5A;
+            opacity: 0.8;
+            filter: blur(0);
+        }
+
+        .flight-node__note {
+            margin: 1.35rem 0 0;
+            font-family: 'Long Cang', 'Ma Shan Zheng', 'Noto Serif SC', serif;
+            font-size: 0.82rem;
+            line-height: 2.05;
+            letter-spacing: 1.2px;
+            color: rgba(105, 100, 92, 0.58);
+        }
+
+        .flight-log-closing {
+            display: block;
+            text-align: center;
+            margin: 2.4rem auto 0;
+            padding: 0.4rem 0 0.8rem;
+            color: rgba(96, 90, 80, 0.46);
+            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-size: 0.74rem;
+            letter-spacing: 0.12em;
+            line-height: 1.7;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .home-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-curves {
+                left: 0;
+            }
+
+            .timeline::after {
+                left: 10px;
+                transform: none;
+            }
+
+            .timeline-item {
+                margin-left: 0 !important;
+                padding-left: 60px !important;
+                padding-right: 0 !important;
+                text-align: left !important;
+            }
+
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                margin-left: 0 !important;
+                padding-left: 60px !important;
+                padding-right: 0 !important;
+            }
+
+            .timeline-dot {
+                left: 0;
+            }
+
+            .chapter-vertical {
+                position: static;
+                writing-mode: horizontal-tb;
+                text-orientation: mixed;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.28rem;
+                margin-bottom: 0.45rem;
+                font-size: 0.84rem;
+                letter-spacing: 0.08em;
+                color: #999999;
+            }
+
+            .chapter-vertical::before {
+                margin: 0;
+            }
+
+            .chapter-watermark {
+                font-size: 88px;
+                right: 0.35rem;
+                top: 52%;
+                opacity: 0.045;
+                transform: translateY(-50%);
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .chapter-tape {
+                transform: rotate(var(--tape-tilt));
+                width: 100%;
+                max-width: 260px;
+            }
+
+            .chapter-tape-note {
+                font-size: 0.52rem;
+            }
+
+            .journey-intro__tape {
+                transform: rotate(-1.5deg);
+            }
+
+            .journey-intro__tape h2 {
+                font-size: 1.5rem;
+            }
+
+            .page-corner-fold {
+                width: 48px;
+                height: 48px;
+                right: 0.4rem;
+                bottom: 0.35rem;
+            }
+
+            .page-corner-fold__svg {
+                width: 48px;
+                height: 48px;
+            }
+
+            .page-corner-fold__hint {
+                font-size: 0.5rem;
+                bottom: 1.35rem;
+            }
+
+            .flight-modal__scroll {
+                padding: 4rem 1.15rem 2.5rem;
+            }
+
+            .flight-center-line {
+                left: 14px;
+                transform: none;
+            }
+
+            .flight-node--left,
+            .flight-node--right {
+                padding-left: 42px;
+                padding-right: 0;
+                justify-content: flex-start;
+            }
+
+            .flight-node__marker {
+                left: 14px;
+            }
+
+            .flight-node--left .flight-node__inner,
+            .flight-node--right .flight-node__inner {
+                flex-direction: column;
+                max-width: none;
+            }
+
+            .flight-node__sketch {
+                width: 100%;
+                max-width: 220px;
+            }
+
+            .flight-node--collage .flight-node__inner {
+                grid-template-columns: 1fr;
+                row-gap: 0.75rem;
+                width: 100%;
+            }
+
+            .flight-node--collage .flight-node__body h2 {
+                margin-left: 0;
+                margin-top: 0.1rem;
+            }
+
+            .flight-node__bridge-note {
+                display: none;
+            }
+
+            .flight-node__body {
+                letter-spacing: 1.1px;
+                font-size: 0.98rem;
+            }
+
+            .flight-node__aside {
+                font-size: 0.68rem;
+                padding-left: 0.95rem;
+            }
+
+            .flight-node__body[data-year-wm]::before {
+                font-size: clamp(3rem, 48vw, 5.5rem);
+                top: 38%;
+            }
+
+            .flight-node__year {
+                font-size: 1.18rem;
+            }
+
+            .b612-section {
+                margin-top: 1.5rem;
+            }
+
+            .b612-marginal {
+                font-size: 0.62rem;
+                max-width: 10em;
+            }
+
+            .b612-marginal--desert {
+                top: 11.5rem;
+                right: 0.2rem;
+                bottom: auto;
+                transform: rotate(11deg);
+            }
+
+            .b612-marginal--sunset {
+                bottom: 5.5rem;
+                left: 0.15rem;
+            }
+
+            .flight-log-closing {
+                margin-top: 2rem;
+                font-size: 0.68rem;
+                letter-spacing: 0.08em;
+            }
+
+            .flight-log-marginal {
+                display: none;
+            }
+
+            .home-marginal {
+                font-size: 0.58rem;
+                max-width: 8em;
+            }
+
+            .home-marginal--tr {
+                top: 0.1rem;
+                max-width: 7em;
+            }
+
+            .home-page__heading {
+                font-size: 1.35rem;
+            }
+
+            .home-page__tape {
+                padding: 0.38rem 1.1rem 0.5rem;
+            }
+
+            .section-flow {
+                height: 52px;
+                margin-top: 0.7rem;
+            }
+
+            .section-flow__note {
+                font-size: 0.56rem;
+                right: 0.8rem;
+            }
+
+            .scene-overflow-note,
+            .timeline-overflow-note,
+            .b612-overflow-note {
+                font-size: 0.56rem;
+            }
+
+            .paper-texture {
+                opacity: 0.42;
+            }
+
+            .paper-creases {
+                opacity: 0.2;
+            }
+
+            .paper-watermark {
+                opacity: 0.02;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="paper-texture" aria-hidden="true"></div>
+    <div class="paper-creases" aria-hidden="true"></div>
+    <div class="paper-watermarks" aria-hidden="true">
+        <span class="paper-watermark paper-watermark--rose">⚘</span>
+        <span class="paper-watermark paper-watermark--b612">B612</span>
+    </div>
+    <div id="starField" class="star-field" aria-hidden="true"></div>
+    <header>
+        <div class="header-container">
+            <div class="logo">The Little Prince</div>
+            <nav>
+                <a href="#home" class="nav-link active" data-page="home">Home</a>
+                <a href="#journey" class="nav-link" data-page="journey">Journey</a>
+                <button type="button" class="nav-flight-btn" id="openFlightLog" aria-label="打开飞行日志" title="飞行日志">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 2L11 13" />
+                        <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                    </svg>
+                </button>
+                <a href="#b612" class="nav-link" data-page="b612">B612</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <p class="home-marginal home-marginal--tl" aria-hidden="true">记得抬头看星星。</p>
+            <p class="home-marginal home-marginal--tr" aria-hidden="true">有些答案，要慢慢等。</p>
+            <header class="home-page__intro">
+                <div class="home-page__tape" style="--tape-tilt: -2deg;">
+                    <h1 class="home-page__heading">The Little Prince</h1>
+                </div>
+            </header>
+            <div class="home-grid">
+                <div class="scene-card scene-card--overflow" onclick="openModal('rose')">
+                    <div class="scene-image">
+                        <img src="little-rose.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <div class="scene-title">The Rose</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"You are like my rose.</span>
+                            <span class="scene-quote-line">You are the only one in the world."</span>
+                        </div>
+                        <p class="scene-overflow-note" aria-hidden="true">（她总在风里）</p>
+                    </div>
+                </div>
+
+                <div class="scene-card" onclick="openModal('planets')">
+                    <div class="scene-image">
+                        <img src="little-plants.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: -3deg;">
+                            <div class="scene-title">The Planets</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"Grown-ups are certainly</span>
+                            <span class="scene-quote-line">very strange."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene-card" onclick="openModal('fox')">
+                    <div class="scene-image">
+                        <img src="little-fox.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: 2.5deg;">
+                            <div class="scene-title">The Fox</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"If you tame me,</span>
+                            <span class="scene-quote-line">we shall need each other."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene-card" onclick="openModal('watering')">
+                    <div class="scene-image">
+                        <img src="little-prince.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: -1.5deg;">
+                            <div class="scene-title">The Little Prince</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"I was too young to know</span>
+                            <span class="scene-quote-line">how to love her."</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-flow" aria-hidden="true">
+                <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <path class="section-flow__path" d="M 22 18 Q 190 8 338 24 Q 520 44 662 32 Q 808 20 950 40" />
+                    <path class="section-flow__arrow" d="M 942 34 L 956 40 L 942 46" />
+                </svg>
+                <span class="section-flow__note">往下走，风会带路</span>
+            </div>
+        </div>
+
+        <!-- JOURNEY PAGE -->
+        <div id="journey" class="page">
+            <div class="journey-intro">
+                <div class="journey-intro__tape">
+                    <h2>小王子的旅程</h2>
+                </div>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-curves" id="timelineCurves" aria-hidden="true"></div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('rose')">
+                        <span class="chapter-watermark" style="--wm-rate: 0.18;">01</span>
+                        <div class="chapter-tape" style="--tape-tilt:-4deg;">
+                            <h3>第一章 自己的星球</h3>
+                            <span class="chapter-tape-note">风沙很大的周二</span>
+                        </div>
+                        <p class="narrative">我生活在一个很小很小的星球上，那里只有三座火山和一朵玫瑰。每天清晨，我为她浇水、为她挡风，假装自己什么都懂，其实我只是太害怕失去她... ✎</p>
+                        <p class="timeline-thought">“那时的我太年轻，<span class="quote-highlight pink">还不懂怎么去爱她</span>。”</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card timeline-card--overflow" onclick="openModal('planets')">
+                        <span class="chapter-watermark" style="--wm-rate: 0.22;">02</span>
+                        <div class="chapter-tape" style="--tape-tilt:3deg;">
+                            <h3>第二章 漫游的开始</h3>
+                            <span class="chapter-tape-note">有风，云层偏低</span>
+                        </div>
+                        <p class="narrative no-indent">后来我离开了自己的星球，在漫长的路上见过国王、自命者、商人和点灯人。他们都很忙，忙到忘了抬头看一眼星空，也忘了问自己为什么要活得这么匆忙... ✉</p>
+                        <p class="timeline-thought">“我看着他们匆匆来去，才发现很少有人<span class="quote-highlight">愿意抬头看星星</span>。”</p>
+                        <p class="timeline-overflow-note" aria-hidden="true">（他还在赶路）</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('desert')">
+                        <span class="chapter-watermark" style="--wm-rate: 0.2;">03</span>
+                        <div class="chapter-tape" style="--tape-tilt:-3deg;">
+                            <h3>第三章 来到地球</h3>
+                            <span class="chapter-tape-note">清晨，温度偏低</span>
+                        </div>
+                        <p class="narrative">我降落在了撒哈拉。这里只有一望无际的沙丘和沉默的星星。直到我遇见了一个飞行员，他为我画了一只装在箱子里的羊……沙漠之所以美丽，是因为它在某个地方藏着一口井。 ✎</p>
+                        <p class="timeline-thought">“我并不怕孤独，<span class="quote-highlight pink">我怕的是没有人真正听懂我</span>。”</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('fox')">
+                        <span class="chapter-watermark" style="--wm-rate: 0.23;">04</span>
+                        <div class="chapter-tape" style="--tape-tilt:4deg;">
+                            <h3>第四章 狐狸的秘密</h3>
+                            <span class="chapter-tape-note">傍晚，星子很亮</span>
+                        </div>
+                        <p class="narrative no-indent">在麦田边，我遇见了那只狐狸。它让我明白“驯服”不是占有，而是让彼此在世界里有了名字。原来我为玫瑰花费的每一分钟，都是她独一无二的原因... ✉</p>
+                        <p class="timeline-thought">“当我愿意靠近你时，我们就会<span class="quote-highlight">彼此需要，彼此独一无二</span>。”</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('watering')">
+                        <span class="chapter-watermark" style="--wm-rate: 0.19;">05</span>
+                        <div class="chapter-tape" style="--tape-tilt:-5deg;">
+                            <h3>第五章 回忆与反思</h3>
+                            <span class="chapter-tape-note">夜深，风渐止</span>
+                        </div>
+                        <p class="narrative">当我准备离开时，我终于懂了：爱不是把对方留在身边，而是愿意为她负责，愿意在她脆弱的时候回头。很多答案都来得太晚，但我还是想把它们写下来... ✎</p>
+                        <p class="timeline-thought">“直到离开前我才明白：<span class="quote-highlight">真正重要的东西，用眼睛是看不见的</span>。”</p>
+                    </div>
+                </div>
+            </div>
+            <div class="section-flow" aria-hidden="true">
+                <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <path class="section-flow__path" d="M 40 44 Q 210 24 360 34 Q 520 46 700 24 Q 820 10 946 22" />
+                    <path class="section-flow__star" d="M 934 22 L 938 30 L 946 32 L 940 38 L 942 46 L 934 41 L 926 46 L 928 38 L 922 32 L 930 30 Z" />
+                </svg>
+                <span class="section-flow__note">下一站：B612 的来信</span>
+            </div>
+        </div>
+
+        <!-- B612 投递箱 -->
+        <div id="b612" class="page">
+            <p class="b612-marginal b612-marginal--rose" aria-hidden="true">记得每天给玫瑰浇水。</p>
+            <p class="b612-marginal b612-marginal--desert" aria-hidden="true">如果你在沙漠里遇见他…</p>
+            <p class="b612-marginal b612-marginal--sunset" aria-hidden="true">第 45 次日落开始了。</p>
+            <section class="b612-section" aria-labelledby="b612-heading">
+                <div class="b612-section__note">
+                    <span class="b612-section__glyph" aria-hidden="true">*</span>
+                    <div class="b612-section__tape">
+                        <h2 id="b612-heading">B612</h2>
+                    </div>
+                </div>
+                <p class="b612-section__lead">
+                    <span class="b612-section__lead-line">在小王子的星球上，种一颗只属于你的心意。</span>
+                    <span class="b612-section__lead-line">文字会化作，夜空里的一点微光。</span>
+                </p>
+                <div class="b612-mailbox">
+                    <span class="b612-mailbox__label">投递箱</span>
+                    <div class="b612-mailbox__input-wrap">
+                        <textarea id="b612MessageInput" maxlength="4000" placeholder="在这里，给小王子留个言吧…" rows="4" autocomplete="off"></textarea>
+                    </div>
+                    <button type="button" class="b612-mailbox__btn" id="b612PlantStar" aria-label="种下一颗星">
+                        <svg class="b612-mailbox__btn-ring" viewBox="0 0 280 76" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <defs>
+                                <filter id="b612InkRough" x="-18%" y="-18%" width="136%" height="136%" color-interpolation-filters="sRGB">
+                                    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="7" result="noise" />
+                                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.85" xChannelSelector="R" yChannelSelector="G" />
+                                </filter>
+                            </defs>
+                            <!-- 一笔画不圆：略扁、不对称，首尾留一小道空隙 -->
+                            <path filter="url(#b612InkRough)" d="M 42 36
+                                C 33 17, 70 8, 136 11
+                                C 202 14, 240 26, 246 40
+                                C 252 54, 218 66, 136 64
+                                C 54 62, 34 48, 46 33" />
+                        </svg>
+                        <span class="b612-mailbox__btn-text">种下一颗星</span>
+                    </button>
+                    <p class="b612-mailbox__toast" id="b612Toast" role="status" aria-live="polite"></p>
+                </div>
+                <p class="b612-overflow-note" aria-hidden="true">（把未说完的话，交给夜空）</p>
+            </section>
+            <div class="section-flow" aria-hidden="true">
+                <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <path class="section-flow__path" d="M 24 16 Q 220 40 410 22 Q 590 6 760 22 Q 862 30 956 14" />
+                    <path class="section-flow__arrow" d="M 946 8 L 958 14 L 946 20" />
+                </svg>
+                <span class="section-flow__note">抬头看，航线还在延伸</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FULLSCREEN FLIGHT LOG -->
+    <div id="flightLogModal" class="flight-modal" aria-hidden="true" role="dialog" aria-labelledby="flightLogHeading">
+        <button type="button" class="flight-modal__close" id="closeFlightLog" aria-label="关闭">×</button>
+        <p class="flight-log-marginal flight-log-marginal--l1" aria-hidden="true">“沙子钻进了表盘里，时间好像停了。”</p>
+        <p class="flight-log-marginal flight-log-marginal--l2" aria-hidden="true">“水只剩最后三口了，但我一点也不慌。”</p>
+        <p class="flight-log-marginal flight-log-marginal--l3" aria-hidden="true">“B612......那是他的家？”</p>
+        <p class="flight-log-marginal flight-log-marginal--r1" aria-hidden="true">“他说，大人们真的非常奇怪。”</p>
+        <p class="flight-log-marginal flight-log-marginal--r2" aria-hidden="true">“这里的夕阳，没有他的星球好看。<br>我画的盒子，他竟然真的看得到羊。”</p>
+        <div class="collectibles" id="collectibles" aria-hidden="true">
+            <span class="collectible collectible--soft" data-symbol="⚘">⚘</span>
+            <span class="collectible" data-symbol="[ ✉ ]">[ ✉ ]</span>
+            <span class="collectible collectible--soft" data-symbol="☁">☁</span>
+            <span class="collectible collectible--soft" data-symbol="✦">✦</span>
+        </div>
+        <div class="flight-modal__scroll" id="flightLogScroll">
+            <p class="flight-log-title" id="flightLogHeading">
+                <span class="flight-log-title-line">1935 - 坠落与初见</span>
+                <span class="flight-log-title-line">1943 - 这一份思念，有了名字</span>
+            </p>
+
+            <div class="flight-timeline-wrap">
+                <div class="flight-center-line" aria-hidden="true">
+                    <svg preserveAspectRatio="none" viewBox="0 0 28 1200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 14 0 Q 11 100 15 200 Q 12 320 16 440 Q 13 560 15 680 Q 11 800 14 920 Q 16 1040 14 1200" fill="none" stroke="#b2aca2" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="3 6 2 7 4 5" opacity="0.55" />
+                        <path d="M 14 40 Q 16 140 12 240 Q 15 360 13 460" fill="none" stroke="#c8c2b6" stroke-width="0.45" stroke-linecap="round" stroke-dasharray="1 8" opacity="0.35" />
+                    </svg>
+                </div>
+
+                <article class="flight-node flight-node--left flight-node--collage">
+                    <svg class="flight-node__marker" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M 11.2 5.8 Q 14 4.5 16.2 6.4 Q 18 9 16.8 12 Q 15.4 14.8 12 15.6 Q 8.2 14.9 6.8 11.2 Q 6 8.2 8.2 6.2 Q 9.6 5 11.2 5.8 Z" fill="none" stroke="#9e988c" stroke-width="0.85" stroke-linejoin="round" opacity="0.75" />
+                    </svg>
+                    <div class="flight-node__inner" data-flight-reveal>
+                        <div class="flight-node__sketch">
+                            <img src="illustration-1.jpg" alt="撒哈拉的坠落插画">
+                            <div class="flight-node__sketch-notes">
+                                <p>（这是我能想象出的，宇宙最温柔的起点）</p>
+                                <p>（一张画坏了的草图，但我舍不得丢掉）</p>
+                                <p>（星星看起来像是一颗发光的糖果）</p>
+                            </div>
+                        </div>
+                        <p class="flight-node__bridge-note" aria-hidden="true">那是他初次提起的星球</p>
+                        <div class="flight-node__body flight-node__body--has-strip" data-year-wm="1935">
+                            <p class="flight-node__overlap-note" aria-hidden="true">（别碰，墨还没干）</p>
+                            <div class="flight-node__date">
+                                <span class="flight-node__year-wrap">
+                                    <span class="flight-node__year">1935.12</span>
+                                    <svg class="flight-node__year-underline" viewBox="0 0 140 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M 2 8 Q 32 3 58 8 T 110 6 T 136 8" />
+                                    </svg>
+                                </span>
+                                <span class="flight-node__whisper">坠落与寻找</span>
+                            </div>
+                            <h2>撒哈拉的坠落</h2>
+                            <p class="flight-node__text"><span class="flight-node__ink-breath">引擎熄火的那一刻，世界突然变得好安静。漫天的星辰是我唯一的坐标，那一刻我意识到：远离人群的孤独并不算什么，可怕的是身处人群却无人能懂。</span></p>
+                            <p class="flight-node__text">就在最绝望的清晨，我听见一个细小的、像银铃般的声音：“请......给我画一只羊。”</p>
+                            <p class="flight-node__text">那个金头发的小人儿，就那样站在沙丘上，仿佛他一直就在那里等我。</p>
+                            <p class="flight-node__note">——安托万·德·圣埃克苏佩里真实坠机于撒哈拉，后成为《小王子》开篇原型。</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="flight-node flight-node--right flight-node--collage flight-node--cloud">
+                    <svg class="flight-node__marker" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M 11.2 5.8 Q 14 4.5 16.2 6.4 Q 18 9 16.8 12 Q 15.4 14.8 12 15.6 Q 8.2 14.9 6.8 11.2 Q 6 8.2 8.2 6.2 Q 9.6 5 11.2 5.8 Z" fill="none" stroke="#9e988c" stroke-width="0.85" stroke-linejoin="round" opacity="0.75" />
+                    </svg>
+                    <div class="flight-node__inner" data-flight-reveal>
+                        <div class="flight-node__sketch flight-node__sketch--paper">
+                            <img src="illustration-2.jpg" alt="" aria-hidden="true">
+                            <p class="flight-node__sketch-caption">（这是一页被风翻到天空里的草稿）<br>（云把思绪揉得很轻，像没写完的话）<br>（星星看起来像铅笔尖蹭出来的亮点）</p>
+                        </div>
+                        <div class="flight-node__body" data-year-wm="1930">
+                            <div class="flight-node__date">
+                                <span class="flight-node__year-wrap">
+                                    <span class="flight-node__year">1930s</span>
+                                    <svg class="flight-node__year-underline" viewBox="0 0 140 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M 2 7 Q 36 4 62 7 T 108 5.5 T 136 7.5" />
+                                    </svg>
+                                </span>
+                                <span class="flight-node__whisper">云层与凝望</span>
+                            </div>
+                            <h2>云端上的观察</h2>
+                            <p class="flight-node__text">当我驾驶着那架破旧的飞机穿过云层，底下的城市缩小成了发光的点。</p>
+                            <p class="flight-node__text">那些大人们忙着计数、忙着争吵、忙着占领土地，他们拥有数不清的星星，却从未真正看向天空。</p>
+                            <p class="flight-node__text">只有孩子知道，最重要的东西，眼睛是看不见的。</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="flight-node flight-node--left flight-node--collage">
+                    <svg class="flight-node__marker" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M 11.2 5.8 Q 14 4.5 16.2 6.4 Q 18 9 16.8 12 Q 15.4 14.8 12 15.6 Q 8.2 14.9 6.8 11.2 Q 6 8.2 8.2 6.2 Q 9.6 5 11.2 5.8 Z" fill="none" stroke="#9e988c" stroke-width="0.85" stroke-linejoin="round" opacity="0.75" />
+                    </svg>
+                    <div class="flight-node__inner" data-flight-reveal>
+                        <div class="flight-node__sketch">
+                            <img src="illustration-3.jpg" alt="最后的失踪插画">
+                            <div class="flight-node__sketch-notes">
+                                <p>（这是最后一次起飞前，风的样子）</p>
+                                <p>（海雾把航线揉皱了，像一张旧纸）</p>
+                                <p>（我把告别，轻轻折进了星光里）</p>
+                            </div>
+                        </div>
+                        <div class="flight-node__body" data-year-wm="1944">
+                            <div class="flight-node__date">
+                                <span class="flight-node__year-wrap">
+                                    <span class="flight-node__year">1944.07</span>
+                                    <svg class="flight-node__year-underline" viewBox="0 0 140 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M 2 8 Q 30 4 56 8 T 104 6 T 134 8" />
+                                    </svg>
+                                </span>
+                                <span class="flight-node__whisper">告别与星辰</span>
+                            </div>
+                            <h2>最后的失踪</h2>
+                            <p class="flight-node__text">1944年7月31日，最后一次起飞。我没有留下任何告别，就像那个离开地球的小男孩一样。</p>
+                            <p class="flight-node__text">如果有人在夜里看向星空，请记得：其中一颗星上住着我的玫瑰，另一颗星上，藏着我的飞机。</p>
+                            <p class="flight-node__text">我只是回到了我该去的地方。</p>
+                            <p class="flight-node__note">——执行侦察任务时于地中海上空失踪。</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <p class="flight-log-closing">“如果你刚好路过那里，请写信告诉我，他回来了。”</p>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="storyModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const storyData = {
+            rose: {
+            title: 'The Story of the Rose',
+                content: `
+                    <p class="modal-text">小王子生活在一个很小的星球上。这个星球上有三座火山，其中两座正在活动，一座已经熄灭。他每天都要清理这个小星球，铲除长在星球上的猴面包树的芽，用扫帚打扫硫磺火山。</p>
+                    
+                    <p class="modal-text">有一天，一朵美丽的花绽放了。小王子立刻被她的美貌所吸引。这朵花和他以前见过的所有花都不一样——她涂着口红，扑了香粉，打着蕾丝裙子。</p>
+                    
+                    <p class="modal-text">"我已经准备好了，"这朵花说，"我亲爱的小王子，请原谅我之前的任性。我曾经对你很固执，但现在我只想靠在你肩上。"</p>
+                    
+                    <p class="modal-text">小王子为这朵花感到骄傲。他为她浇水，给她罩上玻璃罩，为她吹去风，因为他害怕她会感冒。他甚至用屏风为她挡去北风。这朵花慢慢成为了他生活中最重要的一切。</p>
+                    
+                    <p class="modal-text" style="font-style: italic;">"你是我的玫瑰。你是这世界上唯一的。"他对玫瑰说。</p>
+                `
+            },
+            desert: {
+            title: 'Loneliness in the Desert',
+                content: `
+                    <p class="modal-text">小王子终于来到了地球，降落在撒哈拉沙漠中。沙漠是那么的空旷，那么的寂寞。他看到了许多奇奇怪怪的东西：一条蛇在沙漠中爬行，一只狐狸躲在灌木丛中。</p>
+                    
+                    <p class="modal-text">他走了很长的时间，口很渴，他很累。突然，他看到了一架飞机坏在沙漠中。那是叙述者——一个飞行员。</p>
+                    
+                    <p class="modal-text">小王子问飞行员："你能帮我画一只羊吗？"飞行员很惊讶，但他还是试着为小王子画了一只羊。就这样，两个孤独的灵魂在沙漠中相遇了。</p>
+                    
+                    <p class="modal-text">小王子开始给飞行员讲述他的故事——他来自哪个星球，他为什么离开，他是怎样的一个人。飞行员听得入迷，因为他找到了一个真正理解他的人。</p>
+                    
+                    <p class="modal-text" style="font-style: italic;">"在沙漠中，一个人感到有点孤独。但在人群中，也会感到孤独。"小王子说。</p>
+                `
+            },
+            planets: {
+            title: 'Planets and Strange Adults',
+                content: `
+                    <p class="modal-text">小王子在他的旅途中访问了许多星球。在每个星球上，他都遇见了一个大人。这些大人的行为对小王子来说都是非常奇怪的。</p>
+                    
+                    <p class="modal-text">第一个星球上住着一个国王。这个国王没有任何臣民，但他仍然自称为国王。他对小王子发号施令，但这些命令都是非常可笑的。</p>
+                    
+                    <p class="modal-text">第二个星球上住着一个自命者。他就坐在一张椅子上，不断地欣赏自己。每当有人走过来，他就大喊："看我，看我！"</p>
+                    
+                    <p class="modal-text">第三个星球上住着一个商人。他坐在一张小凳子上，拼命地数着星星。他说这些星星都是他的。</p>
+                    
+                    <p class="modal-text">小王子对这些大人感到困惑："这些大人们为什么要做这些毫无意义的事情？他们为什么不能像我一样简单而真实地生活？"这个问题在他心中停留了很久。</p>
+                    
+                    <p class="modal-text" style="font-style: italic;">"大人们确实很奇怪。"小王子想。</p>
+                `
+            },
+            watering: {
+            title: 'The Little Prince',
+                content: `
+                    <p class="modal-text">当小王子站在地球上，看着满天的星星时，他想起了他的玫瑰。他开始后悔自己当初离开她。那些他用在玫瑰身上的时间，现在看来是那么珍贵。</p>
+                    
+                    <p class="modal-text">飞行员问他："你为什么要离开你的玫瑰呢？"</p>
+                    
+                    <p class="modal-text">小王子回答："我当时太年轻了，还不知道怎样去爱她。当我能够去爱她的时候，我就已经离开了。"</p>
+                    
+                    <p class="modal-text">他开始明白：爱不是占有，不是享受，而是责任。是日复一日的陪伴，是对另一个生命的承诺。是在对方需要你的时候，你就在那里。</p>
+                    
+                    <p class="modal-text">他想到了狐狸对他说的话："你对你的玫瑰花费了时间，那才使你的玫瑰变得如此重要。"现在他真正理解了这句话的含义。</p>
+                    
+                    <p class="modal-text" style="font-style: italic;">爱，就是为了对方的快乐而愿意付出一切。</p>
+                `
+            },
+            fox: {
+            title: 'The Fox\'s Secret',
+                content: `
+                    <p class="modal-text">在地球上，小王子遇见了一只狐狸。狐狸被一个金色的网所吸引，但后来看到了小王子。</p>
+                    
+                    <p class="modal-text">"你很陌生，"狐狸说，"请驯服我吧。"</p>
+                    
+                    <p class="modal-text">小王子不知道"驯服"是什么意思。狐狸解释道："驯服就是建立联系。对我来说，你现在只不过是一个小男孩，和其他千千万万个小男孩没有区别。但如果你驯服我，我们就会彼此需要，你对我来说就会是这世界上独一无二的。"</p>
+                    
+                    <p class="modal-text">小王子明白了。他开始每天都来看狐狸，和她在一起。狐狸逐渐爱上了他。有一天，小王子问狐狸是否会哭。</p>
+                    
+                    <p class="modal-text">狐狸说："当然会。因为你已经对我很重要了。"</p>
+                    
+                    <p class="modal-text" style="font-style: italic;">"你要永远对你驯服的东西负责。你要对你的玫瑰负责。"这是狐狸留给小王子最后的秘密。</p>
+                `
+            }
+        };
+
+        function openModal(key) {
+            const story = storyData[key];
+            if (story) {
+                const modalContent = document.querySelector('#storyModal .modal-content');
+                const backgroundMap = {
+                    rose: 'rose.jpg',
+                    desert: 'air.jpg',
+                    planets: 'three.png',
+                    fox: 'fox.png',
+                    watering: 'memory.png'
+                };
+                const overlayMap = {
+                    planets: 0.58,
+                    fox: 0.52
+                };
+                const bgPositionMap = {
+                    planets: 'center 66%'
+                };
+                const bgImage = backgroundMap[key] || 'rose.jpg';
+                const overlayA = overlayMap[key] ?? 0.68;
+                const imgPos = bgPositionMap[key] || 'center';
+                /* 均匀纯色叠在照片上，整卡一致；避免 ::before 在可滚动弹窗里高度/叠层异常导致「只有上面有遮罩」 */
+                modalContent.style.backgroundImage =
+                    `linear-gradient(rgba(254, 253, 251, ${overlayA}), rgba(254, 253, 251, ${overlayA})), url('${bgImage}')`;
+                modalContent.style.backgroundSize = 'cover, cover';
+                modalContent.style.backgroundPosition = `${imgPos}, ${imgPos}`;
+                modalContent.style.backgroundRepeat = 'no-repeat, no-repeat';
+                document.getElementById('modalTitle').textContent = story.title;
+                document.getElementById('modalBody').innerHTML = story.content;
+                document.getElementById('storyModal').classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('storyModal').classList.remove('active');
+        }
+
+        const flightLogModal = document.getElementById('flightLogModal');
+        const flightLogScroll = document.getElementById('flightLogScroll');
+        const collectibles = document.getElementById('collectibles');
+        const flightLogMarginals = Array.from(document.querySelectorAll('.flight-log-marginal'));
+        let flightLogObserver = null;
+
+        function randomBetween(min, max) {
+            return min + Math.random() * (max - min);
+        }
+
+        function layoutCollectibles() {
+            if (!collectibles) return;
+            const items = Array.from(collectibles.querySelectorAll('.collectible'));
+            if (items.length === 0) return;
+
+            // 靠近屏幕左右边缘，尽量不压住中间正文（max-width 900）
+            const vw = window.innerWidth || 0;
+            const contentHalf = Math.min(900, vw) / 2;
+            const gutter = Math.max(18, Math.floor((vw - contentHalf * 2) / 2) - 10);
+
+            items.forEach((el, idx) => {
+                const side = idx % 2 === 0 ? 'left' : 'right';
+                const topVh = randomBetween(12, 88);
+                const x = Math.max(10, Math.min(44, gutter));
+                const baseTilt = Math.round(randomBetween(-4, 4));
+                const hoverTilt = baseTilt + (Math.random() > 0.5 ? 5 : -5);
+
+                el.style.top = `${topVh}vh`;
+                el.style.left = '';
+                el.style.right = '';
+                if (side === 'left') el.style.left = `${x}px`;
+                else el.style.right = `${x}px`;
+
+                el.style.setProperty('--tilt', `${baseTilt}deg`);
+                el.style.setProperty('--hover-tilt', `${hoverTilt}deg`);
+            });
+        }
+
+        function layoutFlightMarginals() {
+            if (!flightLogMarginals.length) return;
+            const vw = window.innerWidth || 0;
+            const contentHalf = Math.min(900, vw) / 2;
+            const gutter = Math.max(18, Math.floor((vw - contentHalf * 2) / 2) - 10);
+            const baseX = Math.max(10, Math.min(52, gutter));
+            const taken = [];
+
+            flightLogMarginals.forEach((el) => {
+                const isLeft = el.className.includes('--l');
+                let topVh = randomBetween(18, 72);
+                for (let i = 0; i < 8; i++) {
+                    if (taken.every((t) => Math.abs(t - topVh) > 8)) break;
+                    topVh = randomBetween(18, 72);
+                }
+                taken.push(topVh);
+
+                const x = baseX + randomBetween(-6, 10);
+                const tilt = Math.round(randomBetween(-9, 9));
+                el.style.top = `${topVh}vh`;
+                el.style.left = '';
+                el.style.right = '';
+                if (isLeft) el.style.left = `${x}px`;
+                else el.style.right = `${x}px`;
+                el.style.transform = `rotate(${tilt}deg)`;
+            });
+        }
+
+        function setupFlightLogReveal() {
+            const els = flightLogScroll.querySelectorAll('[data-flight-reveal]');
+            if (flightLogObserver) {
+                flightLogObserver.disconnect();
+                flightLogObserver = null;
+            }
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                els.forEach((el) => {
+                    el.classList.add('flight-node__inner--visible');
+                    el.querySelectorAll('.flight-node__ink-breath').forEach((line) => {
+                        line.classList.add('is-inked');
+                    });
+                });
+                return;
+            }
+            els.forEach((el) => {
+                el.classList.remove('flight-node__inner--visible');
+                el.querySelectorAll('.flight-node__ink-breath').forEach((line) => {
+                    line.classList.remove('is-inked');
+                });
+            });
+            flightLogObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((ent) => {
+                        if (ent.isIntersecting) {
+                            ent.target.classList.add('flight-node__inner--visible');
+                            const inkTargets = ent.target.querySelectorAll('.flight-node__ink-breath:not(.is-inked)');
+                            inkTargets.forEach((line, idx) => {
+                                window.setTimeout(() => {
+                                    line.classList.add('is-inked');
+                                }, 140 + idx * 90);
+                            });
+                        }
+                    });
+                },
+                { root: flightLogScroll, threshold: 0.11, rootMargin: '0px 0px -8% 0px' }
+            );
+            els.forEach((el) => flightLogObserver.observe(el));
+        }
+
+        function openFlightLog() {
+            flightLogModal.classList.add('active');
+            flightLogModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            flightLogScroll.scrollTop = 0;
+            layoutCollectibles();
+            layoutFlightMarginals();
+            requestAnimationFrame(() => setupFlightLogReveal());
+        }
+
+        function closeFlightLog() {
+            flightLogModal.classList.remove('active');
+            flightLogModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            if (flightLogObserver) {
+                flightLogObserver.disconnect();
+                flightLogObserver = null;
+            }
+        }
+
+        document.getElementById('openFlightLog').addEventListener('click', openFlightLog);
+        document.getElementById('closeFlightLog').addEventListener('click', closeFlightLog);
+
+        window.addEventListener('resize', () => {
+            if (flightLogModal.classList.contains('active')) {
+                layoutCollectibles();
+                layoutFlightMarginals();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && flightLogModal.classList.contains('active')) {
+                closeFlightLog();
+            }
+        });
+
+        /* B612 投递箱 → Spring Boot /api/messages */
+        const MESSAGE_API_BASE = 'http://localhost:8080/api/messages';
+        const starFieldEl = document.getElementById('starField');
+        const b612Input = document.getElementById('b612MessageInput');
+        const b612Btn = document.getElementById('b612PlantStar');
+        const b612Toast = document.getElementById('b612Toast');
+
+        function randomPercent() {
+            return Math.random() * 100;
+        }
+
+        function safeMessageText(content) {
+            const text = String(content || '').trim().replace(/\s+/g, ' ');
+            return text.length > 170 ? text.slice(0, 170) + '…' : text;
+        }
+
+        function addStarMessage(px, py, content, ageOpacity = 0.9, useGlyphMarker = false) {
+            const star = document.createElement('button');
+            star.type = 'button';
+            star.className = 'star-field__star';
+            star.style.left = px + '%';
+            star.style.top = py + '%';
+            star.style.setProperty('--star-opacity', String(Math.max(0.35, Math.min(1, ageOpacity))));
+            star.setAttribute('aria-label', '星语：' + safeMessageText(content));
+
+            const shape = document.createElement('span');
+            shape.className = 'star-field__shape';
+            if (useGlyphMarker) {
+                shape.classList.add('star-field__shape--glyph');
+                shape.textContent = Math.random() < 0.5 ? '·' : '*';
+            }
+            const bubble = document.createElement('span');
+            bubble.className = 'star-field__bubble';
+            bubble.textContent = safeMessageText(content);
+
+            star.appendChild(shape);
+            star.appendChild(bubble);
+            starFieldEl.appendChild(star);
+        }
+
+        function renderHistoryStars(messages) {
+            starFieldEl.querySelectorAll('.star-field__star').forEach((el) => el.remove());
+            const ordered = [...messages].sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
+            const total = ordered.length || 1;
+            ordered.forEach((msg, idx) => {
+                const oldness = 1 - (idx + 1) / total;
+                const ageOpacity = 0.42 + (1 - oldness) * 0.52;
+                addStarMessage(msg.posX, msg.posY, msg.content, ageOpacity);
+            });
+        }
+
+        async function loadHistoryMessages() {
+            try {
+                const res = await fetch(MESSAGE_API_BASE, { method: 'GET' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    renderHistoryStars(data.filter((item) =>
+                        typeof item.posX === 'number' &&
+                        typeof item.posY === 'number' &&
+                        typeof item.content === 'string'
+                    ));
+                }
+            } catch (e) {
+                // 历史星空加载失败时保持静默，避免打断主流程
+            }
+        }
+
+        function playTinyBell() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                const gain = ctx.createGain();
+                gain.gain.setValueAtTime(0.0001, now);
+                gain.gain.exponentialRampToValueAtTime(0.03, now + 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.38);
+                gain.connect(ctx.destination);
+
+                const osc1 = ctx.createOscillator();
+                osc1.type = 'triangle';
+                osc1.frequency.setValueAtTime(1318.5, now);
+                osc1.connect(gain);
+                osc1.start(now);
+                osc1.stop(now + 0.32);
+
+                const osc2 = ctx.createOscillator();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(1760, now + 0.08);
+                osc2.connect(gain);
+                osc2.start(now + 0.08);
+                osc2.stop(now + 0.38);
+
+                window.setTimeout(() => ctx.close(), 500);
+            } catch (e) {
+                // 音频非关键，忽略错误
+            }
+        }
+
+        function prefersReducedMotion() {
+            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        function playStarFlight(posX, posY, displayText, onComplete) {
+            const start = b612Input.getBoundingClientRect();
+            const cx = start.left + start.width / 2;
+            const cy = start.top + start.height / 2;
+            const targetX = (posX / 100) * window.innerWidth;
+            const targetY = (posY / 100) * window.innerHeight;
+            const dx = targetX - cx;
+            const dy = targetY - cy;
+
+            if (prefersReducedMotion()) {
+                addStarMessage(posX, posY, displayText, 0.95, true);
+                if (typeof onComplete === 'function') onComplete();
+                return;
+            }
+
+            const wrap = document.createElement('div');
+            wrap.className = 'star-shoot';
+            const textSpan = document.createElement('span');
+            textSpan.className = 'star-shoot__text';
+            const snippet = displayText.trim().replace(/\s+/g, ' ');
+            textSpan.textContent = snippet.length > 52 ? snippet.slice(0, 52) + '…' : snippet;
+            const core = document.createElement('span');
+            core.className = 'star-shoot__core';
+            wrap.appendChild(textSpan);
+            wrap.appendChild(core);
+            document.body.appendChild(wrap);
+            wrap.style.left = cx + 'px';
+            wrap.style.top = cy + 'px';
+
+            const c1x = dx * 0.2 - dy * 0.12;
+            const c1y = dy * 0.18 + dx * 0.1;
+            const midX = dx * 0.52;
+            const midY = dy * 0.5;
+
+            const keyframes = [
+                {
+                    transform: 'translate(-50%, -50%) translate(0px, 0px) scale(1)',
+                    opacity: 1
+                },
+                {
+                    transform: `translate(-50%, -50%) translate(${c1x}px, ${c1y}px) scale(0.72)`,
+                    opacity: 0.88,
+                    offset: 0.22
+                },
+                {
+                    transform: `translate(-50%, -50%) translate(${midX}px, ${midY}px) scale(0.38)`,
+                    opacity: 0.45,
+                    offset: 0.48
+                },
+                {
+                    transform: `translate(-50%, -50%) translate(${dx * 0.88}px, ${dy * 0.88}px) scale(0.12)`,
+                    opacity: 0.12,
+                    offset: 0.78
+                },
+                {
+                    transform: `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(0.04)`,
+                    opacity: 0
+                }
+            ];
+            const anim = wrap.animate(keyframes, {
+                duration: 3000,
+                easing: 'cubic-bezier(0.18, 0.72, 0.32, 1)'
+            });
+            anim.addEventListener('finish', () => {
+                wrap.remove();
+                addStarMessage(posX, posY, displayText, 0.95, true);
+                if (typeof onComplete === 'function') onComplete();
+            });
+            anim.addEventListener('cancel', () => {
+                wrap.remove();
+                if (typeof onComplete === 'function') onComplete();
+            });
+        }
+
+        b612Btn.addEventListener('click', async () => {
+            const content = b612Input.value.trim();
+            if (!content) {
+                b612Toast.textContent = '请先写下一句话，再种星。';
+                return;
+            }
+            b612Toast.textContent = '';
+            const posX = randomPercent();
+            const posY = randomPercent();
+            b612Btn.disabled = true;
+            try {
+                const res = await fetch(MESSAGE_API_BASE, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content, posX, posY })
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                await res.json();
+                b612Input.setAttribute('readonly', 'readonly');
+                b612Input.classList.add('b612-message-input--flying');
+                playTinyBell();
+                playStarFlight(posX, posY, content, () => {
+                    b612Input.value = '';
+                    b612Input.removeAttribute('readonly');
+                    b612Input.classList.remove('b612-message-input--flying');
+                    b612Toast.textContent = '你的思绪已抵达 B612。';
+                });
+                window.setTimeout(() => {
+                    b612Btn.disabled = false;
+                }, prefersReducedMotion() ? 400 : 3200);
+            } catch (e) {
+                b612Toast.textContent = '投递失败：请确认后端服务已启动（默认 http://localhost:8080）。';
+                b612Btn.disabled = false;
+            }
+        });
+
+        const journeyTimeline = document.querySelector('#journey .timeline');
+        const timelineCurvesContainer = document.getElementById('timelineCurves');
+        let timelineCurveObserver = null;
+
+        function timelinePathD(h, seed = 0) {
+            const m = 28;
+            const sway = 12 + (seed % 2) * 1.5; // 轻微变化，整体保持规则 S
+            const xR = m + sway;
+            const xL = m - sway;
+            const y1 = h * 0.32;
+            const y2 = h * 0.68;
+            return `M${m} 0 C ${xR} ${h * 0.14}, ${xR} ${h * 0.24}, ${m} ${y1} C ${xL} ${h * 0.48}, ${xL} ${h * 0.58}, ${m} ${y2} C ${xR} ${h * 0.82}, ${xR} ${h * 0.92}, ${m} ${h}`;
+        }
+
+        function setupTimelineCurves() {
+            if (!journeyTimeline || !timelineCurvesContainer) return;
+            const items = [...journeyTimeline.querySelectorAll('.timeline-item')];
+            if (items.length < 2) return;
+            const mobile = window.innerWidth <= 768;
+            const centerX = mobile ? 10 : journeyTimeline.clientWidth / 2;
+
+            timelineCurvesContainer.innerHTML = '';
+            for (let i = 0; i < items.length - 1; i += 1) {
+                const y1 = items[i].offsetTop + 18;
+                const y2 = items[i + 1].offsetTop + 18;
+                const top = Math.min(y1, y2);
+                const h = Math.max(60, Math.abs(y2 - y1));
+
+                const segment = document.createElement('div');
+                segment.className = 'timeline-segment';
+                segment.style.left = `${centerX - 28}px`;
+                segment.style.top = `${top}px`;
+                segment.style.height = `${h}px`;
+
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('class', 'timeline-svg');
+                svg.setAttribute('viewBox', `0 0 56 ${h}`);
+                svg.setAttribute('preserveAspectRatio', 'none');
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', timelinePathD(h, i));
+                path.setAttribute('stroke-dasharray', '6 5');
+                svg.appendChild(path);
+                const pLen = path.getTotalLength();
+
+                const secondary = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                secondary.setAttribute('d', timelinePathD(h, i));
+                secondary.setAttribute('class', 'timeline-stitch-secondary');
+                svg.appendChild(secondary);
+
+                const midPoint = path.getPointAtLength(pLen * 0.5);
+                const nextPoint = path.getPointAtLength(Math.min(pLen, pLen * 0.52));
+                const angle = Math.atan2(nextPoint.y - midPoint.y, nextPoint.x - midPoint.x) * 180 / Math.PI;
+                const offsetX = i % 2 === 0 ? -6 : 6;
+
+                const plane = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                plane.setAttribute('class', 'timeline-plane');
+                plane.setAttribute('transform', `translate(${midPoint.x + offsetX}, ${midPoint.y}) rotate(${angle - 45})`);
+                const p1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p1.setAttribute('d', 'M6 -6 L0 0');
+                const p2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                p2.setAttribute('d', 'M6 -6 L2 6 L0 1 L-7 -2 Z');
+                plane.appendChild(p1);
+                plane.appendChild(p2);
+                plane.style.opacity = '1';
+                plane.style.transition = 'opacity 0.6s ease';
+                svg.appendChild(plane);
+
+                segment.appendChild(svg);
+
+                timelineCurvesContainer.appendChild(segment);
+            }
+
+            if (timelineCurveObserver) timelineCurveObserver.disconnect();
+            timelineCurveObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('draw');
+                        const plane = entry.target.querySelector('.timeline-plane');
+                        if (plane) plane.style.opacity = '1';
+                    }
+                });
+            }, { threshold: 0.05 });
+            [...timelineCurvesContainer.querySelectorAll('.timeline-svg')].forEach((node) => {
+                node.classList.add('draw');
+                timelineCurveObserver.observe(node);
+            });
+        }
+
+        window.addEventListener('resize', setupTimelineCurves);
+
+        const chapterWatermarks = [...document.querySelectorAll('.chapter-watermark')];
+        function updateChapterWatermarkParallax() {
+            const y = window.scrollY || window.pageYOffset || 0;
+            const shift = Math.min(16, y * 0.015);
+            chapterWatermarks.forEach((el) => {
+                el.style.setProperty('--chapter-shift', `${shift.toFixed(2)}px`);
+            });
+        }
+        window.addEventListener('scroll', updateChapterWatermarkParallax, { passive: true });
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                
+                // Update active states
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                
+                link.classList.add('active');
+                document.getElementById(pageId).classList.add('active');
+                if (pageId === 'journey') setupTimelineCurves();
+                updateChapterWatermarkParallax();
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('storyModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('storyModal')) {
+                closeModal();
+            }
+        });
+
+        loadHistoryMessages();
+        setupTimelineCurves();
+        updateChapterWatermarkParallax();
+    </script>
+</body>
+</html>
