@@ -3648,8 +3648,16 @@
             }
         });
 
-        /* B612 投递箱 → Spring Boot /api/messages */
-        const MESSAGE_API_BASE = 'http://localhost:8080/api/messages';
+        /* B612 投递箱 → /api/messages
+           说明：如果你在手机上访问页面，`localhost` 会指向手机自身。
+           这里根据当前页面的 hostname 自动拼接后端地址：
+           - 电脑本机访问：localhost:8080
+           - 局域网/手机访问（用电脑 IP 打开页面）：<电脑IP>:8080
+        */
+        const apiHost = (location.hostname && location.hostname !== 'localhost')
+            ? location.hostname
+            : 'localhost';
+        const MESSAGE_API_BASE = `/api/submit`;
         const starFieldEl = document.getElementById('starField');
         const b612Input = document.getElementById('b612MessageInput');
         const b612Btn = document.getElementById('b612PlantStar');
@@ -3857,7 +3865,7 @@
                     b612Btn.disabled = false;
                 }, prefersReducedMotion() ? 400 : 3200);
             } catch (e) {
-                b612Toast.textContent = '投递失败：请确认后端服务已启动（默认 http://localhost:8080）。';
+                b612Toast.textContent = '投递失败：请确认后端服务已启动。';
                 b612Btn.disabled = false;
             }
         });
