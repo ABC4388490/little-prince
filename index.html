@@ -3648,16 +3648,23 @@
             }
         });
 
-        /* B612 投递箱 → /api/messages
-           说明：如果你在手机上访问页面，`localhost` 会指向手机自身。
-           这里根据当前页面的 hostname 自动拼接后端地址：
-           - 电脑本机访问：localhost:8080
-           - 局域网/手机访问（用电脑 IP 打开页面）：<电脑IP>:8080
-        */
-        const apiHost = (location.hostname && location.hostname !== 'localhost')
-            ? location.hostname
-            : 'localhost';
-        const MESSAGE_API_BASE = `/api/submit`;
+        // B612 投递箱：
+        // - 线上（https）建议使用独立 https API 域名
+        // - 本地开发保留 http://localhost:8080 回退
+        // 可通过 URL 参数覆盖，例如：
+        //   https://little-prince.xyz/?api=https://your-api.onrender.com/api/messages
+        const queryApiBase = new URLSearchParams(location.search).get('api');
+        const envApiBase = (window.LITTLE_PRINCE_API_BASE || '').trim();
+        const MESSAGE_API_CANDIDATES = ['https://your-app-name.onrender.com/api/messages'];
+        if (queryApiBase) MESSAGE_API_CANDIDATES.push(queryApiBase.trim());
+        if (envApiBase) MESSAGE_API_CANDIDATES.push(envApiBase);
+        MESSAGE_API_CANDIDATES.push('/api/messages');
+
+        const isLocalHost = ['localhost', '127.0.0.1'].includes(location.hostname);
+        if (isLocalHost) {
+            MESSAGE_API_CANDIDATES.push('http://localhost:8080/api/messages');
+            MESSAGE_API_CANDIDATES.push(`http://${location.hostname}:8080/api/messages`);
+        }
         const starFieldEl = document.getElementById('starField');
         const b612Input = document.getElementById('b612MessageInput');
         const b612Btn = document.getElementById('b612PlantStar');
@@ -3707,11 +3714,24 @@
             });
         }
 
+        async function fetchMessagesWithFallback(options) {
+            let lastError = null;
+            for (const base of MESSAGE_API_CANDIDATES) {
+                try {
+                    const res = await fetch(base, options);
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    const json = await res.json();
+                    return json;
+                } catch (err) {
+                    lastError = err;
+                }
+            }
+            throw lastError || new Error('all endpoints failed');
+        }
+
         async function loadHistoryMessages() {
             try {
-                const res = await fetch(MESSAGE_API_BASE, { method: 'GET' });
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const data = await res.json();
+                const data = await fetchMessagesWithFallback({ method: 'GET' });
                 if (Array.isArray(data)) {
                     renderHistoryStars(data.filter((item) =>
                         typeof item.posX === 'number' &&
@@ -3845,13 +3865,11 @@
             const posY = randomPercent();
             b612Btn.disabled = true;
             try {
-                const res = await fetch(MESSAGE_API_BASE, {
+                await fetchMessagesWithFallback({
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content, posX, posY })
                 });
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                await res.json();
                 b612Input.setAttribute('readonly', 'readonly');
                 b612Input.classList.add('b612-message-input--flying');
                 playTinyBell();
@@ -3865,7 +3883,7 @@
                     b612Btn.disabled = false;
                 }, prefersReducedMotion() ? 400 : 3200);
             } catch (e) {
-                b612Toast.textContent = '投递失败：请确认后端服务已启动。';
+                b612Toast.textContent = '投递失败：请确认后端已启动，或 /api/messages 代理已配置。';
                 b612Btn.disabled = false;
             }
         });
