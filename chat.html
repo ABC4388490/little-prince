@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>星球管家 · B612</title>
+  <style>
+    :root{
+      --bg: #f4f1ea;
+      --card: rgba(255,253,251,.92);
+      --ink: rgba(48,46,42,.9);
+      --muted: rgba(96,90,80,.62);
+      --line: rgba(170,160,140,.28);
+      --accent: #8b9b7a;
+    }
+    body{
+      margin:0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    }
+    .wrap{
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
+    }
+    .title{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:12px;
+      margin: 6px 0 14px;
+    }
+    .title h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing: .08em;
+      font-weight: 650;
+      color: rgba(68,64,56,.92);
+    }
+    .title .hint{
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(120,110,92,.08);
+      overflow:hidden;
+    }
+    .log{
+      height: min(62vh, 560px);
+      overflow:auto;
+      padding: 14px 14px 6px;
+    }
+    .msg{
+      display:flex;
+      gap:10px;
+      margin: 10px 0;
+      align-items:flex-start;
+    }
+    .role{
+      flex: 0 0 auto;
+      width: 68px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing:.08em;
+    }
+    .bubble{
+      border: 1px solid rgba(180,170,150,.26);
+      background: rgba(255,255,255,.56);
+      border-radius: 14px;
+      padding: 10px 12px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-width: 100%;
+    }
+    .msg.assistant .bubble{
+      border-color: rgba(140,155,122,.28);
+      background: rgba(245,248,242,.68);
+    }
+    .bar{
+      border-top: 1px solid var(--line);
+      display:flex;
+      gap:10px;
+      padding: 12px;
+      align-items:flex-end;
+    }
+    textarea{
+      flex:1;
+      min-height: 44px;
+      max-height: 160px;
+      resize: vertical;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(170,160,140,.35);
+      outline: none;
+      background: rgba(255,255,255,.6);
+      color: var(--ink);
+      line-height:1.6;
+    }
+    button{
+      flex:0 0 auto;
+      border: 1px solid rgba(140,155,122,.45);
+      background: rgba(139,155,122,.14);
+      color: rgba(70,78,58,.92);
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor:pointer;
+      letter-spacing:.08em;
+      font-weight: 650;
+    }
+    button:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+    .foot{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    code{background: rgba(0,0,0,.05); padding: 0 6px; border-radius: 6px;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="title">
+      <h1>星球管家</h1>
+      <div class="hint">把烦恼交给风，把愿望交给星星</div>
+    </div>
+
+    <div class="card">
+      <div id="chatLog" class="log" aria-live="polite"></div>
+      <div class="bar">
+        <textarea id="chatInput" placeholder="对星球管家说点什么…" maxlength="2000"></textarea>
+        <button id="chatSend">发送</button>
+      </div>
+    </div>
+
+    <div class="foot">
+      - **请求只发送到** <code>/api/chat</code>（API Key 不在前端）<br/>
+      - 如需本地运行，可先启动 <code>node server.js</code> 再打开 <code>http://127.0.0.1:3000/chat.html</code>
+    </div>
+  </div>
+
+  <script src="./chat.js"></script>
+</body>
+</html>
+
