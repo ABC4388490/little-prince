@@ -1621,6 +1621,37 @@
             margin-bottom: 1rem;
         }
 
+        .reply-modal__meta {
+            margin-top: -0.25rem;
+            margin-bottom: 0.95rem;
+            color: rgba(96, 92, 84, 0.58);
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+        }
+
+        .reply-modal__block {
+            margin: 0 0 1.05rem;
+            padding: 0.7rem 0.9rem;
+            border-radius: 12px;
+            border: 1px dashed rgba(142, 151, 121, 0.38);
+            background: rgba(255, 253, 248, 0.78);
+            color: rgba(60, 58, 52, 0.88);
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            letter-spacing: 0.04em;
+            white-space: pre-wrap;
+        }
+
+        .reply-modal__label {
+            display: inline-block;
+            margin-bottom: 0.32rem;
+            color: rgba(102, 116, 86, 0.86);
+            font-size: 0.76rem;
+            letter-spacing: 0.1em;
+        }
+
         /* JOURNEY PAGE */
         .journey-intro {
             text-align: center;
@@ -3410,6 +3441,24 @@
         </div>
     </div>
 
+    <div id="replyModal" class="modal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" type="button" id="replyModalClose" aria-label="关闭">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title">B612 回信</h2>
+            </div>
+            <p class="reply-modal__meta">星球管家把你的心事收进了风里。</p>
+            <div class="reply-modal__block">
+                <span class="reply-modal__label">你的留言</span>
+                <div id="replyModalUserText"></div>
+            </div>
+            <div class="reply-modal__block">
+                <span class="reply-modal__label">小王子的回信</span>
+                <div id="replyModalReplyText"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const storyData = {
             rose: {
@@ -3667,6 +3716,9 @@
             if (e.key === 'Escape' && flightLogModal.classList.contains('active')) {
                 closeFlightLog();
             }
+            if (e.key === 'Escape' && replyModal.classList.contains('active')) {
+                closeReplyModal();
+            }
         });
 
         // B612 投递箱：
@@ -3683,6 +3735,10 @@
         const b612Input = document.getElementById('b612MessageInput');
         const b612Btn = document.getElementById('b612PlantStar');
         const b612Toast = document.getElementById('b612Toast');
+        const replyModal = document.getElementById('replyModal');
+        const replyModalCloseBtn = document.getElementById('replyModalClose');
+        const replyModalUserText = document.getElementById('replyModalUserText');
+        const replyModalReplyText = document.getElementById('replyModalReplyText');
 
         function randomPercent() {
             return Math.random() * 100;
@@ -3693,7 +3749,13 @@
             return text.length > 170 ? text.slice(0, 170) + '…' : text;
         }
 
-        function addStarMessage(px, py, content, ageOpacity = 0.9, useGlyphMarker = false) {
+        function formatBubbleText(content, reply) {
+            const userLine = '留言：' + safeMessageText(content);
+            const replyLine = reply ? '\n回信：' + safeMessageText(reply) : '';
+            return userLine + replyLine;
+        }
+
+        function addStarMessage(px, py, content, reply = '', ageOpacity = 0.9, useGlyphMarker = false) {
             const star = document.createElement('button');
             star.type = 'button';
             star.className = 'star-field__star';
@@ -3710,7 +3772,7 @@
             }
             const bubble = document.createElement('span');
             bubble.className = 'star-field__bubble';
-            bubble.textContent = safeMessageText(content);
+            bubble.textContent = formatBubbleText(content, reply);
 
             star.appendChild(shape);
             star.appendChild(bubble);
@@ -3724,9 +3786,23 @@
             ordered.forEach((msg, idx) => {
                 const oldness = 1 - (idx + 1) / total;
                 const ageOpacity = 0.42 + (1 - oldness) * 0.52;
-                addStarMessage(msg.posX, msg.posY, msg.content, ageOpacity);
+                addStarMessage(msg.posX, msg.posY, msg.content, msg.reply || '', ageOpacity);
             });
         }
+
+        function openReplyModal(userText, replyText) {
+            replyModalUserText.textContent = safeMessageText(userText);
+            replyModalReplyText.textContent = safeMessageText(replyText || '今晚风很轻，我会继续替你守着这颗星。');
+            replyModal.classList.add('active');
+            replyModal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeReplyModal() {
+            replyModal.classList.remove('active');
+            replyModal.setAttribute('aria-hidden', 'true');
+        }
+
+        replyModalCloseBtn.addEventListener('click', closeReplyModal);
 
         async function fetchMessagesWithFallback(options) {
             let lastError = null;
@@ -3879,7 +3955,7 @@
             const posY = randomPercent();
             b612Btn.disabled = true;
             try {
-                await fetchMessagesWithFallback({
+                const created = await fetchMessagesWithFallback({
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content, posX, posY })
@@ -3893,6 +3969,7 @@
                     b612Input.classList.remove('b612-message-input--flying');
                     b612Toast.textContent = '你的思绪已抵达 B612。';
                 });
+                openReplyModal(content, created?.reply || '');
                 window.setTimeout(() => {
                     b612Btn.disabled = false;
                 }, prefersReducedMotion() ? 400 : 3200);
@@ -4024,6 +4101,12 @@
         document.getElementById('storyModal').addEventListener('click', (e) => {
             if (e.target === document.getElementById('storyModal')) {
                 closeModal();
+            }
+        });
+
+        replyModal.addEventListener('click', (e) => {
+            if (e.target === replyModal) {
+                closeReplyModal();
             }
         });
 
