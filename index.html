@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hand-drawn Rose - Little Prince</title>
+    <link rel="icon" type="image/png" href="./favicon-pure-rose.png?v=1">
+    <link rel="shortcut icon" href="./favicon.ico?v=1">
+    <link rel="apple-touch-icon" href="./pure-rose.png?v=4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400&family=Liu+Jian+Mao+Cao&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&family=Patrick+Hand&family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -31,6 +34,18 @@
             line-height: 1.8;
             min-height: 100vh;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        html,
+        body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+            display: none;
         }
 
         /* 纸张质感：微小噪点 + 纤维 */
@@ -137,15 +152,18 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: var(--primary-color);
-            letter-spacing: 1px;
+            font-size: 2rem;
+            font-weight: 300;
+            color: #7f8f72;
+            letter-spacing: 1.8px;
+            font-family: 'Shadows Into Light', 'Patrick Hand', 'Kalam', 'Segoe Print', 'Comic Sans MS', cursive;
+            transform: rotate(-1.2deg);
+            line-height: 1.2;
         }
 
         nav {
             display: flex;
-            gap: 2rem;
+            gap: 3.7rem;
             align-items: center;
         }
 
@@ -177,18 +195,35 @@
 
         nav a {
             text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 400;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
+            color: #4a4a4a;
+            font-weight: 300;
+            padding: 0.18rem 0.22rem;
+            border-bottom: none;
             transition: all 0.3s ease;
-            font-size: 0.95rem;
+            font-size: 1.01rem;
+            font-family: 'Shadows Into Light', 'Patrick Hand', 'Kalam', 'Segoe Print', 'Comic Sans MS', cursive;
+            letter-spacing: 3.1px;
+            display: inline-block;
+            line-height: 2.2em;
         }
 
         nav a:hover,
         nav a.active {
             color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
+            border-bottom-color: transparent;
+            transform: translateY(-1px);
+        }
+
+        nav a[data-page="home"] {
+            transform: rotate(-1.2deg);
+        }
+
+        nav a[data-page="journey"] {
+            transform: rotate(0.8deg);
+        }
+
+        nav a[data-page="b612"] {
+            transform: rotate(-0.4deg);
         }
 
         .container {
@@ -201,15 +236,7 @@
         }
 
         .container::before {
-            content: '';
-            position: absolute;
-            inset: 0.35rem 0.45rem 0.35rem 0.45rem;
-            border-radius: 10px;
-            pointer-events: none;
-            box-shadow:
-                inset 0 0 26px rgba(108, 96, 76, 0.045),
-                inset 0 0 0 1px rgba(156, 142, 118, 0.05);
-            z-index: 0;
+            content: none;
         }
 
         /* 页面右下角：折角线 + 极淡「未完待续」 */
@@ -1212,9 +1239,10 @@
             margin-top: 1.15rem;
             min-height: 1.5rem;
             font-family: 'Noto Serif SC', 'Songti SC', serif;
-            font-size: 0.88rem;
-            color: rgba(90, 118, 86, 0.92);
-            letter-spacing: 0.04em;
+            font-size: 0.78rem;
+            color: rgba(126, 116, 102, 0.72);
+            letter-spacing: 0.08em;
+            text-align: center;
             transition: opacity 0.4s ease;
         }
 
@@ -1379,7 +1407,7 @@
             font-weight: 600;
             color: var(--primary-color);
             letter-spacing: 0.04em;
-            font-family: 'Ma Shan Zheng', 'Noto Serif SC', 'Songti SC', serif;
+            font-family: 'Shadows Into Light', 'Patrick Hand', 'Kalam', 'Segoe Print', 'Comic Sans MS', cursive;
             transform: rotate(2deg);
         }
 
@@ -1522,7 +1550,7 @@
             color: var(--primary-color);
             margin: 0;
             font-weight: 500;
-            font-family: 'Ma Shan Zheng', 'Noto Serif SC', 'Songti SC', serif;
+            font-family: 'Shadows Into Light', 'Patrick Hand', 'Kalam', 'Segoe Print', 'Comic Sans MS', cursive;
             position: relative;
             z-index: 0;
             letter-spacing: 0.02em;
@@ -1561,16 +1589,56 @@
         }
 
         .modal-content {
-            background-color: var(--bg-white);
-            border-radius: 16px;
+            background:
+                radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.3px),
+                radial-gradient(circle at 78% 66%, rgba(126, 120, 108, 0.04) 0 0.8px, transparent 1.2px),
+                repeating-linear-gradient(12deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 10px),
+                repeating-linear-gradient(98deg, rgba(118, 97, 70, 0.014) 0 1px, transparent 1px 12px),
+                rgba(252, 248, 240, 0.985);
+            border: 1px solid rgba(146, 124, 92, 0.24);
+            border-radius: 15px;
             max-width: 700px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
             padding: 2.5rem;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow:
+                0 16px 36px rgba(110, 90, 66, 0.12),
+                0 1px 0 rgba(255, 255, 255, 0.6) inset;
             /* 底图与遮罩由 JS 叠成多层 background，不用 ::before，避免在 overflow 容器里只盖住上半截 */
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            box-shadow:
+                inset 18px 0 24px -28px rgba(102, 86, 64, 0.08),
+                inset -18px 0 24px -28px rgba(102, 86, 64, 0.06),
+                inset 0 18px 24px -28px rgba(102, 86, 64, 0.05),
+                inset 0 -22px 28px -32px rgba(102, 86, 64, 0.08);
+            opacity: 0.82;
+        }
+
+        .modal-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 72px;
+            height: 72px;
+            border-top-right-radius: 15px;
+            background:
+                linear-gradient(135deg, rgba(221, 210, 185, 0.78) 0%, rgba(248, 243, 232, 0.98) 52%, rgba(235, 226, 206, 0.9) 100%);
+            clip-path: polygon(100% 0, 100% 100%, 0 0);
+            box-shadow:
+                inset 1px -1px 0 rgba(160, 139, 108, 0.12),
+                -8px 10px 18px -18px rgba(120, 98, 70, 0.12);
+            opacity: 0.58;
+            pointer-events: none;
         }
 
         .modal-close {
@@ -1581,38 +1649,56 @@
             width: 40px;
             height: 40px;
             border: none;
-            background: rgba(139, 155, 122, 0.1);
+            background: rgba(204, 186, 151, 0.18);
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.5rem;
-            color: var(--text-dark);
+            color: rgba(188, 168, 114, 0.92);
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            transform: rotate(0deg);
         }
 
         .modal-close:hover {
-            background: var(--primary-color);
-            color: white;
+            background: rgba(204, 186, 151, 0.28);
+            transform: rotate(90deg);
         }
 
         .modal-header {
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--primary-color);
+            border-bottom: none;
             padding-bottom: 1rem;
+            position: relative;
         }
 
         .modal-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
+            font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', 'Noto Serif SC', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: rgba(188, 168, 114, 0.92);
             margin-bottom: 0.5rem;
         }
 
+        .modal-header::after {
+            content: '';
+            display: block;
+            margin-top: 10px;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(136, 113, 83, 0.55) 0 6px,
+                transparent 6px 12px
+            );
+            mask: radial-gradient(12px 8px at 6px 4px, #000 98%, transparent 100%) left/12px 8px repeat-x;
+            opacity: 0.6;
+        }
+
         .modal-text {
-            color: #666666;
-            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
-            font-size: 1.06rem;
+            color: rgba(95, 88, 78, 0.88);
+            font-family: 'Noto Serif SC', 'FangSong', 'STFangsong', 'KaiTi', 'STKaiti', serif;
+            font-size: 14px;
             line-height: 2.05;
             letter-spacing: 1.6px;
             font-weight: 300;
@@ -1621,90 +1707,236 @@
             margin-bottom: 1rem;
         }
 
-        .reply-modal__meta {
-            margin-top: -0.25rem;
-            margin-bottom: 0.95rem;
-            color: rgba(96, 92, 84, 0.58);
-            font-family: 'Noto Serif SC', 'Songti SC', serif;
-            font-size: 0.8rem;
-            letter-spacing: 0.08em;
+        /* 回信：手撕便签条（无半透明框、无滚动条、无 X，仅正文 + 玫瑰章） */
+        #replyModal.reply-slip-anchor {
+            position: fixed;
+            z-index: 1000;
+            right: max(0.45rem, env(safe-area-inset-right, 0px));
+            bottom: max(0.55rem, env(safe-area-inset-bottom, 0px));
+            width: min(94vw, 368px);
+            max-height: min(76vh, 520px);
+            display: none;
+            pointer-events: none;
         }
 
-        .reply-modal__block {
-            margin: 0 0 1.05rem;
-            padding: 0.7rem 0.9rem;
-            border-radius: 12px;
-            border: 1px dashed rgba(142, 151, 121, 0.38);
-            background: rgba(255, 253, 248, 0.78);
-            color: rgba(60, 58, 52, 0.88);
-            font-family: 'Noto Serif SC', 'Songti SC', serif;
-            font-size: 0.95rem;
-            line-height: 1.8;
+        #replyModal.reply-slip-anchor.active {
+            display: block;
+            pointer-events: auto;
+        }
+
+        .reply-slip {
+            width: 100%;
+            transform-origin: 90% 100%;
+        }
+
+        .reply-slip__fall {
+            transform: translate3d(0, 0, 0) rotate(-2deg);
+            opacity: 0;
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        #replyModal.reply-slip-anchor.active:not(.is-leaving) .reply-slip__fall {
+            animation: replySlipFall 1.14s cubic-bezier(0.28, 0.82, 0.36, 1) forwards;
+        }
+
+        #replyModal.reply-slip-anchor.is-leaving .reply-slip__fall {
+            animation: replySlipDriftOut 0.52s ease-in forwards;
+        }
+
+        @keyframes replySlipFall {
+            0% {
+                opacity: 0;
+                transform: translate3d(4px, calc(-100vh - 40px), 0) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) rotate(-2deg);
+            }
+        }
+
+        @keyframes replySlipDriftOut {
+            0% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) rotate(-2deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(72%, 18px, 0) rotate(6deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #replyModal.reply-slip-anchor.active:not(.is-leaving) .reply-slip__fall {
+                animation: none;
+                opacity: 1;
+                transform: translate3d(0, 0, 0) rotate(-2deg);
+            }
+
+            #replyModal.reply-slip-anchor.is-leaving .reply-slip__fall {
+                animation: none;
+                opacity: 0;
+            }
+        }
+
+        /* 手撕米黄纸：不规则 clip-path，无玻璃态、无外框阴影 */
+        .reply-slip__panel {
+            position: relative;
+            max-height: min(76vh, 520px);
+            clip-path: polygon(
+                3% 1.2%,
+                11% 0%,
+                22% 1.8%,
+                35% 0.4%,
+                48% 2.1%,
+                61% 0.2%,
+                74% 1.6%,
+                88% 0.6%,
+                98% 2.4%,
+                100% 8%,
+                97% 15%,
+                100% 24%,
+                98% 33%,
+                100% 41%,
+                97% 50%,
+                100% 58%,
+                98% 67%,
+                100% 76%,
+                97% 85%,
+                100% 93%,
+                94% 100%,
+                81% 98.5%,
+                66% 100%,
+                51% 98%,
+                36% 100%,
+                22% 97.5%,
+                9% 100%,
+                0% 96%,
+                1.8% 86%,
+                0% 74%,
+                2.2% 62%,
+                0% 50%,
+                2% 38%,
+                0% 26%,
+                1.6% 14%,
+                0% 5%
+            );
+            background: #f4eedf;
+        }
+
+        .reply-slip__inner {
+            position: relative;
+            max-height: min(76vh, 520px);
+            overflow: hidden;
+            padding: 1.25rem 1.2rem 3.35rem 1.15rem;
+            cursor: pointer;
+        }
+
+        .reply-slip__letter {
+            font-family: 'FangSong', 'STFangsong', 'KaiTi', 'STKaiti', 'Noto Serif SC', serif;
+            font-size: 0.93rem;
+            line-height: 2.08;
             letter-spacing: 0.04em;
-            white-space: pre-wrap;
+            color: rgba(86, 74, 66, 0.92);
         }
 
-        .reply-modal__label {
-            display: inline-block;
-            margin-bottom: 0.32rem;
-            color: rgba(102, 116, 86, 0.86);
-            font-size: 0.76rem;
-            letter-spacing: 0.1em;
+        .reply-slip__body {
+            margin: 0 0 1rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            transition: opacity 0.12s ease;
+        }
+
+        .reply-slip__body:last-of-type {
+            margin-bottom: 0.35rem;
+        }
+
+        .reply-slip__body--reply {
+            font-style: italic;
+            color: rgba(78, 70, 62, 0.9);
+        }
+
+        /* 右下角玫瑰章（pure-rose.png）：点击收起便签 */
+        .reply-slip__rose {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 80px;
+            height: 80px;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            opacity: 0.52;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .reply-slip__rose:hover,
+        .reply-slip__rose:focus-visible {
+            opacity: 0.88;
+            transform: scale(1.04);
+            outline: none;
+        }
+
+        .reply-slip__rose-img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center bottom;
+            pointer-events: none;
+            image-rendering: auto;
         }
 
         /* JOURNEY PAGE */
         .journey-intro {
             text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem 0;
+            margin-bottom: 3.2rem;
+            padding: 2.2rem 1rem 1rem;
+            position: relative;
+            overflow: visible;
         }
 
-        /* Journey 大标题：浅黄纸胶带 + 约 2° 随手贴感 */
+        /* Journey 大标题：手撕纸抬头，去除标准卡片感 */
         .journey-intro__tape {
             position: relative;
             display: inline-block;
-            padding: 0.55rem 1.5rem 0.72rem;
-            margin-bottom: 1rem;
-            transform: rotate(-2deg);
+            padding: 0 0 0.45rem;
+            margin-bottom: 0.6rem;
+            transform: none;
         }
 
         .journey-intro__tape::before {
+            content: none;
+        }
+
+        .journey-intro__tape::after {
             content: '';
             position: absolute;
-            z-index: -1;
-            left: -12px;
-            right: -12px;
-            top: -5px;
-            bottom: -14px;
-            background: linear-gradient(192deg, rgba(255, 248, 210, 0.52), rgba(246, 234, 188, 0.4));
-            clip-path: polygon(
-                4% 0%,
-                94% 0%,
-                100% 6%,
-                98% 20%,
-                100% 38%,
-                97% 54%,
-                100% 70%,
-                98% 86%,
-                99% 100%,
-                6% 100%,
-                0% 94%,
-                2% 78%,
-                0% 58%,
-                3% 42%,
-                0% 24%,
-                2% 8%,
-                4% 0%
-            );
-            box-shadow: 0 1px 3px rgba(72, 64, 48, 0.06);
+            left: 50%;
+            bottom: -0.18rem;
+            transform: translateX(-50%) rotate(-1.2deg);
+            width: min(78vw, 320px);
+            height: 16px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 16' preserveAspectRatio='none'%3E%3Cpath d='M4 9 C 24 15, 44 3, 64 9 C 84 14, 104 4, 124 9 C 146 14, 166 4, 186 9 C 206 13, 226 5, 246 9 C 266 14, 286 4, 316 9' fill='none' stroke='%23b8a083' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round' stroke-dasharray='2 2' stroke-opacity='0.52'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            pointer-events: none;
+            opacity: 0.88;
         }
 
         .journey-intro__tape h2 {
             font-size: 2rem;
-            color: var(--primary-color);
-            margin: 0;
+            color: rgba(112, 99, 86, 0.92);
+            margin: 0 auto;
+            max-width: min(92vw, 520px);
+            padding: 0 0.35rem;
+            box-sizing: border-box;
             position: relative;
             z-index: 0;
+            transform: rotate(-1.5deg);
+            font-family: 'Ma Shan Zheng', 'Long Cang', 'KaiTi', 'STKaiti', 'Noto Serif SC', cursive;
+            font-weight: 400;
+            letter-spacing: 0.04em;
         }
 
         .journey-intro p {
@@ -1712,6 +1944,148 @@
             color: var(--text-light);
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        .journey-map {
+            position: sticky;
+            top: 60px;
+            width: calc(100% - 80px);
+            margin: 16px auto;
+            height: 140px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            /* 标题比容器宽时不要被裁掉左侧「小王」 */
+            overflow: visible;
+            z-index: 18;
+        }
+
+        /* SVG 手绘航线：曲线路径 + stroke-dasharray，由 JS 写入 d */
+        .journey-map__svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        .journey-map__star {
+            position: absolute;
+            color: #c8b89a;
+            font-size: 10px;
+            line-height: 1;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .journey-map__star--tl { top: 8px; left: 10px; }
+        .journey-map__star--tr { top: 8px; right: 10px; }
+        .journey-map__star--bl { bottom: 8px; left: 10px; }
+        .journey-map__star--br { bottom: 8px; right: 10px; }
+
+        .journey-map__nodes {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+        }
+
+        .journey-map__ship {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #8b6f4e;
+            transform: translate(-50%, -50%) rotate(-14deg);
+            pointer-events: none;
+            z-index: 4;
+            transition: filter 0.2s ease;
+            filter: drop-shadow(0 1px 0 rgba(255, 253, 247, 0.7));
+        }
+
+        .journey-map__node {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            color: #6b4c35;
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.2s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .journey-map__node:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* 无圆圈容器：图标直接压在旅程地图纸面上（见 figma / App 图标式圆框已移除） */
+        .journey-map__planet {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            line-height: 1;
+            transition: filter 0.2s ease, opacity 0.2s ease;
+            overflow: visible;
+            padding: 0;
+        }
+
+        .journey-map__planet-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: saturate(0.92) contrast(0.96);
+            opacity: 1;
+        }
+
+        .journey-map__name {
+            font-size: 11px;
+            color: #6b4c35;
+            line-height: 1.45;
+            white-space: nowrap;
+            width: 76px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            letter-spacing: 0.08em;
+            font-weight: 300;
+            font-family: 'Shadows Into Light', 'Patrick Hand', 'Kalam', 'Segoe Print', cursive;
+        }
+
+        .journey-map__node.is-active .journey-map__planet {
+            box-shadow: none;
+        }
+
+        .journey-map__node.is-active .journey-map__planet-img {
+            filter: saturate(1) contrast(1) brightness(1.06);
+        }
+
+        .journey-map__node.is-active .journey-map__name {
+            color: #7a4a6a;
+        }
+
+        .planet-anchor {
+            position: relative;
+            height: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .timeline {
@@ -1777,19 +2151,31 @@
 
 
         .timeline-item {
-            margin-bottom: 3rem;
+            margin-bottom: 3.25rem;
             position: relative;
             z-index: 1;
+            --planet-color: #9f8f77;
+        }
+
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .timeline-item:nth-child(odd) {
             margin-left: 0;
             text-align: right;
-            padding-right: calc(50% + 30px);
+            padding-right: calc(50% + 42px);
         }
 
         .timeline-item:nth-child(even) {
-            margin-left: calc(50% + 30px);
+            margin-left: calc(50% + 42px);
             text-align: left;
             padding-left: 0;
         }
@@ -1798,36 +2184,52 @@
             position: absolute;
             left: 50%;
             top: 0;
-            transform: translateX(-50%);
+            transform: translateX(calc(-50% + var(--timeline-dot-shift, 0px)));
             width: 14px;
             height: 14px;
-            background: #cfcfcf;
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
+            background: rgba(154, 146, 131, 0.86);
+            border: none;
+            border-radius: 0;
+            clip-path: polygon(48% 3%, 66% 12%, 86% 32%, 95% 52%, 84% 75%, 63% 92%, 39% 96%, 16% 84%, 6% 62%, 10% 38%, 24% 17%);
+            filter: saturate(0.86);
             z-index: 10;
+        }
+
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: rgba(176, 167, 152, 0.28);
+            clip-path: polygon(47% 6%, 69% 14%, 88% 35%, 92% 56%, 80% 79%, 60% 90%, 36% 93%, 16% 82%, 6% 61%, 11% 36%, 27% 14%);
+            opacity: 0.9;
+            z-index: -1;
+        }
+
+        .timeline-dot::after {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 5px;
+            height: 5px;
+            background: rgba(245, 242, 234, 0.34);
+            clip-path: polygon(50% 0%, 72% 18%, 100% 50%, 74% 80%, 44% 100%, 18% 78%, 0% 44%, 24% 18%);
         }
 
         .timeline-card {
             --note-tilt: 0deg;
-            background:
-                repeating-linear-gradient(
-                    to bottom,
-                    rgba(122, 116, 103, 0.06) 0,
-                    rgba(122, 116, 103, 0.06) 1px,
-                    transparent 1px,
-                    transparent 30px
-                ),
-                linear-gradient(180deg, rgba(255, 255, 252, 0.38), rgba(255, 252, 248, 0.28));
-            padding: 1.25rem 1.1rem 1.15rem;
-            border-radius: 10px;
-            box-shadow: none;
+            --wash-a: rgba(173, 199, 214, 0.2);
+            --wash-b: rgba(237, 226, 199, 0.22);
+            background: transparent;
+            padding: 1.7rem 1.55rem 1.55rem;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             text-align: left;
             transform: rotate(var(--note-tilt));
+            max-width: 520px;
         }
 
         .timeline-item:nth-child(1) .timeline-card { --note-tilt: -0.7deg; }
@@ -1835,6 +2237,9 @@
         .timeline-item:nth-child(3) .timeline-card { --note-tilt: -0.4deg; }
         .timeline-item:nth-child(4) .timeline-card { --note-tilt: 0.8deg; }
         .timeline-item:nth-child(5) .timeline-card { --note-tilt: -0.6deg; }
+        .timeline-item:nth-child(6) .timeline-card { --note-tilt: 0.55deg; }
+        .timeline-item:nth-child(7) .timeline-card { --note-tilt: -0.45deg; }
+        .timeline-item:nth-child(8) .timeline-card { --note-tilt: 0.35deg; }
 
         .timeline-card--overflow {
             overflow: visible;
@@ -1864,49 +2269,38 @@
             white-space: nowrap;
         }
 
-        /* 拼贴细节：淡咖啡渍 + 轻微压花痕 */
         .timeline-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at 84% 22%, rgba(157, 126, 79, 0.12) 0 16px, rgba(157, 126, 79, 0.03) 17px 30px, transparent 31px),
-                radial-gradient(circle at 16% 78%, rgba(157, 126, 79, 0.09) 0 12px, rgba(157, 126, 79, 0.02) 13px 24px, transparent 25px),
-                radial-gradient(ellipse 36px 14px at 72% 64%, rgba(128, 139, 106, 0.06) 0 55%, transparent 56%);
-            pointer-events: none;
-            z-index: 0;
+            content: none;
         }
 
-        /* 拼贴细节：右上折角 */
         .timeline-card::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 28px;
-            height: 28px;
-            background:
-                linear-gradient(135deg, rgba(236, 228, 205, 0.86) 0 50%, rgba(212, 196, 166, 0.72) 50% 100%);
-            clip-path: polygon(100% 0, 0 0, 100% 100%);
-            box-shadow: -1px 1px 0 rgba(122, 112, 90, 0.16);
-            opacity: 0.72;
-            pointer-events: none;
-            z-index: 1;
+            content: none;
         }
 
         .timeline-card:hover {
-            transform: translateY(-1px);
+            transform: rotate(calc(var(--note-tilt) + 0.2deg)) translateY(-2px);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-card {
+            --wash-a: rgba(177, 205, 219, 0.22);
+            --wash-b: rgba(239, 228, 202, 0.18);
+        }
+
+        .timeline-item:nth-child(even) .timeline-card {
+            --wash-a: rgba(164, 191, 210, 0.16);
+            --wash-b: rgba(236, 224, 196, 0.25);
         }
 
         .timeline-card h3 {
-            color: #666666;
+            color: #4a4a4a;
             margin: 0;
             font-size: 0.98rem;
-            letter-spacing: 1px;
+            letter-spacing: 1.1px;
             position: relative;
             z-index: 1;
-            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
             font-weight: 300;
+            line-height: 2em;
             opacity: 0.88;
         }
 
@@ -1915,44 +2309,17 @@
             position: relative;
             display: inline-block;
             margin: 0.1rem 0 0.9rem;
-            padding: 0.42rem 0.88rem 0.58rem;
+            padding: 0.18rem 0.28rem 0.32rem;
             background: transparent;
-            border-radius: 0;
+            border-bottom: 2px solid rgba(200, 180, 150, 0.5);
+            border-radius: 7px;
             transform: rotate(var(--tape-tilt));
             box-shadow: none;
             z-index: 2;
         }
 
-        /* 半透明和纸胶带：两头不规则撕裂（clip-path），无图片 */
         .chapter-tape::before {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            left: -11px;
-            right: -11px;
-            top: -4px;
-            bottom: -13px;
-            background: linear-gradient(186deg, rgba(255, 246, 205, 0.48), rgba(242, 228, 178, 0.4));
-            clip-path: polygon(
-                4% 0%,
-                94% 0%,
-                100% 6%,
-                98% 20%,
-                100% 38%,
-                97% 54%,
-                100% 70%,
-                98% 86%,
-                99% 100%,
-                6% 100%,
-                0% 94%,
-                2% 78%,
-                0% 58%,
-                3% 42%,
-                0% 24%,
-                2% 8%,
-                4% 0%
-            );
-            box-shadow: 0 1px 2px rgba(70, 62, 48, 0.07);
+            content: none;
         }
 
         .chapter-tape-note {
@@ -1970,15 +2337,15 @@
         }
 
         .timeline-card p {
-            color: #666666;
-            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            color: #4a4a4a;
+            font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
             font-size: 1.06rem;
-            line-height: 2.05;
+            line-height: 2.45em;
             margin-bottom: 0.8rem;
             position: relative;
             z-index: 1;
             text-align: left;
-            letter-spacing: 1.6px;
+            letter-spacing: 1.8px;
             font-weight: 300;
             opacity: 0.82;
         }
@@ -2012,33 +2379,49 @@
 
         .timeline-thought {
             margin-bottom: 0.9rem;
-            font-size: 0.94rem;
-            line-height: 2;
-            color: #666666;
+            font-size: 20px;
+            line-height: 2.35em;
+            color: #3f3428;
             font-style: italic;
-            font-family: 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
-            letter-spacing: 1.6px;
+            font-family: 'Ma Shan Zheng', 'KaiTi', 'STKaiti', 'Kaiti SC', 'Noto Serif SC', serif;
+            letter-spacing: 1.9px;
             font-weight: 300;
             opacity: 0.8;
+            border-left: 2px solid var(--planet-color);
+            padding-left: 16px;
         }
 
-        /* 荧光笔标注：不加粗，仅底色涂抹 */
+        .timeline-thought .quote-char {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-thought.is-typed .quote-char {
+            opacity: 1;
+        }
+
+        /* 金句高亮：改为手绘感波浪下划线 */
         .quote-highlight {
             position: relative;
             display: inline;
             padding: 0 0.1em;
             z-index: 1;
-            background:
-                linear-gradient(transparent 55%, rgba(252, 234, 115, 0.58) 55% 88%, transparent 88%);
-            border-radius: 4px;
-            box-decoration-break: clone;
-            -webkit-box-decoration-break: clone;
+            background: transparent;
+            text-decoration: none;
         }
 
         .quote-highlight.pink {
-            background:
-                linear-gradient(transparent 55%, rgba(245, 194, 212, 0.56) 55% 88%, transparent 88%);
+            text-decoration: none;
         }
+
+        #planet-0,
+        #planet-1,
+        #planet-2,
+        #planet-3,
+        #planet-4,
+        #planet-5,
+        #planet-6,
+        #planet-7 { --planet-color: #9f8f77; }
 
         /* FULLSCREEN FLIGHT LOG MODAL */
         .flight-modal {
@@ -2798,6 +3181,8 @@
 
             nav a {
                 font-size: 0.85rem;
+                letter-spacing: 2.1px;
+                line-height: 2.1em;
             }
 
             .home-grid {
@@ -2806,6 +3191,16 @@
 
             .timeline-curves {
                 left: 0;
+            }
+
+            .journey-map {
+                height: 164px;
+                width: calc(100% - 24px);
+                top: 56px;
+            }
+
+            .journey-map__nodes {
+                inset: 0;
             }
 
             .timeline::after {
@@ -2828,7 +3223,8 @@
             }
 
             .timeline-dot {
-                left: 0;
+                left: 10px;
+                transform: translateX(calc(-50% + var(--timeline-dot-shift, 0px)));
             }
 
             .chapter-vertical {
@@ -2858,6 +3254,22 @@
 
             .modal-content {
                 padding: 1.5rem;
+            }
+
+            #replyModal.reply-slip-anchor {
+                width: min(96vw, 352px);
+                max-height: min(78vh, 540px);
+                right: max(0.4rem, env(safe-area-inset-right, 0px));
+                bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+            }
+
+            .reply-slip__panel,
+            .reply-slip__inner {
+                max-height: min(78vh, 540px);
+            }
+
+            .reply-slip__inner {
+                padding: 1.05rem 1rem 3.25rem 1rem;
             }
 
             .chapter-tape {
@@ -3064,11 +3476,6 @@
 <body>
     <div class="paper-texture" aria-hidden="true"></div>
     <div class="paper-creases" aria-hidden="true"></div>
-    <div class="paper-watermarks" aria-hidden="true">
-        <span class="paper-watermark paper-watermark--rose">⚘</span>
-        <span class="paper-watermark paper-watermark--b612">B612</span>
-    </div>
-    <div id="starField" class="star-field" aria-hidden="true"></div>
     <header>
         <div class="header-container">
             <div class="logo">The Little Prince</div>
@@ -3174,10 +3581,33 @@
                     <h2>小王子的旅程</h2>
                 </div>
             </div>
-
+            <div class="journey-map" id="journeyMap">
+                <svg class="journey-map__svg" id="journeyMapSvg" aria-hidden="true" role="presentation">
+                    <defs>
+                        <filter id="journeyPathPencil" color-interpolation-filters="sRGB" x="-14%" y="-14%" width="128%" height="128%">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="23" result="journeyNoise" />
+                            <feDisplacementMap in="SourceGraphic" in2="journeyNoise" scale="0.9" xChannelSelector="R" yChannelSelector="G" />
+                        </filter>
+                    </defs>
+                    <!-- 底层略粗的淡化描边，衬托铅笔主线 -->
+                    <path id="journeyMapRouteBase" fill="none" stroke="#c4b49a" stroke-width="2.35" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.2" d="" />
+                    <path id="journeyMapRoute" fill="none" stroke="#8f7a5c" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 10 3 8 4 7 2 9" stroke-opacity="0.9" filter="url(#journeyPathPencil)" d="" />
+                </svg>
+                <span class="journey-map__ship" id="journeyMapShip" aria-hidden="true">✈</span>
+                <div class="journey-map__nodes" id="journeyMapNodes">
+                    <button type="button" class="journey-map__node" data-target="planet-0"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f339.png" alt="B-612"></span><span class="journey-map__name">B-612</span></button>
+                    <button type="button" class="journey-map__node" data-target="planet-1"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f451.png" alt="国王星"></span><span class="journey-map__name">King's</span></button>
+                    <button type="button" class="journey-map__node" data-target="planet-2"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3a9.png" alt="虚荣者"></span><span class="journey-map__name">Vain Man</span></button>
+                    <button type="button" class="journey-map__node" data-target="planet-3"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f37e.png" alt="酒鬼星"></span><span class="journey-map__name">Tipplers</span></button>
+                    <button type="button" class="journey-map__node" data-target="planet-4"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4bc.png" alt="商人星"></span><span class="journey-map__name">Business Man</span></button>
+                    <button type="button" class="journey-map__node" data-target="planet-5"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f56f.png" alt="点灯人星"></span><span class="journey-map__name">Lamplighter</span></button>
+                    <button type="button" class="journey-map__node" data-target="planet-6"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4d6.png" alt="学者星"></span><span class="journey-map__name">Geographer</span></button>
+                    <button type="button" class="journey-map__node" data-target="planet-7"><span class="journey-map__planet"><img class="journey-map__planet-img" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f98a.png" alt="地球"></span><span class="journey-map__name">Earth</span></button>
+                </div>
+            </div>
             <div class="timeline">
                 <div class="timeline-curves" id="timelineCurves" aria-hidden="true"></div>
-                <div class="timeline-item">
+                <div class="timeline-item" id="planet-0">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('rose')">
                         <span class="chapter-watermark" style="--wm-rate: 0.18;">01</span>
@@ -3186,11 +3616,11 @@
                             <span class="chapter-tape-note">风沙很大的周二</span>
                         </div>
                         <p class="narrative">我生活在一个很小很小的星球上，那里只有三座火山和一朵玫瑰。每天清晨，我为她浇水、为她挡风，假装自己什么都懂，其实我只是太害怕失去她... ✎</p>
-                        <p class="timeline-thought">“那时的我太年轻，<span class="quote-highlight pink">还不懂怎么去爱她</span>。”</p>
+                        <p class="timeline-thought">“那时的我太年轻，还不懂怎么去爱她。”</p>
                     </div>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item" id="planet-1">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card timeline-card--overflow" onclick="openModal('planets')">
                         <span class="chapter-watermark" style="--wm-rate: 0.22;">02</span>
@@ -3199,12 +3629,12 @@
                             <span class="chapter-tape-note">有风，云层偏低</span>
                         </div>
                         <p class="narrative no-indent">后来我离开了自己的星球，在漫长的路上见过国王、自命者、商人和点灯人。他们都很忙，忙到忘了抬头看一眼星空，也忘了问自己为什么要活得这么匆忙... ✉</p>
-                        <p class="timeline-thought">“我看着他们匆匆来去，才发现很少有人<span class="quote-highlight">愿意抬头看星星</span>。”</p>
+                        <p class="timeline-thought">“我看着他们匆匆来去，才发现很少有人愿意抬头看星星。”</p>
                         <p class="timeline-overflow-note" aria-hidden="true">（他还在赶路）</p>
                     </div>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item" id="planet-2">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('desert')">
                         <span class="chapter-watermark" style="--wm-rate: 0.2;">03</span>
@@ -3213,11 +3643,11 @@
                             <span class="chapter-tape-note">清晨，温度偏低</span>
                         </div>
                         <p class="narrative">我降落在了撒哈拉。这里只有一望无际的沙丘和沉默的星星。直到我遇见了一个飞行员，他为我画了一只装在箱子里的羊……沙漠之所以美丽，是因为它在某个地方藏着一口井。 ✎</p>
-                        <p class="timeline-thought">“我并不怕孤独，<span class="quote-highlight pink">我怕的是没有人真正听懂我</span>。”</p>
+                        <p class="timeline-thought">“我并不怕孤独，我怕的是没有人真正听懂我。”</p>
                     </div>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item" id="planet-3">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('fox')">
                         <span class="chapter-watermark" style="--wm-rate: 0.23;">04</span>
@@ -3226,11 +3656,11 @@
                             <span class="chapter-tape-note">傍晚，星子很亮</span>
                         </div>
                         <p class="narrative no-indent">在麦田边，我遇见了那只狐狸。它让我明白“驯服”不是占有，而是让彼此在世界里有了名字。原来我为玫瑰花费的每一分钟，都是她独一无二的原因... ✉</p>
-                        <p class="timeline-thought">“当我愿意靠近你时，我们就会<span class="quote-highlight">彼此需要，彼此独一无二</span>。”</p>
+                        <p class="timeline-thought">“当我愿意靠近你时，我们就会彼此需要，彼此独一无二。”</p>
                     </div>
                 </div>
 
-                <div class="timeline-item">
+                <div class="timeline-item" id="planet-4">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('watering')">
                         <span class="chapter-watermark" style="--wm-rate: 0.19;">05</span>
@@ -3239,7 +3669,46 @@
                             <span class="chapter-tape-note">夜深，风渐止</span>
                         </div>
                         <p class="narrative">当我准备离开时，我终于懂了：爱不是把对方留在身边，而是愿意为她负责，愿意在她脆弱的时候回头。很多答案都来得太晚，但我还是想把它们写下来... ✎</p>
-                        <p class="timeline-thought">“直到离开前我才明白：<span class="quote-highlight">真正重要的东西，用眼睛是看不见的</span>。”</p>
+                        <p class="timeline-thought">“直到离开前我才明白：真正重要的东西，用眼睛是看不见的。”</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="planet-5">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="chapter-watermark" style="--wm-rate: 0.2;">06</span>
+                        <div class="chapter-tape" style="--tape-tilt:3deg;">
+                            <h3>第六章 点灯人的夜</h3>
+                            <span class="chapter-tape-note">夜航，星群交替</span>
+                        </div>
+                        <p class="narrative no-indent">在最小最忙的星球上，点灯人一遍遍点亮又熄灭路灯。他没有时间看风景，却一直守着光的节奏。那一刻我想：也许责任，常常就是在无人注视时依然重复地温柔。 ✦</p>
+                        <p class="timeline-thought">“他很累，却没有放弃让黑夜有一点点亮。”</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="planet-6">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="chapter-watermark" style="--wm-rate: 0.21;">07</span>
+                        <div class="chapter-tape" style="--tape-tilt:-2deg;">
+                            <h3>第七章 学者的地图</h3>
+                            <span class="chapter-tape-note">纸页翻动，风很轻</span>
+                        </div>
+                        <p class="narrative">学者知道山川河流的名字，却从不亲自出发。他教会我“记录”很重要，但更重要的是亲眼看见、亲手触碰。地图能标出路，却不能替你走路。 ✎</p>
+                        <p class="timeline-thought">“知道很多名字，不等于真正认识这个世界。”</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="planet-7">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <span class="chapter-watermark" style="--wm-rate: 0.22;">08</span>
+                        <div class="chapter-tape" style="--tape-tilt:2deg;">
+                            <h3>第八章 回到地球</h3>
+                            <span class="chapter-tape-note">黎明前，风停了</span>
+                        </div>
+                        <p class="narrative no-indent">当我再次望向地球，才明白旅程并不是为了离开，而是为了带着新的眼睛回来。狐狸、玫瑰、沙漠与井，都在我心里有了新的位置。故事没有结束，它只是变成了你继续书写的那一页。 ☄</p>
+                        <p class="timeline-thought">“真正的归途，是带着爱与责任回到最初的地方。”</p>
                     </div>
                 </div>
             </div>
@@ -3248,12 +3717,13 @@
                     <path class="section-flow__path" d="M 40 44 Q 210 24 360 34 Q 520 46 700 24 Q 820 10 946 22" />
                     <path class="section-flow__star" d="M 934 22 L 938 30 L 946 32 L 940 38 L 942 46 L 934 41 L 926 46 L 928 38 L 922 32 L 930 30 Z" />
                 </svg>
-                <span class="section-flow__note">下一站：B612 的来信</span>
+                <span class="section-flow__note">下一页：飞行日志</span>
             </div>
         </div>
 
         <!-- B612 投递箱 -->
         <div id="b612" class="page">
+            <div id="starField" class="star-field" aria-hidden="true"></div>
             <p class="b612-marginal b612-marginal--rose" aria-hidden="true">记得每天给玫瑰浇水。</p>
             <p class="b612-marginal b612-marginal--desert" aria-hidden="true">如果你在沙漠里遇见他…</p>
             <p class="b612-marginal b612-marginal--sunset" aria-hidden="true">第 45 次日落开始了。</p>
@@ -3441,20 +3911,28 @@
         </div>
     </div>
 
-    <div id="replyModal" class="modal" aria-hidden="true">
-        <div class="modal-content">
-            <button class="modal-close" type="button" id="replyModalClose" aria-label="关闭">×</button>
-            <div class="modal-header">
-                <h2 class="modal-title">B612 回信</h2>
-            </div>
-            <p class="reply-modal__meta">星球管家把你的心事收进了风里。</p>
-            <div class="reply-modal__block">
-                <span class="reply-modal__label">你的留言</span>
-                <div id="replyModalUserText"></div>
-            </div>
-            <div class="reply-modal__block">
-                <span class="reply-modal__label">小王子的回信</span>
-                <div id="replyModalReplyText"></div>
+    <div id="replyModal" class="reply-slip-anchor" aria-hidden="true">
+        <div class="reply-slip" role="dialog" aria-label="回信便签" tabindex="-1">
+            <div class="reply-slip__fall" id="replySlipFall">
+                <div class="reply-slip__panel">
+                    <div class="reply-slip__inner" id="replySlipInner">
+                        <div class="reply-slip__letter">
+                            <p id="replyModalUserText" class="reply-slip__body reply-slip__body--user"></p>
+                            <p id="replyModalReplyText" class="reply-slip__body reply-slip__body--reply"></p>
+                        </div>
+                        <button type="button" class="reply-slip__rose" id="replyModalRose" aria-label="收起便签">
+                            <img
+                                class="reply-slip__rose-img"
+                                src="pure-rose.png?v=2"
+                                alt=""
+                                loading="eager"
+                                decoding="async"
+                                draggable="false"
+                                onerror="this.onerror=null;this.src='pure-rose.svg';"
+                            />
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -3728,7 +4206,14 @@
         //   https://little-prince.xyz/?api=https://little-prince-production.up.railway.app/api/messages
         const queryApiBase = new URLSearchParams(location.search).get('api');
         const envApiBase = (window.LITTLE_PRINCE_API_BASE || '').trim();
-        const MESSAGE_API_CANDIDATES = ['https://little-prince-production.up.railway.app/api/messages'];
+        const MESSAGE_API_CANDIDATES = [
+            '/api/messages',
+            'https://little-prince-production.up.railway.app/api/messages',
+        ];
+        // 仅在非 https 页面下追加 http localhost，避免混合内容报错
+        if (location.protocol !== 'https:') {
+            MESSAGE_API_CANDIDATES.push('http://localhost:8080/api/messages');
+        }
         if (queryApiBase) MESSAGE_API_CANDIDATES.push(queryApiBase.trim());
         if (envApiBase) MESSAGE_API_CANDIDATES.push(envApiBase);
         const starFieldEl = document.getElementById('starField');
@@ -3736,9 +4221,14 @@
         const b612Btn = document.getElementById('b612PlantStar');
         const b612Toast = document.getElementById('b612Toast');
         const replyModal = document.getElementById('replyModal');
-        const replyModalCloseBtn = document.getElementById('replyModalClose');
+        const replySlipFall = document.getElementById('replySlipFall');
+        const replySlipInner = document.getElementById('replySlipInner');
         const replyModalUserText = document.getElementById('replyModalUserText');
         const replyModalReplyText = document.getElementById('replyModalReplyText');
+        let slipUserBuffer = '';
+        let slipReplyBuffer = '';
+        let slipTw1 = null;
+        let slipTw2 = null;
 
         function randomPercent() {
             return Math.random() * 100;
@@ -3747,6 +4237,119 @@
         function safeMessageText(content) {
             const text = String(content || '').trim().replace(/\s+/g, ' ');
             return text.length > 170 ? text.slice(0, 170) + '…' : text;
+        }
+
+        /*
+         * 回信来源（从强到弱）：
+         * 1）接口返回的非占位正文 → 原样使用（真正「因你而异」需后端按 content 生成）。
+         * 2）否则：先按留言里的关键词匹配主题短句池；再否则按整句哈希从通用池里取（同一句留言稳定对同一句回信）。
+         */
+        const PRINCE_API_PLACEHOLDER_REPLIES = new Set(['今晚风很轻，我会继续替你守着这颗星。']);
+
+        const PRINCE_ECHO_THEMES = [
+            {
+                keys: ['难过', '伤心', '哭', '痛苦', '绝望', '好累', '累了', '累', '疲惫', '害怕', '焦虑', '烦'],
+                pool: [
+                    '难过的时候，就抬头看一眼：有一颗星，是专门为你亮着的。',
+                    '眼泪也会变成盐粒，落在 B612 的沙里——有一天会变成很轻很轻的糖。',
+                    '不必急着好起来。你先坐一会儿，我让风把你的叹息吹散一点。',
+                ],
+            },
+            {
+                keys: ['开心', '快乐', '幸福', '谢谢', '棒', '好耶', '哈哈'],
+                pool: [
+                    '你的高兴像一小簇光，我已经把它别在今晚的星帘上了。',
+                    '谢谢你说给我听：这样的时刻，连火山口都安静得想微笑。',
+                    '快乐不必很大声。你这一句，就足够让星球转得轻一点。',
+                ],
+            },
+            {
+                keys: ['想家', '回家', '妈妈', '爸爸', '家人', '故乡'],
+                pool: [
+                    '想家的时候，就把思念折成纸飞机吧——它会先替你飞一段路。',
+                    '远方的人也在看同一片天。你写下的字，会替你把拥抱寄近一点。',
+                    '家有时候不是一个地方，是你心里那盏还没熄的小灯。',
+                ],
+            },
+            {
+                keys: ['爱', '喜欢', '恋爱', '分手', '想你', '告白'],
+                pool: [
+                    '爱不是占有，是愿意为对方多留一点耐心——像给玫瑰罩上玻璃罩那样小心。',
+                    '喜欢会长大，也会变小；你写下的这一刻，它正停在你手边。',
+                    '想一个人的时候，就写一行字吧：风会读，星会记，我也会替你收好。',
+                ],
+            },
+            {
+                keys: ['星星', '星空', '夜空', '月亮', '宇宙', '天文'],
+                pool: [
+                    '星星听见了。它们不急着回答，只是亮得更温柔了一点。',
+                    '我把你的句子挂在银河边当书签：等你抬头，就能翻到那一页。',
+                    '宇宙很大，你的这一句却很亮——像一颗不肯睡的小恒星。',
+                ],
+            },
+            {
+                keys: ['玫瑰', '花'],
+                pool: [
+                    '玫瑰说，她愿意替你保守秘密；等你想开口时，再把香气还给你。',
+                    '每一朵花都有自己的骄傲。你写下的，也值得被温柔对待。',
+                    '花期会过去，香气会留下。你心里的那朵，我会替你记着。',
+                ],
+            },
+            {
+                keys: ['狐狸', '驯服', '朋友', '孤独', '一个人'],
+                pool: [
+                    '狐狸让我转告你：驯服不是占有，是彼此在时间里慢慢变得重要。',
+                    '孤独并不丢脸。你只是还没遇到愿意听你慢慢说话的那阵风。',
+                    '朋友像星星：不一定总见面，但你知道它们一直在。',
+                ],
+            },
+        ];
+
+        const PRINCE_ECHO_POOL = [
+            '我把你给风听的那句话，悄悄夹在 B612 的夜云里了。',
+            '你说的事，我已经替你收进一颗很小的沙粒里——小到只有心才看得见。',
+            '风从撒哈拉那边绕过来，把你的字句吹成一串很轻很轻的铃声。',
+            '今夜没有答案也没关系；有些心事，本来就该在星空里慢慢凉下来。',
+            '我在纸边上画了一颗很小的星：那是你的句子落下来的地方。',
+            '我把你的想念折成纸飞机，朝你抬头就能看见的那片天角掷出去了。',
+            '星球很小，心事很大——但再大，也装得下你这一句。',
+            '你写下的字，会像露水一样在日出前自己找到该去的地方。',
+            '如果累了，就把今天交给星星保管；明天醒来，它们会还你一点点光。',
+            '我在 B612 的篱笆边坐了一会儿：你的句子像草叶一样轻轻碰了碰我的袖口。',
+            '不必完美。你说出来的那一刻，它就已经是一颗真的星星了。',
+            '我会继续替你守着这颗星——也替你守着那句还没说完的话。',
+            '今晚风很轻。我把你的声音叠进星光里，等你抬头时慢慢拆开。',
+        ];
+
+        function echoHashPickIndex(s, modulo) {
+            const str = String(s || '').trim();
+            let h = 2166136261 >>> 0;
+            for (let i = 0; i < str.length; i += 1) {
+                h ^= str.charCodeAt(i);
+                h = Math.imul(h, 16777619) >>> 0;
+            }
+            const len = str.length || 1;
+            return (h + len * 31 + (str.charCodeAt(0) | 0) * 13) % modulo;
+        }
+
+        function fingerprintEchoPick(content) {
+            const s = String(content || '').trim();
+            for (let t = 0; t < PRINCE_ECHO_THEMES.length; t += 1) {
+                const theme = PRINCE_ECHO_THEMES[t];
+                if (theme.keys.some((k) => s.includes(k))) {
+                    const idx = echoHashPickIndex(s, theme.pool.length);
+                    return theme.pool[idx];
+                }
+            }
+            const idx = echoHashPickIndex(s, PRINCE_ECHO_POOL.length);
+            return PRINCE_ECHO_POOL[idx];
+        }
+
+        function resolveReplyForUser(userText, replyFromApi) {
+            const t = String(replyFromApi || '').trim();
+            if (!t) return fingerprintEchoPick(userText);
+            if (PRINCE_API_PLACEHOLDER_REPLIES.has(t)) return fingerprintEchoPick(userText);
+            return t;
         }
 
         function formatBubbleText(content, reply) {
@@ -3786,23 +4389,124 @@
             ordered.forEach((msg, idx) => {
                 const oldness = 1 - (idx + 1) / total;
                 const ageOpacity = 0.42 + (1 - oldness) * 0.52;
-                addStarMessage(msg.posX, msg.posY, msg.content, msg.reply || '', ageOpacity);
+                const echo = resolveReplyForUser(msg.content, msg.reply || '');
+                addStarMessage(msg.posX, msg.posY, msg.content, echo, ageOpacity);
             });
         }
 
+        function clearSlipTypewriter() {
+            if (slipTw1) {
+                clearInterval(slipTw1);
+                slipTw1 = null;
+            }
+            if (slipTw2) {
+                clearInterval(slipTw2);
+                slipTw2 = null;
+            }
+        }
+
+        function startSlipTypewriters() {
+            clearSlipTypewriter();
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                replyModalUserText.textContent = slipUserBuffer;
+                replyModalReplyText.textContent = slipReplyBuffer;
+                replyModalUserText.style.opacity = '1';
+                replyModalReplyText.style.opacity = '1';
+                return;
+            }
+            const charMs = 38;
+            replyModalUserText.textContent = '';
+            replyModalReplyText.textContent = '';
+            replyModalUserText.style.opacity = '0.22';
+            let i = 0;
+            const n1 = slipUserBuffer.length;
+            slipTw1 = setInterval(() => {
+                i += 1;
+                replyModalUserText.textContent = slipUserBuffer.slice(0, i);
+                replyModalUserText.style.opacity = String(0.22 + 0.78 * (i / Math.max(n1, 1)));
+                if (i >= n1) {
+                    clearInterval(slipTw1);
+                    slipTw1 = null;
+                    replyModalUserText.style.opacity = '1';
+                    let j = 0;
+                    const n2 = slipReplyBuffer.length;
+                    replyModalReplyText.style.opacity = '0.22';
+                    slipTw2 = setInterval(() => {
+                        j += 1;
+                        replyModalReplyText.textContent = slipReplyBuffer.slice(0, j);
+                        replyModalReplyText.style.opacity = String(0.22 + 0.78 * (j / Math.max(n2, 1)));
+                        if (j >= n2) {
+                            clearInterval(slipTw2);
+                            slipTw2 = null;
+                            replyModalReplyText.style.opacity = '1';
+                        }
+                    }, charMs);
+                }
+            }, charMs);
+        }
+
         function openReplyModal(userText, replyText) {
-            replyModalUserText.textContent = safeMessageText(userText);
-            replyModalReplyText.textContent = safeMessageText(replyText || '今晚风很轻，我会继续替你守着这颗星。');
+            clearSlipTypewriter();
+            slipUserBuffer = safeMessageText(userText);
+            slipReplyBuffer = safeMessageText(resolveReplyForUser(userText, replyText));
+            replyModalUserText.textContent = '';
+            replyModalReplyText.textContent = '';
+            replyModalUserText.style.opacity = '';
+            replyModalReplyText.style.opacity = '';
+            replyModal.classList.remove('is-leaving');
+            replyModal.classList.remove('active');
+            if (replySlipFall) void replySlipFall.offsetHeight;
             replyModal.classList.add('active');
             replyModal.setAttribute('aria-hidden', 'false');
+            playReplyBell();
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduceMotion || !replySlipFall) {
+                startSlipTypewriters();
+                return;
+            }
+            function onFallEnd(e) {
+                if (e.target !== replySlipFall) return;
+                if (!String(e.animationName || '').includes('replySlipFall')) return;
+                if (!replyModal.classList.contains('active') || replyModal.classList.contains('is-leaving')) return;
+                startSlipTypewriters();
+            }
+            replySlipFall.addEventListener('animationend', onFallEnd, { once: true });
+        }
+
+        function teardownReplySlip() {
+            clearSlipTypewriter();
+            replyModal.classList.remove('active', 'is-leaving');
+            replyModal.setAttribute('aria-hidden', 'true');
+            replyModalUserText.textContent = '';
+            replyModalReplyText.textContent = '';
+            replyModalUserText.style.opacity = '';
+            replyModalReplyText.style.opacity = '';
+        }
+
+        function dismissReplySlip() {
+            if (!replyModal.classList.contains('active') || replyModal.classList.contains('is-leaving')) return;
+            clearSlipTypewriter();
+            replyModal.classList.add('is-leaving');
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                teardownReplySlip();
+                return;
+            }
+            function onOutEnd(e) {
+                if (e.target !== replySlipFall) return;
+                if (!String(e.animationName || '').includes('replySlipDriftOut')) return;
+                teardownReplySlip();
+            }
+            replySlipFall.addEventListener('animationend', onOutEnd, { once: true });
         }
 
         function closeReplyModal() {
-            replyModal.classList.remove('active');
-            replyModal.setAttribute('aria-hidden', 'true');
+            dismissReplySlip();
         }
 
-        replyModalCloseBtn.addEventListener('click', closeReplyModal);
+        if (replySlipInner) {
+            replySlipInner.addEventListener('click', () => dismissReplySlip());
+        }
 
         async function fetchMessagesWithFallback(options) {
             let lastError = null;
@@ -3861,6 +4565,46 @@
                 osc2.stop(now + 0.38);
 
                 window.setTimeout(() => ctx.close(), 500);
+            } catch (e) {
+                // 音频非关键，忽略错误
+            }
+        }
+
+        function playReplyBell() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                const master = ctx.createGain();
+                master.gain.setValueAtTime(0.0001, now);
+                master.gain.exponentialRampToValueAtTime(0.026, now + 0.05);
+                master.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+                master.connect(ctx.destination);
+
+                const notes = [
+                    { freq: 1318.5, start: 0.00, dur: 0.42 },
+                    { freq: 1567.98, start: 0.11, dur: 0.48 },
+                    { freq: 1760.00, start: 0.24, dur: 0.58 },
+                    { freq: 2093.00, start: 0.40, dur: 0.66 },
+                    { freq: 2349.32, start: 0.58, dur: 0.72 },
+                ];
+
+                notes.forEach(({ freq, start, dur }) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + start);
+                    gain.gain.setValueAtTime(0.0001, now + start);
+                    gain.gain.exponentialRampToValueAtTime(0.22, now + start + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + start + dur);
+                    osc.connect(gain);
+                    gain.connect(master);
+                    osc.start(now + start);
+                    osc.stop(now + start + dur + 0.02);
+                });
+
+                window.setTimeout(() => ctx.close(), 1800);
             } catch (e) {
                 // 音频非关键，忽略错误
             }
@@ -3950,31 +4694,71 @@
                 b612Toast.textContent = '请先写下一句话，再种星。';
                 return;
             }
+
             b612Toast.textContent = '';
             const posX = randomPercent();
             const posY = randomPercent();
             b612Btn.disabled = true;
+            let flightDone = false;
+            let pendingReply = null;
+            const flightDelayMs = 3200;
+            const flightStartAt = Date.now();
+
+            const onFlightDone = () => {
+                flightDone = true;
+                if (pendingReply !== null) {
+                    const elapsed = Date.now() - flightStartAt;
+                    const remain = Math.max(0, flightDelayMs - elapsed);
+                    window.setTimeout(() => {
+                        openReplyModal(content, pendingReply || '');
+                    }, remain);
+                    pendingReply = null;
+                }
+            };
+
+            b612Input.setAttribute('readonly', 'readonly');
+            b612Input.classList.add('b612-message-input--flying');
+            playTinyBell();
+            playStarFlight(posX, posY, content, () => {
+                b612Input.value = '';
+                b612Input.removeAttribute('readonly');
+                b612Input.classList.remove('b612-message-input--flying');
+                b612Toast.textContent = '你的思绪已抵达 B612。';
+                onFlightDone();
+            });
             try {
                 const created = await fetchMessagesWithFallback({
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content, posX, posY })
                 });
-                b612Input.setAttribute('readonly', 'readonly');
-                b612Input.classList.add('b612-message-input--flying');
-                playTinyBell();
-                playStarFlight(posX, posY, content, () => {
-                    b612Input.value = '';
-                    b612Input.removeAttribute('readonly');
-                    b612Input.classList.remove('b612-message-input--flying');
-                    b612Toast.textContent = '你的思绪已抵达 B612。';
-                });
-                openReplyModal(content, created?.reply || '');
+                const replyText = created?.reply || '';
+                if (flightDone) {
+                    const elapsed = Date.now() - flightStartAt;
+                    const remain = Math.max(0, flightDelayMs - elapsed);
+                    window.setTimeout(() => {
+                        openReplyModal(content, replyText);
+                    }, remain);
+                } else {
+                    pendingReply = replyText;
+                }
                 window.setTimeout(() => {
                     b612Btn.disabled = false;
                 }, prefersReducedMotion() ? 400 : 3200);
             } catch (e) {
-                b612Toast.textContent = '投递失败：请确认后端已启动，或 /api/messages 代理已配置。';
+                // 离线兜底：接口不可用时也允许把星星种下，并展示本地回信
+                if (flightDone) {
+                    const elapsed = Date.now() - flightStartAt;
+                    const remain = Math.max(0, flightDelayMs - elapsed);
+                    window.setTimeout(() => {
+                        openReplyModal(content, '');
+                    }, remain);
+                } else {
+                    pendingReply = '';
+                }
+                b612Toast.textContent = '后端暂不可达，已切换为离线回信模式。';
+                b612Input.removeAttribute('readonly');
+                b612Input.classList.remove('b612-message-input--flying');
                 b612Btn.disabled = false;
             }
         });
@@ -3982,15 +4766,48 @@
         const journeyTimeline = document.querySelector('#journey .timeline');
         const timelineCurvesContainer = document.getElementById('timelineCurves');
         let timelineCurveObserver = null;
+        const journeyMap = document.getElementById('journeyMap');
+        const journeyMapSvg = document.getElementById('journeyMapSvg');
+        const journeyMapRoutePath = document.getElementById('journeyMapRoute');
+        const journeyMapRouteBasePath = document.getElementById('journeyMapRouteBase');
+        const journeyMapNodesWrap = document.getElementById('journeyMapNodes');
+        const journeyMapNodes = journeyMapNodesWrap ? [...journeyMapNodesWrap.querySelectorAll('.journey-map__node')] : [];
+        const journeyMapShip = document.getElementById('journeyMapShip');
+        const journeyPlanetTargets = ['planet-0', 'planet-1', 'planet-2', 'planet-3', 'planet-4', 'planet-5', 'planet-6', 'planet-7'];
+        const journeyChapterItems = [...document.querySelectorAll('#journey .timeline-item')];
+        let journeyPlanetObserver = null;
+        let journeyRevealObserver = null;
+        let journeyMapPoints = [];
+        let journeyMapActiveIndex = 0;
+        let journeyShipX = null;
+        let journeyShipY = null;
+        let journeyShipAnimId = null;
+        const JOURNEY_MAP_PADDING = 40;
 
-        function timelinePathD(h, seed = 0) {
-            const m = 28;
-            const sway = 12 + (seed % 2) * 1.5; // 轻微变化，整体保持规则 S
-            const xR = m + sway;
-            const xL = m - sway;
-            const y1 = h * 0.32;
-            const y2 = h * 0.68;
-            return `M${m} 0 C ${xR} ${h * 0.14}, ${xR} ${h * 0.24}, ${m} ${y1} C ${xL} ${h * 0.48}, ${xL} ${h * 0.58}, ${m} ${y2} C ${xR} ${h * 0.82}, ${xR} ${h * 0.92}, ${m} ${h}`;
+        function curveSeedNoise(seed) {
+            const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+            return x - Math.floor(x);
+        }
+
+        function timelinePathD(h, seed = 0, startX = 28, endX = 28) {
+            const n1 = curveSeedNoise(seed + 1) - 0.5;
+            const n2 = curveSeedNoise(seed + 7) - 0.5;
+            const n3 = curveSeedNoise(seed + 13) - 0.5;
+            const sway = 11 + (seed % 2) * 1.6 + n1 * 3.6;
+            const center = (startX + endX) / 2;
+            const xR = center + sway;
+            const xL = center - sway + n2 * 2.4;
+            const y1 = h * (0.31 + n2 * 0.03);
+            const y2 = h * (0.69 + n3 * 0.03);
+            const c1y = h * (0.14 + n1 * 0.02);
+            const c2y = h * (0.24 + n2 * 0.02);
+            const c3y = h * (0.48 + n3 * 0.02);
+            const c4y = h * (0.58 + n1 * 0.02);
+            const c5y = h * (0.82 + n2 * 0.02);
+            const c6y = h * (0.92 + n3 * 0.02);
+            const midX1 = center + n3 * 1.6 + (startX - center) * 0.36;
+            const midX2 = center - n2 * 1.2 + (endX - center) * 0.36;
+            return `M${startX} 0 C ${xR} ${c1y}, ${xR + n2 * 1.8} ${c2y}, ${midX1} ${y1} C ${xL} ${c3y}, ${xL - n1 * 1.6} ${c4y}, ${midX2} ${y2} C ${xR + n3 * 1.1} ${c5y}, ${xR - n1 * 1.4} ${c6y}, ${endX} ${h}`;
         }
 
         function setupTimelineCurves() {
@@ -3999,6 +4816,18 @@
             if (items.length < 2) return;
             const mobile = window.innerWidth <= 768;
             const centerX = mobile ? 10 : journeyTimeline.clientWidth / 2;
+            const dotOffsets = items.map((_, idx) => {
+                const n = curveSeedNoise(idx + 31) - 0.5;
+                const amp = mobile ? 4.6 : 11.2;
+                return n * amp;
+            });
+
+            items.forEach((item, idx) => {
+                const dot = item.querySelector('.timeline-dot');
+                if (dot) {
+                    dot.style.setProperty('--timeline-dot-shift', `${dotOffsets[idx].toFixed(2)}px`);
+                }
+            });
 
             timelineCurvesContainer.innerHTML = '';
             for (let i = 0; i < items.length - 1; i += 1) {
@@ -4017,15 +4846,18 @@
                 svg.setAttribute('class', 'timeline-svg');
                 svg.setAttribute('viewBox', `0 0 56 ${h}`);
                 svg.setAttribute('preserveAspectRatio', 'none');
+                const startX = 28 + dotOffsets[i];
+                const endX = 28 + dotOffsets[i + 1];
+                const d = timelinePathD(h, i, startX, endX);
 
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path.setAttribute('d', timelinePathD(h, i));
+                path.setAttribute('d', d);
                 path.setAttribute('stroke-dasharray', '6 5');
                 svg.appendChild(path);
                 const pLen = path.getTotalLength();
 
                 const secondary = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                secondary.setAttribute('d', timelinePathD(h, i));
+                secondary.setAttribute('d', d);
                 secondary.setAttribute('class', 'timeline-stitch-secondary');
                 svg.appendChild(secondary);
 
@@ -4068,7 +4900,239 @@
             });
         }
 
+        function layoutJourneyMapNodes() {
+            if (!journeyMap || !journeyMapNodes.length) return;
+            const w = journeyMap.offsetWidth;
+            const h = journeyMap.offsetHeight;
+            if (w <= 0 || h <= 0) return;
+            const count = journeyMapNodes.length;
+            const step = count > 1 ? (w - JOURNEY_MAP_PADDING * 2) / (count - 1) : 0;
+            const y = Math.max(66, h - 56);
+            journeyMapNodes.forEach((node, index) => {
+                const x = JOURNEY_MAP_PADDING + index * step;
+                /* 上下错动要小，否则各星球中心高度差太大，贝塞尔航线会斜穿大块图标 */
+                const wobble = index % 2 === 0 ? -5 : 5;
+                node.style.left = `${x}px`;
+                node.style.top = `${y + wobble}px`;
+            });
+        }
+
+        function getJourneyMapPoints() {
+            if (!journeyMap || !journeyMapNodes.length) return [];
+            layoutJourneyMapNodes();
+            const mapRect = journeyMap.getBoundingClientRect();
+            return journeyMapNodes.map((node) => {
+                const p = node.querySelector('.journey-map__planet');
+                if (!p) return null;
+                const r = p.getBoundingClientRect();
+                return {
+                    x: r.left - mapRect.left + r.width / 2,
+                    y: r.top - mapRect.top + r.height / 2
+                };
+            }).filter(Boolean);
+        }
+
+        /** 星球中心点序列 → 手绘感起伏丝带（三次贝塞尔） */
+        function buildJourneyRibbonPath(points) {
+            if (points.length < 2) return '';
+            const first = points[0];
+            let d = `M ${first.x.toFixed(2)} ${first.y.toFixed(2)}`;
+            for (let i = 0; i < points.length - 1; i += 1) {
+                const p0 = points[i];
+                const p1 = points[i + 1];
+                const dx = p1.x - p0.x;
+                const dy = p1.y - p0.y;
+                const len = Math.hypot(dx, dy) || 1;
+                const nx = -dy / len;
+                const ny = dx / len;
+                const wave = (i % 2 === 0 ? 1 : -1) * (14 + (i % 5) * 3.4 + (i % 7) * 1.3);
+                const drift = Math.sin(i * 1.85 + 0.7) * 5.5 + (i % 3 - 1) * 3.2;
+                const cp1x = p0.x + dx * 0.3 + nx * wave * 0.42 + drift;
+                const cp1y = p0.y + dy * 0.22 + ny * wave * 0.38 + wave * 0.65;
+                const cp2x = p0.x + dx * 0.7 + nx * wave * 0.38 - drift * 0.45;
+                const cp2y = p1.y - dy * 0.2 + ny * wave * 0.32 - wave * 0.62;
+                d += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`;
+            }
+            return d;
+        }
+
+        function drawJourneyMapRoute() {
+            if (!journeyMap || !journeyMapSvg || !journeyMapRoutePath || !journeyMapNodes.length) return;
+            layoutJourneyMapNodes();
+            const W = journeyMap.offsetWidth;
+            const H = journeyMap.offsetHeight;
+            if (W <= 0 || H <= 0) return;
+            journeyMapSvg.setAttribute('width', String(W));
+            journeyMapSvg.setAttribute('height', String(H));
+            journeyMapSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+            const points = getJourneyMapPoints();
+            journeyMapPoints = points;
+            if (points.length < 2) {
+                journeyMapRoutePath.setAttribute('d', '');
+                if (journeyMapRouteBasePath) journeyMapRouteBasePath.setAttribute('d', '');
+                return;
+            }
+            const pathD = buildJourneyRibbonPath(points);
+            journeyMapRoutePath.setAttribute('d', pathD);
+            if (journeyMapRouteBasePath) journeyMapRouteBasePath.setAttribute('d', pathD);
+        }
+
+        function positionJourneyShip(x, y, angle = -14) {
+            if (!journeyMapShip) return;
+            journeyShipX = x;
+            journeyShipY = y;
+            journeyMapShip.style.left = `${x}px`;
+            journeyMapShip.style.top = `${y - 16}px`;
+            journeyMapShip.style.transform = `translate(-50%, -50%) rotate(${angle.toFixed(2)}deg)`;
+        }
+
+        function moveJourneyShipTo(index, immediate = false) {
+            if (!journeyMapPoints.length || !journeyMapShip) return;
+            const safeIdx = Math.max(0, Math.min(index, journeyMapPoints.length - 1));
+            const target = journeyMapPoints[safeIdx];
+            if (!target) return;
+            const tx = target.x;
+            const ty = target.y;
+            if (journeyShipAnimId) {
+                cancelAnimationFrame(journeyShipAnimId);
+                journeyShipAnimId = null;
+            }
+            if (immediate || journeyShipX === null || journeyShipY === null) {
+                positionJourneyShip(tx, ty, -14);
+                return;
+            }
+            const sx = journeyShipX;
+            const sy = journeyShipY;
+            const duration = 380;
+            const startAt = performance.now();
+            const baseAngle = Math.atan2(ty - sy, tx - sx) * 180 / Math.PI;
+            const targetAngle = Math.max(-38, Math.min(18, baseAngle));
+            const step = (now) => {
+                const t = Math.min(1, (now - startAt) / duration);
+                const ease = 1 - Math.pow(1 - t, 3);
+                const x = sx + (tx - sx) * ease;
+                const y = sy + (ty - sy) * ease;
+                const angle = -14 + (targetAngle + 14) * ease;
+                positionJourneyShip(x, y, angle);
+                if (t < 1) {
+                    journeyShipAnimId = requestAnimationFrame(step);
+                } else {
+                    journeyShipAnimId = null;
+                    positionJourneyShip(tx, ty, -14);
+                }
+            };
+            journeyShipAnimId = requestAnimationFrame(step);
+        }
+
+        function setJourneyMapActive(targetId) {
+            const idx = journeyPlanetTargets.indexOf(targetId);
+            if (idx !== -1) {
+                journeyMapActiveIndex = idx;
+                moveJourneyShipTo(idx, false);
+            }
+            journeyMapNodes.forEach((node) => {
+                const isActive = node.getAttribute('data-target') === targetId;
+                node.classList.toggle('is-active', isActive);
+            });
+        }
+
+        function setActivePlanet(index) {
+            if (typeof index !== 'number' || Number.isNaN(index)) return;
+            const safe = Math.max(0, Math.min(index, journeyPlanetTargets.length - 1));
+            journeyMapActiveIndex = safe;
+            journeyMapNodes.forEach((node) => node.classList.remove('is-active'));
+            const activeNode = journeyMapNodes[safe];
+            if (activeNode) activeNode.classList.add('is-active');
+            moveJourneyShipTo(safe, false);
+            const id = journeyPlanetTargets[safe];
+            if (location.hash !== `#${id}`) {
+                history.replaceState(null, '', `#${id}`);
+            }
+        }
+
+        function smoothScrollToPlanet(id) {
+            const el = id ? document.getElementById(id) : null;
+            if (!el) return;
+            const headerEl = document.querySelector('header');
+            const headerH = headerEl ? headerEl.offsetHeight : 0;
+            const mapH = (journeyMap && journeyMap.offsetHeight) ? journeyMap.offsetHeight : 0;
+            // 顶部有 sticky 导航 + sticky 地图，按实际遮挡高度计算定位偏移
+            const topOffset = headerH + mapH + 20;
+            const top = window.scrollY + el.getBoundingClientRect().top - topOffset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+
+        function prepareJourneyQuotes() {
+            journeyChapterItems.forEach((item) => {
+                const quote = item.querySelector('.timeline-thought');
+                if (!quote || quote.dataset.prepared === '1') return;
+                const text = quote.textContent || '';
+                quote.textContent = '';
+                [...text].forEach((char, idx) => {
+                    const span = document.createElement('span');
+                    span.className = 'quote-char';
+                    span.textContent = char;
+                    span.style.transitionDelay = `${idx * 50}ms`;
+                    quote.appendChild(span);
+                });
+                quote.dataset.prepared = '1';
+            });
+        }
+
+        function typeJourneyQuote(item) {
+            const quote = item.querySelector('.timeline-thought');
+            if (!quote || quote.dataset.typed === '1') return;
+            quote.classList.add('is-typed');
+            quote.dataset.typed = '1';
+        }
+
+        function initJourneyMap() {
+            if (!journeyMapNodes.length) return;
+            prepareJourneyQuotes();
+            journeyMapNodes.forEach((node) => {
+                node.addEventListener('click', () => {
+                    const id = node.getAttribute('data-target');
+                    if (id) smoothScrollToPlanet(id);
+                });
+            });
+
+            if (journeyPlanetObserver) journeyPlanetObserver.disconnect();
+            journeyPlanetObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const idx = journeyPlanetTargets.indexOf(entry.target.id);
+                        if (idx !== -1) setActivePlanet(idx);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            if (journeyRevealObserver) journeyRevealObserver.disconnect();
+            journeyRevealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    typeJourneyQuote(entry.target);
+                    observer.unobserve(entry.target);
+                });
+            }, { threshold: 0.1 });
+
+            journeyPlanetTargets.forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) journeyPlanetObserver.observe(el);
+            });
+            journeyChapterItems.forEach((item) => journeyRevealObserver.observe(item));
+            layoutJourneyMapNodes();
+            drawJourneyMapRoute();
+            moveJourneyShipTo(journeyMapActiveIndex, true);
+            setActivePlanet(0);
+        }
+
         window.addEventListener('resize', setupTimelineCurves);
+        window.addEventListener('resize', () => {
+            drawJourneyMapRoute();
+            moveJourneyShipTo(journeyMapActiveIndex, true);
+        });
 
         const chapterWatermarks = [...document.querySelectorAll('.chapter-watermark')];
         function updateChapterWatermarkParallax() {
@@ -4092,7 +5156,13 @@
                 
                 link.classList.add('active');
                 document.getElementById(pageId).classList.add('active');
-                if (pageId === 'journey') setupTimelineCurves();
+                if (pageId === 'journey') {
+                    setupTimelineCurves();
+                    window.requestAnimationFrame(() => {
+                        drawJourneyMapRoute();
+                        moveJourneyShipTo(journeyMapActiveIndex, true);
+                    });
+                }
                 updateChapterWatermarkParallax();
             });
         });
@@ -4104,14 +5174,10 @@
             }
         });
 
-        replyModal.addEventListener('click', (e) => {
-            if (e.target === replyModal) {
-                closeReplyModal();
-            }
-        });
-
         loadHistoryMessages();
         setupTimelineCurves();
+        initJourneyMap();
+        drawJourneyMapRoute();
         updateChapterWatermarkParallax();
     </script>
 </body>
