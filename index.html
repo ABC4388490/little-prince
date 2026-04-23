@@ -5197,7 +5197,7 @@
         const envApiBase = (window.LITTLE_PRINCE_API_BASE || '').trim();
         const CHAT_API_CANDIDATES = [
             '/api',
-            'https://little-prince-production.up.railway.app/api',
+            'https://little-prince-message-api-production-a183.up.railway.app/api',
         ];
         // 仅在非 https 页面下追加 http localhost，避免混合内容报错
         if (location.protocol !== 'https:') {
@@ -5530,13 +5530,28 @@
                 try {
                     const url = base + cleanPath;
                     const res = await fetch(url, options);
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    if (!res.ok) {
+                        let bodyText = '';
+                        try {
+                            bodyText = await res.text();
+                        } catch (e) {}
+                        const err = new Error('HTTP ' + res.status);
+                        err.status = res.status;
+                        err.bodyText = bodyText;
+                        throw err;
+                    }
                     return await res.json();
                 } catch (err) {
                     lastError = err;
                 }
             }
             throw lastError || new Error('all endpoints failed');
+        }
+
+        function isDatabaseNotConfiguredError(err) {
+            const status = err && err.status;
+            const body = String((err && err.bodyText) || '').toLowerCase();
+            return status === 503 && body.includes('database_url');
         }
 
         function formatTime(ts) {
@@ -5617,6 +5632,7 @@
         }
 
         let b612ConversationId = null;
+        let b612UseLegacyApi = false;
         const visitorId = getVisitorId();
 
         async function ensureConversation() {
@@ -5627,6 +5643,29 @@
         }
 
         async function loadB612Chat() {
+            if (b612UseLegacyApi) {
+                const items = await fetchChatWithFallback('/messages', { method: 'GET' });
+                if (Array.isArray(items)) {
+                    renderChatHistory(
+                        items.flatMap((m) => {
+                            const user = {
+                                role: 'user',
+                                content: m.content,
+                                createdAt: m.createdAt,
+                                posX: m.posX,
+                                posY: m.posY,
+                            };
+                            const assistant = m.reply
+                                ? [{ role: 'assistant', content: m.reply, createdAt: m.replyCreatedAt || m.createdAt }]
+                                : [];
+                            return [user, ...assistant];
+                        })
+                    );
+                    renderStarsFromChat(items.map((m) => ({ role: 'user', id: m.id, content: m.content, posX: m.posX, posY: m.posY })));
+                }
+                if (b612Toast) b612Toast.textContent = '当前为本地记忆模式（仅本机可见）。';
+                return;
+            }
             try {
                 const cid = await ensureConversation();
                 const items = await fetchChatWithFallback('/conversations/' + cid + '/messages', { method: 'GET' });
@@ -5635,6 +5674,11 @@
                     renderStarsFromChat(items);
                 }
             } catch (e) {
+                if (isDatabaseNotConfiguredError(e)) {
+                    b612UseLegacyApi = true;
+                    b612ConversationId = null;
+                    return loadB612Chat();
+                }
                 // 后端不可达时保持安静，仅提示一次
                 if (b612Toast) b612Toast.textContent = '暂时连不上 B612 的邮局（后端）。你仍可以写下话，但跨设备记忆需要后端恢复。';
                 updateChatEmptyState();
@@ -5814,17 +5858,43 @@
             b612Input.value = '';
 
             try {
-                const cid = await ensureConversation();
-                const created = await fetchChatWithFallback('/conversations/' + cid + '/messages', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ visitorId, content, posX, posY })
-                });
+                if (b612UseLegacyApi) {
+                    const created = await fetchChatWithFallback('/messages', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ content, posX, posY })
+                    });
+                    const replyText = created?.reply || '';
+                    appendChatMessage('assistant', replyText || fingerprintEchoPick(content), created?.replyCreatedAt || new Date().toISOString());
+                    if (b612Toast) b612Toast.textContent = '我已经收到了（本地记忆）。';
+                } else {
+                    const cid = await ensureConversation();
+                    const created = await fetchChatWithFallback('/conversations/' + cid + '/messages', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ visitorId, content, posX, posY })
+                    });
 
-                const replyText = created?.assistant?.content || '';
-                appendChatMessage('assistant', replyText || fingerprintEchoPick(content), created?.assistant?.createdAt || new Date().toISOString());
-                if (b612Toast) b612Toast.textContent = '我已经收到了。';
+                    const replyText = created?.assistant?.content || '';
+                    appendChatMessage('assistant', replyText || fingerprintEchoPick(content), created?.assistant?.createdAt || new Date().toISOString());
+                    if (b612Toast) b612Toast.textContent = '我已经收到了。';
+                }
             } catch (e) {
+                if (!b612UseLegacyApi && isDatabaseNotConfiguredError(e)) {
+                    try {
+                        b612UseLegacyApi = true;
+                        b612ConversationId = null;
+                        const created = await fetchChatWithFallback('/messages', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ content, posX, posY })
+                        });
+                        const replyText = created?.reply || '';
+                        appendChatMessage('assistant', replyText || fingerprintEchoPick(content), created?.replyCreatedAt || new Date().toISOString());
+                        if (b612Toast) b612Toast.textContent = '已切换为本地记忆模式。';
+                        return;
+                    } catch (e2) {}
+                }
                 // 离线兜底：后端不可达时仍给出回信（但无法跨设备记忆）
                 appendChatMessage('assistant', fingerprintEchoPick(content), new Date().toISOString());
                 if (b612Toast) b612Toast.textContent = '后端暂不可达：已改用离线回信（记忆不会同步）。';
