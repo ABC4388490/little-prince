@@ -10,7 +10,7 @@
       <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
 
-    <!-- ôK6„iÅ‚ráX + {®Br -->
+    <!-- ï¿½K6ï¿½iÅ‚rï¿½X + {ï¿½Br -->
     <linearGradient id="warmFill" x1="300" y1="220" x2="730" y2="860" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#E8B79B" stop-opacity="0.28"/>
       <stop offset="0.55" stop-color="#D79B7B" stop-opacity="0.22"/>
@@ -22,9 +22,9 @@
     </linearGradient>
   </defs>
 
-  <!-- ÌoÅØ6sK -->
+  <!-- ï¿½oï¿½ï¿½6sK -->
   <g transform="translate(512 512) rotate(-28) translate(-512 -512)">
-    <!-- {‚rôÏÂþ4èŒ>èôÍÄèôá	 -->
+    <!-- {ï¿½rï¿½ï¿½ï¿½ï¿½4ï¿½>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	 -->
     <path
       d="M 336 250
          C 286 302, 278 374, 316 430
@@ -83,7 +83,7 @@
       filter="url(#pencilWobbleFine)"
     />
 
-    <!-- nÓô—ôÅ -->
+    <!-- nï¿½ï¿½ï¿½ï¿½ï¿½ -->
     <path
       d="M 336 250
          C 286 302, 278 374, 316 430
@@ -155,7 +155,7 @@
       filter="url(#pencilWobbleFine)"
     />
 
-    <!-- Äè…ùýôÏÂþ„ý	 -->
+    <!-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	 -->
     <path
       d="M 452 556
          C 430 598, 400 658, 376 704
@@ -175,7 +175,7 @@
       filter="url(#pencilWobbleFine)"
     />
 
-    <!-- …±ï + …è¹b -->
+    <!-- ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½b -->
     <path
       d="M 730 712
          C 710 734, 710 770, 734 792
@@ -204,7 +204,7 @@
       filter="url(#pencilWobbleFine)"
     />
 
-    <!-- Ï¢r‘¹Mn`ÑÂþ4èÄè>è	 -->
+    <!-- Ï¢rï¿½ï¿½Mn`ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½>ï¿½	 -->
     <g fill="#6E2E22" fill-opacity="0.52">
       <circle cx="456" cy="308" r="5.2"/>
       <circle cx="486" cy="350" r="3.8"/>

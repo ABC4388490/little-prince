@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
   <title>Hand-drawn wrench (transparent)</title>
   <defs>
-    <!-- {®–¨©¿aÏÅKØ -->
+    <!-- {ï¿½ï¿½ï¿½ï¿½ï¿½aï¿½ï¿½Kï¿½ -->
     <filter id="pencilWobble" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="8" result="noise"/>
       <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
 
-    <!-- ôÆ„¿a–¨(…èÓ„ -->
+    <!-- ï¿½Æ„ï¿½aï¿½ï¿½(ï¿½ï¿½ï¿½Ó„ -->
     <filter id="pencilWobbleFine" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="11" result="noise"/>
       <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.3" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
 
-    <!-- áá„iÅ‚rØ -->
+    <!-- ï¿½ï¿½iÅ‚rï¿½ -->
     <linearGradient id="warmFill" x1="240" y1="260" x2="760" y2="820" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#E7B69A" stop-opacity="0.34"/>
       <stop offset="0.55" stop-color="#D89A78" stop-opacity="0.26"/>
@@ -26,9 +26,9 @@
     </linearGradient>
   </defs>
 
-  <!-- sK;SÌoÅØ6,S -->
+  <!-- sK;Sï¿½oï¿½ï¿½6,S -->
   <g transform="translate(512 512) rotate(-28) translate(-512 -512)">
-    <!-- ÔŒ„iÅ•r(nÓ…	 -->
+    <!-- ÔŒï¿½iÅ•r(nÓ…	 -->
     <path
       d="M 404 188
          C 336 250, 316 330, 350 392
@@ -61,7 +61,7 @@
       filter="url(#pencilWobble)"
     />
 
-    <!-- nÓÅñp¿ÌÏ¹!ßK–	 -->
+    <!-- nï¿½ï¿½ï¿½pï¿½ï¿½Ï¹!ï¿½Kï¿½	 -->
     <path
       d="M 404 188
          C 336 250, 316 330, 350 392
@@ -133,7 +133,7 @@
       filter="url(#pencilWobbleFine)"
     />
 
-    <!-- …èı¿KØÆ¿	 -->
+    <!-- ï¿½ï¿½ï¿½ï¿½Kï¿½Æ¿	 -->
     <path
       d="M 454 534
          C 430 576, 394 640, 364 692
@@ -153,7 +153,7 @@
       filter="url(#pencilWobbleFine)"
     />
 
-    <!-- sã…mÒ€	 -->
+    <!-- sï¿½ï¿½mï¿½ï¿½	 -->
     <path
       d="M 742 712
          C 726 728, 726 754, 744 772
@@ -178,11 +178,11 @@
       filter="url(#pencilWobbleFine)"
     />
 
-    <!-- {®„Å4q¿à	 -->
+    <!-- {ï¿½ï¿½ï¿½4qï¿½ï¿½	 -->
     <path d="M 520 610 C 550 590, 590 578, 620 584" stroke="#6A6258" stroke-opacity="0.22" stroke-width="4" stroke-linecap="round" filter="url(#pencilWobbleFine)"/>
     <path d="M 402 804 C 438 816, 472 808, 500 792" stroke="#6A6258" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round" filter="url(#pencilWobbleFine)"/>
 
-    <!-- ‘¹Â`Ù„(	 -->
+    <!-- ï¿½ï¿½ï¿½`Ù„(	 -->
     <g fill="#7B3D2C" fill-opacity="0.55">
       <circle cx="520" cy="420" r="5"/>
       <circle cx="558" cy="470" r="3.8"/>
