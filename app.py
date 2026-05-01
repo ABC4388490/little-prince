@@ -36,6 +36,39 @@ FALLBACK_REPLY = (
 )
 
 
+def _load_local_env_file() -> None:
+    """
+    Load key=value pairs from message-api/.env into process env.
+    Existing environment variables are preserved.
+    """
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    if not os.path.exists(env_path):
+        return
+    raw_text = ""
+    for enc in ("utf-8", "utf-8-sig", "utf-16", "gbk"):
+        try:
+            with open(env_path, "r", encoding=enc) as f:
+                raw_text = f.read()
+            if raw_text:
+                break
+        except Exception:
+            continue
+    if not raw_text:
+        return
+    for raw in raw_text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and (key not in os.environ or not str(os.environ.get(key, "")).strip()):
+            os.environ[key] = value
+
+
+_load_local_env_file()
+
+
 @dataclass(frozen=True)
 class Message:
     id: int
@@ -155,7 +188,7 @@ def _safe_message_text(text: str, limit: int = 1800) -> str:
     return clean[:limit]
 
 
-def _call_deepseek(user_text: str, context: Optional[Sequence[dict[str, str]]] = None) -> str:
+def _call_deepseek_messages(messages: Sequence[dict[str, str]]) -> str:
     api_key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
     if not api_key:
         return FALLBACK_REPLY
@@ -163,11 +196,18 @@ def _call_deepseek(user_text: str, context: Optional[Sequence[dict[str, str]]] =
     url = os.environ.get("DEEPSEEK_API_URL", "https://api.deepseek.com/v1/chat/completions").strip()
     model = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat").strip()
 
-    base_messages: list[dict[str, str]] = [{"role": "system", "content": SYSTEM_PROMPT}]
-    if context:
-        # context is a list like: [{"role":"user","content":"..."}, {"role":"assistant","content":"..."}]
-        base_messages.extend(context)
-    base_messages.append({"role": "user", "content": user_text})
+    base_messages: list[dict[str, str]] = []
+    for m in messages:
+        role = str((m or {}).get("role", "")).strip()
+        content = _safe_message_text(str((m or {}).get("content", "")), limit=900)
+        if role not in ("system", "user", "assistant"):
+            continue
+        if not content:
+            continue
+        base_messages.append({"role": role, "content": content})
+
+    if not base_messages:
+        base_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     payload = {
         "model": model,
@@ -199,12 +239,46 @@ def _call_deepseek(user_text: str, context: Optional[Sequence[dict[str, str]]] =
         return FALLBACK_REPLY
 
 
+def _require_messages() -> list[dict[str, str]]:
+    data = request.get_json(silent=True) or {}
+    msgs = data.get("messages")
+    if not isinstance(msgs, list) or not msgs:
+        raise ValueError("messages[] is required")
+    # Cap length to keep costs bounded
+    msgs = msgs[-24:]
+    out: list[dict[str, str]] = []
+    for m in msgs:
+        if not isinstance(m, dict):
+            continue
+        role = str(m.get("role") or "").strip()
+        content = str(m.get("content") or "")
+        if role not in ("system", "user", "assistant"):
+            continue
+        content = _safe_message_text(content, limit=1200 if role == "system" else 900)
+        if not content:
+            continue
+        out.append({"role": role, "content": content})
+    if not out:
+        raise ValueError("messages[] is empty")
+    return out
+
+
 app = Flask(__name__)
 cors_origins = os.environ.get("CORS_ORIGINS", "*").strip()
-origins = "*"
+origins: str | list[str] = "*"
 if cors_origins and cors_origins != "*":
-    origins = [o.strip() for o in cors_origins.split(",") if o.strip()]
-CORS(app, resources={r"/api/*": {"origins": origins}})
+    parsed_origins: list[str] = []
+    for raw_origin in cors_origins.split(","):
+        origin = raw_origin.strip().strip('"').strip("'").rstrip("/")
+        if origin:
+            parsed_origins.append(origin)
+    if parsed_origins:
+        origins = parsed_origins
+CORS(
+    app,
+    resources={r"/api/*": {"origins": origins}},
+    supports_credentials=False,
+)
 _init_db()
 _pg_init_db()
 
@@ -241,21 +315,28 @@ def list_messages() -> Any:
 
 @app.post("/api/messages")
 def create_message() -> Any:
+    # Legacy star storage endpoint kept, but AI reply now comes from messages[]
     data = request.get_json(silent=True) or {}
-    content = _safe_message_text(str(data.get("content") or ""), limit=900)
+    try:
+        messages = _require_messages()
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+    # For storage, we still require posX/posY and store last user content.
     posX = _parse_float(data.get("posX"))
     posY = _parse_float(data.get("posY"))
-
-    if not content:
-        return jsonify({"error": "content is required"}), 400
     if posX is None or posY is None:
         return jsonify({"error": "posX and posY must be numbers"}), 400
-
     posX = max(0.0, min(100.0, posX))
     posY = max(0.0, min(100.0, posY))
 
+    user_msgs = [m for m in messages if m.get("role") == "user" and m.get("content")]
+    content = _safe_message_text(user_msgs[-1]["content"] if user_msgs else "", limit=900)
+    if not content:
+        return jsonify({"error": "messages[] must contain a user message"}), 400
+
     created_at = _utc_iso_now()
-    reply = _call_deepseek(content)
+    reply = _call_deepseek_messages(messages)
     reply_created_at = _utc_iso_now()
 
     with _connect() as conn:
@@ -375,10 +456,12 @@ def post_conversation_message(conversation_id: int) -> Any:
         return jsonify({"error": "DATABASE_URL is not configured"}), 503
 
     data = request.get_json(silent=True) or {}
-    content = _safe_message_text(str(data.get("content") or ""), limit=900)
-    if not content:
-        return jsonify({"error": "content is required"}), 400
+    try:
+        messages = _require_messages()
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
 
+    # Optional pos for star animation storage
     pos_x = _parse_float(data.get("posX"))
     pos_y = _parse_float(data.get("posY"))
     if pos_x is not None:
@@ -386,9 +469,13 @@ def post_conversation_message(conversation_id: int) -> Any:
     if pos_y is not None:
         pos_y = max(0.0, min(100.0, pos_y))
 
-    # Create assistant reply with context.
-    context = _build_context_for_llm(conversation_id, max_pairs=6)
-    reply = _call_deepseek(content, context=context)
+    user_msgs = [m for m in messages if m.get("role") == "user" and m.get("content")]
+    content = _safe_message_text(user_msgs[-1]["content"] if user_msgs else "", limit=900)
+    if not content:
+        return jsonify({"error": "messages[] must contain a user message"}), 400
+
+    # Create assistant reply from provided messages[] (front-end assembled).
+    reply = _call_deepseek_messages(messages)
 
     with _pg_connect() as conn:
         # Ensure conversation exists
@@ -436,6 +523,27 @@ def post_conversation_message(conversation_id: int) -> Any:
             },
         }
     ), 201
+
+
+@app.post("/api/chat")
+def chat_messages() -> Any:
+    """
+    OpenAI-style: accepts only messages[] and forwards to chat/completions.
+    """
+    try:
+        messages = _require_messages()
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    reply = _call_deepseek_messages(messages)
+    return jsonify(
+        {
+            "assistant": {
+                "role": "assistant",
+                "content": reply,
+                "createdAt": _utc_iso_now(),
+            }
+        }
+    ), 200
 
 
 if __name__ == "__main__":
