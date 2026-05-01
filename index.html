@@ -8069,6 +8069,21 @@
         #journey.page .journey-map__node:nth-child(3) { left: 69% !important; top: 38% !important; --node-size: 84px; }
         #journey.page .journey-map__node:nth-child(4) { left: 94% !important; top: 55% !important; --node-size: 82px; }
         #journey.page .journey-map__node:nth-child(5) { left: 76% !important; top: 79% !important; --node-size: 102px; }
+        #journey.page .journey-map__node:nth-child(5) .journey-map__name {
+            margin-top: 24px;
+            text-align: center;
+            color: rgba(95, 77, 56, 0.96);
+            font-size: 0.98rem;
+            line-height: 1.08;
+            text-shadow: 0 1px 0 rgba(255, 251, 242, 0.82);
+            position: relative;
+            z-index: 6;
+        }
+        #journey.page .journey-map__node:nth-child(5) .journey-map__name b {
+            font-size: 0.76rem;
+            margin-bottom: 3px;
+            color: rgba(126, 103, 74, 0.95);
+        }
         /* 06 放到 05(商人) 与 07(地理学家) 中间 */
         /* 06 点灯人、07 地理学家：缩小 1/6（保留原布局与位置） */
         #journey.page .journey-map__node:nth-child(6) { left: 62% !important; top: 81% !important; --node-size: 57px; }
@@ -8939,9 +8954,7 @@
         <div class="fox-taming-modal__panel" role="document">
             <button type="button" class="fox-taming-modal__close" aria-label="关闭" data-fox-action="close">×</button>
             <span class="fox-taming-modal__decor fox-taming-modal__decor--star-a" aria-hidden="true">✦</span>
-            <span class="fox-taming-modal__decor fox-taming-modal__decor--star-b" aria-hidden="true">🪐</span>
             <span class="fox-taming-modal__decor fox-taming-modal__decor--star-c" aria-hidden="true">❀</span>
-            <span class="fox-taming-modal__decor fox-taming-modal__decor--grain" aria-hidden="true">🌹</span>
             <div id="foxStepContainer" class="fox-taming-modal__content"></div>
             <p id="foxModalToast" class="fox-toast" role="status" aria-live="polite"></p>
         </div>
