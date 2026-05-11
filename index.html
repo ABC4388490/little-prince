@@ -2032,7 +2032,7 @@
             padding: 0.25rem 0.15rem;
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
+            gap: 12px;
             scrollbar-width: thin;
             scrollbar-gutter: stable;
         }
@@ -2112,20 +2112,16 @@
             transform: rotate(-6deg);
         }
 
+        /* 气泡：共用排版，背景/宽度/内边距由角色选择器承担 */
         .b612-chat__bubble {
-            max-width: min(56%, 17rem);
-            padding: 0;
-            border-radius: 0;
+            box-sizing: border-box;
             border: none;
-            background: transparent;
             box-shadow: none;
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
             font-family: var(--font-hand), 'Noto Serif SC', 'Songti SC', 'Microsoft YaHei', serif;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: rgba(92, 92, 92, 0.82);
             letter-spacing: 0.02em;
+            color: rgba(72, 62, 48, 0.9);
             white-space: pre-wrap;
             word-break: break-word;
             position: relative;
@@ -2135,11 +2131,22 @@
             content: none;
         }
 
+        .b612-chat__msg--assistant .b612-chat__bubble {
+            background: #F3ECDD;
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 70%;
+        }
+
         .b612-chat__msg--user .b612-chat__bubble {
-            border-color: transparent;
-            background: transparent;
-            border-radius: 0;
-            color: rgba(92, 92, 92, 0.82);
+            background: #FFF6DF;
+            border-radius: 16px;
+            padding: 12px 16px;
+            max-width: 65%;
+            font-size: 14px;
+            line-height: 1.7;
         }
 
         .b612-chat__msg--user .b612-chat__bubble::before {
@@ -2530,8 +2537,7 @@
             box-shadow: 0 0 0 3px rgba(225, 196, 129, 0.2);
         }
 
-        .b612-story-modal__send,
-        .b612-chat-modal__send {
+        .b612-story-modal__send {
             border: none;
             border-radius: 999px;
             padding: 0.66rem 1.28rem;
@@ -2544,35 +2550,67 @@
             transition: transform 0.22s ease, box-shadow 0.22s ease;
         }
 
-        .b612-story-modal__send:hover:not(:disabled),
-        .b612-chat-modal__send:hover:not(:disabled) {
+        .b612-story-modal__send:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 12px 22px rgba(154, 116, 40, 0.34);
         }
 
-        .b612-story-modal__send:active:not(:disabled),
-        .b612-chat-modal__send:active:not(:disabled) {
+        .b612-story-modal__send:active:not(:disabled) {
             transform: scale(0.97);
         }
 
-        .b612-story-modal__send:focus-visible,
-        .b612-chat-modal__send:focus-visible {
+        .b612-story-modal__send:focus-visible {
             outline: 2px solid rgba(167, 133, 70, 0.55);
             outline-offset: 2px;
         }
 
+        .b612-chat-modal__send {
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            padding: 0 14px;
+            border: none;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 14px;
+            color: #5a3e11;
+            background: #E8C98F;
+            box-shadow: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .b612-chat-modal__send:hover:not(:disabled) {
+            background: #DDBB78;
+        }
+
+        .b612-chat-modal__send:active:not(:disabled) {
+            background: #d4b26e;
+        }
+
+        .b612-chat-modal__send:focus-visible {
+            outline: 2px solid rgba(140, 110, 60, 0.55);
+            outline-offset: 2px;
+        }
+
         .b612-chat-modal__panel {
-            width: min(620px, calc(100vw - 2rem));
-            height: min(520px, calc(100vh - 2rem));
-            background: rgba(255, 250, 239, 0.88);
-            border: 1px solid rgba(198, 145, 54, 0.18);
-            border-radius: 26px;
-            box-shadow: 0 28px 70px rgba(70, 50, 30, 0.18);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 1rem 1rem 0.9rem;
+            width: min(400px, calc(100vw - 32px));
+            max-height: min(90vh, 720px);
+            background-color: #f7f2e7;
+            background-image: url('bb.png');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 20px;
+            box-shadow: 0 24px 48px rgba(70, 50, 30, 0.16);
+            padding: 24px;
             display: flex;
             flex-direction: column;
+            gap: 16px;
+            box-sizing: border-box;
             transform: scale(0.94);
             opacity: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
@@ -2582,13 +2620,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.9rem;
+            flex-shrink: 0;
+            gap: 12px;
+            margin: 0;
+            padding: 0;
         }
 
         .b612-chat-modal__title {
             margin: 0;
             color: rgba(86, 70, 48, 0.94);
-            font-size: 1.05rem;
+            font-size: 16px;
             letter-spacing: 0.08em;
         }
 
@@ -2600,44 +2641,185 @@
             border-radius: 50%;
             cursor: pointer;
             color: rgba(98, 82, 56, 0.72);
-            font-size: 1.2rem;
+            font-size: 20px;
             line-height: 1;
+            flex-shrink: 0;
         }
 
         .b612-chat-modal__close:hover {
             background: rgba(209, 187, 142, 0.16);
         }
 
-        .b612-chat-modal__body {
+        .b612-chat-modal__messages {
             flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .b612-chat-modal__gen-status {
+            font-size: 13px;
+            color: rgba(100, 88, 72, 0.78);
+            text-align: center;
+            margin: 0;
+            min-height: 0;
+            letter-spacing: 0.04em;
+        }
+
+        .b612-chat-modal__gen-status:not([hidden]) {
+            margin-bottom: 0;
+        }
+
+        .b612-chat-modal__messages-scroll {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            border-radius: 14px;
-            background: rgba(248, 242, 231, 0.62);
-            border: 1px solid rgba(192, 167, 117, 0.18);
-            padding: 0.75rem;
+        }
+
+        .b612-chat-modal__messages-scroll .b612-chat__list {
+            flex: 1;
+            min-height: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 0 8px 8px 0;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            touch-action: pan-y;
+        }
+
+        .b612-chat-modal__messages-scroll .b612-chat__empty {
+            flex-shrink: 0;
+            padding: 8px 0 0;
+            margin: 0;
+        }
+
+        #b612DeepDiveWrap.b612-deep-dive {
+            flex-shrink: 0;
+            margin: 0;
+            padding: 8px 0 0;
+            border-top: 1px dashed rgba(200, 175, 130, 0.22);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+
+        .b612-chat-modal__btn-weak {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #D6C7A1;
+            background: transparent;
+            color: #8C7A5B;
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .b612-chat-modal__btn-weak:hover:not(:disabled) {
+            background: #F3ECDD;
+        }
+
+        .b612-chat-modal__btn-weak:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        .b612-chat-modal__interpret-status {
+            width: 100%;
+            margin: 0;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: rgba(72, 58, 48, 0.88);
+            text-align: left;
+            line-height: 1.45;
+            border-radius: 12px;
+            background: rgba(255, 252, 246, 0.9);
+            box-sizing: border-box;
+        }
+
+        /* 无文案时不占位，避免出现输入框上方的空白「白条」 */
+        .b612-chat-modal__interpret-status:empty {
+            display: none;
+            padding: 0;
+            margin: 0;
+            min-height: 0;
+            background: transparent;
+        }
+
+        .b612-chat-modal .b612-interp-panel.ai-rag-assistant__results {
+            width: 100%;
+            max-height: min(288px, 40vh);
+            margin-top: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            touch-action: pan-y;
+            box-sizing: border-box;
+        }
+
+        .b612-chat-modal__footer {
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .b612-chat-modal__composer {
             display: flex;
-            gap: 0.65rem;
-            margin-top: 0.85rem;
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .b612-chat-modal__composer .b612-chat-modal__send {
+            align-self: flex-end;
         }
 
         .b612-chat-modal__input {
             flex: 1;
-            height: 46px;
-            border-radius: 999px;
-            border: 1px solid rgba(168, 148, 102, 0.18);
-            background: #f7f2e9;
+            min-width: 0;
+            width: 100%;
+            min-height: 96px;
+            max-height: 200px;
+            height: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(182, 168, 130, 0.45);
+            background: #F3ECDD;
             color: rgba(88, 70, 45, 0.88);
-            padding: 0 0.85rem;
+            padding: 12px 16px;
             outline: none;
-            font-size: 0.94rem;
+            font-size: 14px;
+            line-height: 1.45;
+            box-sizing: border-box;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .b612-chat-modal__input::placeholder {
+            color: #B8A98A;
+            opacity: 1;
+        }
+
+        .b612-chat-modal__input::-webkit-input-placeholder {
+            color: #B8A98A;
         }
 
         .b612-chat-modal__input:focus {
-            border-color: rgba(203, 171, 101, 0.68);
-            box-shadow: 0 0 0 3px rgba(225, 196, 129, 0.2);
+            border-color: rgba(168, 140, 88, 0.55);
+            box-shadow: 0 0 0 3px rgba(232, 201, 143, 0.35);
         }
 
         .b612-open-dialog {
@@ -2764,56 +2946,118 @@
             }
         }
 
-        .b612-chat-modal .b612-chat {
-            max-width: none;
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-        }
-
-        .b612-chat-modal .b612-chat__list {
-            max-height: none;
-            height: auto;
-            flex: 1 1 auto;
-            min-height: 0;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding-right: 0.2rem;
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
-            touch-action: pan-y;
-        }
-
-        .b612-chat__bubble {
-            max-width: 72%;
-            padding: 14px 18px;
-            border-radius: 18px;
-            background: rgba(255, 250, 238, 0.75);
-            border: 1px solid rgba(198, 145, 54, 0.16);
-            box-shadow: 0 8px 22px rgba(120, 90, 50, 0.08);
-            font-family: "KaiTi", "STKaiti", serif;
-            line-height: 1.8;
-            color: rgba(88, 70, 45, 0.9);
-        }
-
-        .b612-chat__msg--user .b612-chat__bubble {
+        .ai-rag-assistant {
+            position: relative;
+            z-index: 4;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            max-width: min(92vw, 440px);
             margin-left: auto;
-            background: rgba(255, 250, 238, 0.75);
-            border: 1px solid rgba(198, 145, 54, 0.16);
-            box-shadow: 0 8px 22px rgba(120, 90, 50, 0.08);
-            color: rgba(88, 70, 45, 0.9);
+            margin-right: auto;
+            text-align: left;
         }
 
-        .b612-chat__msg--loading .b612-chat__bubble {
-            color: rgba(122, 104, 74, 0.78);
-            font-style: italic;
+        .ai-rag-assistant__title {
+            font-family: var(--font-hand), 'Noto Serif SC', serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(72, 64, 52, 0.85);
+            letter-spacing: 0.12em;
+            margin: 0 0 0.35rem;
+            text-align: center;
         }
 
-        .b612-chat__meta {
-            opacity: 0.55;
-            margin-top: 0.35rem;
+        .ai-rag-assistant__lead {
+            font-size: 0.78rem;
+            color: rgba(90, 82, 70, 0.55);
+            text-align: center;
+            margin: 0 0 1rem;
+            line-height: 1.5;
+        }
+
+        .ai-rag-assistant__entry.b612-inline-entry {
+            margin-top: 0.5rem;
+        }
+
+        .ai-rag-assistant__status {
+            font-size: 0.78rem;
+            color: rgba(72, 58, 48, 0.9);
+            text-align: center;
+            min-height: 1.2em;
+            margin: 0.6rem auto 0;
+            max-width: 26rem;
+            padding: 0.45rem 0.7rem;
+            border-radius: 10px;
+            background: rgba(255, 252, 246, 0.94);
+            box-shadow: 0 1px 10px rgba(50, 38, 22, 0.08);
+            line-height: 1.45;
+        }
+
+        .ai-rag-assistant__results {
+            margin-top: 1.25rem;
+            padding: 1rem 1rem 1.1rem;
+            border-radius: 12px;
+            background: linear-gradient(165deg, rgba(255, 252, 242, 0.55), rgba(248, 238, 220, 0.35));
+            box-shadow: 0 2px 14px rgba(80, 60, 30, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(200, 180, 140, 0.2);
+        }
+
+        .ai-rag-assistant__block {
+            margin-bottom: 1rem;
+        }
+
+        .ai-rag-assistant__block:last-child {
+            margin-bottom: 0;
+        }
+
+        .ai-rag-assistant__block h4 {
+            font-family: var(--font-hand), 'Noto Serif SC', serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            color: rgba(100, 90, 72, 0.55);
+            margin: 0 0 0.4rem;
+            font-weight: 500;
+        }
+
+        .ai-rag-assistant__block p,
+        .ai-rag-assistant__analysis {
+            font-size: 0.84rem;
+            color: rgba(55, 48, 38, 0.82);
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .ai-rag-assistant__analysis {
+            white-space: pre-wrap;
+        }
+
+        .ai-rag-assistant__citations {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ai-rag-assistant__citations li {
+            font-size: 0.78rem;
+            color: rgba(65, 58, 48, 0.78);
+            line-height: 1.55;
+            padding: 0.45rem 0;
+            border-bottom: 1px dashed rgba(180, 160, 120, 0.25);
+        }
+
+        .ai-rag-assistant__citations li:last-child {
+            border-bottom: none;
+        }
+
+        .ai-rag-assistant__cite-preview {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.72rem;
+            color: rgba(110, 98, 82, 0.7);
+        }
+
+        .ai-rag-assistant__empty {
+            color: rgba(110, 100, 88, 0.5);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -8734,20 +8978,41 @@
 
         <div id="b612ChatModal" class="b612-chat-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="b612ChatTitle">
             <div class="b612-chat-modal__panel">
-                <div class="b612-chat-modal__header">
+                <header class="b612-chat-modal__header">
                     <h3 class="b612-chat-modal__title" id="b612ChatTitle">B612 · 对话</h3>
                     <button type="button" class="b612-chat-modal__close" id="b612ChatClose" aria-label="关闭">×</button>
-                </div>
-                <div class="b612-chat-modal__body">
-                    <div class="b612-chat" aria-label="与小王子的对话">
+                </header>
+                <section class="b612-chat-modal__messages" aria-label="与小王子的对话">
+                    <p id="b612GenStatus" class="b612-chat-modal__gen-status" hidden role="status" aria-live="polite"></p>
+                    <div class="b612-chat-modal__messages-scroll">
                         <div class="b612-chat__list" id="b612ChatList" role="log" aria-live="polite" aria-relevant="additions"></div>
+                        <div id="b612DeepDiveWrap" class="b612-deep-dive" hidden>
+                            <button type="button" class="b612-chat-modal__btn-weak" id="b612DeepDiveBtn">📖 解读这句话</button>
+                            <p class="b612-chat-modal__interpret-status" id="b612DeepDiveStatus" role="status" aria-live="polite"></p>
+                            <div class="ai-rag-assistant__results b612-interp-panel" id="b612InterpPanel" hidden>
+                                <div class="ai-rag-assistant__block">
+                                    <h4>结论</h4>
+                                    <p id="b612InterpConclusion"></p>
+                                </div>
+                                <div class="ai-rag-assistant__block">
+                                    <h4>分析</h4>
+                                    <div id="b612InterpAnalysis" class="ai-rag-assistant__analysis"></div>
+                                </div>
+                                <div class="ai-rag-assistant__block">
+                                    <h4>引用</h4>
+                                    <ul class="ai-rag-assistant__citations" id="b612InterpCitations"></ul>
+                                </div>
+                            </div>
+                        </div>
                         <p class="b612-chat__empty" id="b612ChatEmpty" aria-hidden="true">（写一句话吧）</p>
                     </div>
-                </div>
-                <div class="b612-chat-modal__composer">
-                    <input id="b612ChatInput" class="b612-chat-modal__input" maxlength="4000" autocomplete="off" placeholder="继续写给小王子的心里话…" />
-                    <button type="button" class="b612-chat-modal__send" id="b612ChatSend" aria-label="发送">✦ 送给星星</button>
-                </div>
+                </section>
+                <footer class="b612-chat-modal__footer">
+                    <div class="b612-chat-modal__composer">
+                        <textarea id="b612ChatInput" class="b612-chat-modal__input" rows="4" maxlength="4000" autocomplete="off" placeholder="继续写给小王子的心里话…" title="Enter 发送，Shift+Enter 换行"></textarea>
+                        <button type="button" class="b612-chat-modal__send" id="b612ChatSend" aria-label="送给星星">✨ 送给星星</button>
+                    </div>
+                </footer>
             </div>
         </div>
 
@@ -10171,16 +10436,24 @@
         //   https://little-prince.xyz/?api=https://little-prince-production.up.railway.app/api
         const queryApiBase = new URLSearchParams(location.search).get('api');
         const envApiBase = (window.LITTLE_PRINCE_API_BASE || '').trim();
-        const CHAT_API_CANDIDATES = [
-            '/api',
-            'https://little-prince-message-api-production-a183.up.railway.app/api',
-        ];
-        // 仅在非 https 页面下追加 http localhost，避免混合内容报错
-        if (location.protocol !== 'https:') {
-            CHAT_API_CANDIDATES.push('http://localhost:5000/api');
+        const CHAT_API_CANDIDATES = [];
+        function pushChatApiCand(raw) {
+            const s = String(raw || '').trim();
+            if (!s || CHAT_API_CANDIDATES.includes(s)) return;
+            CHAT_API_CANDIDATES.push(s);
         }
-        if (queryApiBase) CHAT_API_CANDIDATES.push(queryApiBase.trim());
-        if (envApiBase) CHAT_API_CANDIDATES.push(envApiBase);
+        if (queryApiBase) pushChatApiCand(queryApiBase.trim());
+        if (envApiBase) pushChatApiCand(envApiBase);
+        // 本机用 py/http.server 开页时，同源 /api 会打到静态端口（无 chat）；先试 5000 上的 uvicorn
+        if (location.protocol !== 'https:') {
+            const h = location.hostname;
+            if (h === 'localhost' || h === '127.0.0.1') {
+                pushChatApiCand('http://127.0.0.1:5000/api');
+                pushChatApiCand('http://localhost:5000/api');
+            }
+        }
+        pushChatApiCand('/api');
+        pushChatApiCand('https://little-prince-message-api-production-a183.up.railway.app/api');
 
         function normalizeApiBase(raw) {
             const s = String(raw || '').trim().replace(/\/+$/, '');
@@ -10214,6 +10487,18 @@
         const b612ChatInput = document.getElementById('b612ChatInput');
         const b612ChatSend = document.getElementById('b612ChatSend');
         const b612ChatClose = document.getElementById('b612ChatClose');
+        const b612DeepDiveWrap = document.getElementById('b612DeepDiveWrap');
+        const b612DeepDiveBtn = document.getElementById('b612DeepDiveBtn');
+        const b612DeepDiveStatus = document.getElementById('b612DeepDiveStatus');
+        const b612InterpPanel = document.getElementById('b612InterpPanel');
+        const b612InterpConclusion = document.getElementById('b612InterpConclusion');
+        const b612InterpAnalysis = document.getElementById('b612InterpAnalysis');
+        const b612InterpCitations = document.getElementById('b612InterpCitations');
+        const b612GenStatus = document.getElementById('b612GenStatus');
+        let lastB612UserText = '';
+        let lastB612AssistantText = '';
+        /** 最近一次成功生成的小王子回信，供「深入解读」调用 /analyze */
+        let lastReply = '';
         const b612InlineInput = document.getElementById('b612InlineInput');
         const b612InlineSend = document.getElementById('b612InlineSend');
         const replyModal = document.getElementById('replyModal');
@@ -10723,6 +11008,72 @@
             replySlipInner.addEventListener('click', () => dismissReplySlip());
         }
 
+        function resetB612DeepDive() {
+            lastB612UserText = '';
+            lastB612AssistantText = '';
+            lastReply = '';
+            if (b612DeepDiveWrap) b612DeepDiveWrap.hidden = true;
+            if (b612DeepDiveBtn) b612DeepDiveBtn.disabled = false;
+            if (b612DeepDiveStatus) b612DeepDiveStatus.textContent = '';
+            if (b612InterpPanel) {
+                b612InterpPanel.hidden = true;
+                if (b612InterpConclusion) b612InterpConclusion.textContent = '';
+                if (b612InterpAnalysis) b612InterpAnalysis.textContent = '';
+                if (b612InterpCitations) b612InterpCitations.innerHTML = '';
+            }
+        }
+
+        function fillInterpretPanel(data, els) {
+            const conclusionEl = els.conclusionEl;
+            const analysisEl = els.analysisEl;
+            const citationsEl = els.citationsEl;
+            if (!conclusionEl || !analysisEl || !citationsEl) return;
+
+            function escapeHtml(s) {
+                return String(s || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
+
+            const conclusion =
+                String(data.conclusion || '').trim() ||
+                String((data.assistant && data.assistant.content) || '').trim();
+            const analysis =
+                String(data.analysis || '').trim() ||
+                String((data.assistant && data.assistant.content) || '').trim();
+            conclusionEl.textContent = conclusion;
+            analysisEl.textContent = analysis;
+            const cit = Array.isArray(data.citations) ? data.citations : [];
+            if (cit.length === 0) {
+                citationsEl.innerHTML = '<li class="ai-rag-assistant__empty">（本次无摘录引用）</li>';
+            } else {
+                citationsEl.innerHTML = cit
+                    .map((c) => {
+                        const label = escapeHtml(c.label || c.chunk_id || '—');
+                        const src = escapeHtml(c.source_name || '');
+                        const prevRaw = String(c.text || '').slice(0, 280);
+                        const prev = escapeHtml(prevRaw);
+                        const prevHtml = prev
+                            ? '<span class="ai-rag-assistant__cite-preview">' +
+                              prev +
+                              (String(c.text || '').length > 280 ? '…' : '') +
+                              '</span>'
+                            : '';
+                        return (
+                            '<li><strong>' +
+                            label +
+                            '</strong>' +
+                            (src ? ' · ' + src : '') +
+                            prevHtml +
+                            '</li>'
+                        );
+                    })
+                    .join('');
+            }
+        }
+
         async function fetchChatWithFallback(path, options) {
             const cleanPath = String(path || '').startsWith('/') ? String(path) : '/' + String(path || '');
             let lastError = null;
@@ -10748,6 +11099,60 @@
                 }
             }
             throw lastError || new Error('all endpoints failed');
+        }
+
+        function getLastB612AssistantBubbleText() {
+            if (!b612ChatList) return '';
+            const nodes = b612ChatList.querySelectorAll('.b612-chat__msg--assistant:not(.b612-chat__msg--loading)');
+            const last = nodes.length ? nodes[nodes.length - 1] : null;
+            if (!last) return '';
+            const bubble = last.querySelector('.b612-chat__bubble');
+            if (!bubble) return '';
+            const clone = bubble.cloneNode(true);
+            const meta = clone.querySelector('.b612-chat__meta');
+            if (meta) meta.remove();
+            return String(clone.textContent || '').trim();
+        }
+
+        if (b612DeepDiveBtn) {
+            b612DeepDiveBtn.addEventListener('click', async (ev) => {
+                ev.stopPropagation();
+                let replyText = String(lastReply || lastB612AssistantText || '').trim();
+                if (!replyText) replyText = getLastB612AssistantBubbleText();
+                if (!replyText) {
+                    if (b612DeepDiveStatus) {
+                        b612DeepDiveStatus.textContent = '没有可解读的回信，请先发送并收到小王子回信。';
+                    }
+                    return;
+                }
+                if (!b612InterpConclusion || !b612InterpAnalysis || !b612InterpCitations) {
+                    if (b612DeepDiveStatus) b612DeepDiveStatus.textContent = '页面结构异常，请刷新重试。';
+                    return;
+                }
+                b612DeepDiveBtn.disabled = true;
+                if (b612DeepDiveStatus) b612DeepDiveStatus.textContent = '正在解读…';
+                if (b612InterpPanel) b612InterpPanel.hidden = true;
+                try {
+                    const data = await fetchChatWithFallback('/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: replyText, lastReply: replyText }),
+                    });
+                    fillInterpretPanel(data, {
+                        conclusionEl: b612InterpConclusion,
+                        analysisEl: b612InterpAnalysis,
+                        citationsEl: b612InterpCitations,
+                    });
+                    if (b612InterpPanel) b612InterpPanel.hidden = false;
+                    if (b612DeepDiveStatus) b612DeepDiveStatus.textContent = '';
+                } catch (e) {
+                    if (b612DeepDiveStatus) {
+                        b612DeepDiveStatus.textContent = '暂时连不上解读服务，请稍后再试。';
+                    }
+                } finally {
+                    b612DeepDiveBtn.disabled = false;
+                }
+            });
         }
 
         function isDatabaseNotConfiguredError(err) {
@@ -11141,12 +11546,18 @@
             }
 
             openB612ChatModal();
+            resetB612DeepDive();
 
             if (b612Toast) b612Toast.textContent = '';
+            if (b612GenStatus) {
+                b612GenStatus.hidden = false;
+                b612GenStatus.textContent = '正在生成回信…';
+            }
             const posX = randomPercent();
             const posY = randomPercent();
             b612Btn.disabled = true;
             if (b612ChatSend) b612ChatSend.disabled = true;
+            if (b612InlineSend) b612InlineSend.disabled = true;
 
             appendChatMessage('user', content, new Date().toISOString());
             const loadingNode = appendChatMessage('assistant', '小王子正在看星星…', null, 'b612-chat__msg--loading');
@@ -11187,20 +11598,37 @@
                 });
                 finalReply = created?.assistant?.content || fingerprintEchoPick(content);
                 finalCreatedAt = created?.assistant?.createdAt || finalCreatedAt;
+                if (b612GenStatus) {
+                    b612GenStatus.textContent = '';
+                    b612GenStatus.hidden = true;
+                }
                 if (b612Toast) b612Toast.textContent = '我已经收到了。';
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
                 const assistantNode = appendChatMessage('assistant', '', finalCreatedAt);
                 await typewriterToBubble(assistantNode && assistantNode.bubble, finalReply);
+                lastB612UserText = content;
+                lastB612AssistantText = finalReply;
+                lastReply = finalReply;
+                if (b612DeepDiveWrap) b612DeepDiveWrap.hidden = false;
             } catch (e) {
+                if (b612GenStatus) {
+                    b612GenStatus.textContent = '';
+                    b612GenStatus.hidden = true;
+                }
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
                 const assistantNode = appendChatMessage('assistant', '', new Date().toISOString());
                 await typewriterToBubble(assistantNode && assistantNode.bubble, fingerprintEchoPick(content));
                 if (b612Toast) b612Toast.textContent = '后端暂不可达：已改用离线回信（记忆不会同步）。';
             } finally {
+                if (b612GenStatus) {
+                    b612GenStatus.textContent = '';
+                    b612GenStatus.hidden = true;
+                }
                 b612Input.removeAttribute('readonly');
                 if (b612ChatInput) b612ChatInput.removeAttribute('readonly');
                 b612Btn.disabled = false;
                 if (b612ChatSend) b612ChatSend.disabled = false;
+                if (b612InlineSend) b612InlineSend.disabled = false;
                 if (b612ChatInput) b612ChatInput.focus();
             }
         }
@@ -11224,7 +11652,7 @@
         }
         if (b612ChatInput) {
             b612ChatInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     sendB612Message(b612ChatInput.value.trim());
                 }
