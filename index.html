@@ -2138,6 +2138,7 @@
             font-size: 14px;
             line-height: 1.7;
             max-width: 70%;
+            width: fit-content;
         }
 
         .b612-chat__msg--user .b612-chat__bubble {
@@ -2145,6 +2146,7 @@
             border-radius: 16px;
             padding: 12px 16px;
             max-width: 65%;
+            width: fit-content;
             font-size: 14px;
             line-height: 1.7;
         }
@@ -2597,8 +2599,8 @@
         }
 
         .b612-chat-modal__panel {
-            width: min(400px, calc(100vw - 32px));
-            max-height: min(90vh, 720px);
+            width: min(560px, calc(100vw - 32px));
+            max-height: min(68vh, 440px);
             background-color: #f7f2e7;
             background-image: url('bb.png');
             background-position: center;
@@ -2606,10 +2608,10 @@
             background-repeat: no-repeat;
             border-radius: 20px;
             box-shadow: 0 24px 48px rgba(70, 50, 30, 0.16);
-            padding: 24px;
+            padding: 16px 20px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             box-sizing: border-box;
             transform: scale(0.94);
             opacity: 0;
@@ -2618,19 +2620,13 @@
 
         .b612-chat-modal__header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             flex-shrink: 0;
             gap: 12px;
             margin: 0;
             padding: 0;
-        }
-
-        .b612-chat-modal__title {
-            margin: 0;
-            color: rgba(86, 70, 48, 0.94);
-            font-size: 16px;
-            letter-spacing: 0.08em;
+            min-height: 32px;
         }
 
         .b612-chat-modal__close {
@@ -2775,9 +2771,9 @@
 
         .b612-chat-modal__composer {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 12px;
-            align-items: stretch;
+            align-items: center;
             margin: 0;
             padding: 0;
             width: 100%;
@@ -2785,26 +2781,24 @@
         }
 
         .b612-chat-modal__composer .b612-chat-modal__send {
-            align-self: flex-end;
+            flex-shrink: 0;
         }
 
         .b612-chat-modal__input {
             flex: 1;
             min-width: 0;
-            width: 100%;
-            min-height: 96px;
-            max-height: 200px;
-            height: auto;
-            border-radius: 16px;
+            width: auto;
+            height: 44px;
+            min-height: 44px;
+            border-radius: 28px;
             border: 1px solid rgba(182, 168, 130, 0.45);
             background: #F3ECDD;
             color: rgba(88, 70, 45, 0.88);
-            padding: 12px 16px;
+            padding: 0 16px;
             outline: none;
             font-size: 14px;
-            line-height: 1.45;
+            line-height: 1.35;
             box-sizing: border-box;
-            resize: vertical;
             font-family: inherit;
         }
 
@@ -2820,6 +2814,12 @@
         .b612-chat-modal__input:focus {
             border-color: rgba(168, 140, 88, 0.55);
             box-shadow: 0 0 0 3px rgba(232, 201, 143, 0.35);
+        }
+
+        /* 单行输入横条：占满剩余宽度 */
+        #b612ChatModal .b612-chat-modal__input {
+            flex: 1;
+            min-width: 0;
         }
 
         .b612-open-dialog {
@@ -8976,10 +8976,9 @@
             </div>
         </div>
 
-        <div id="b612ChatModal" class="b612-chat-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="b612ChatTitle">
+        <div id="b612ChatModal" class="b612-chat-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="B612 · 对话">
             <div class="b612-chat-modal__panel">
                 <header class="b612-chat-modal__header">
-                    <h3 class="b612-chat-modal__title" id="b612ChatTitle">B612 · 对话</h3>
                     <button type="button" class="b612-chat-modal__close" id="b612ChatClose" aria-label="关闭">×</button>
                 </header>
                 <section class="b612-chat-modal__messages" aria-label="与小王子的对话">
@@ -9009,7 +9008,7 @@
                 </section>
                 <footer class="b612-chat-modal__footer">
                     <div class="b612-chat-modal__composer">
-                        <textarea id="b612ChatInput" class="b612-chat-modal__input" rows="4" maxlength="4000" autocomplete="off" placeholder="继续写给小王子的心里话…" title="Enter 发送，Shift+Enter 换行"></textarea>
+                        <input id="b612ChatInput" type="text" class="b612-chat-modal__input" maxlength="4000" autocomplete="off" placeholder="继续写给小王子的心里话…" title="Enter 发送" />
                         <button type="button" class="b612-chat-modal__send" id="b612ChatSend" aria-label="送给星星">✨ 送给星星</button>
                     </div>
                 </footer>
@@ -11652,7 +11651,7 @@
         }
         if (b612ChatInput) {
             b612ChatInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
+                if (e.key === 'Enter') {
                     e.preventDefault();
                     sendB612Message(b612ChatInput.value.trim());
                 }
