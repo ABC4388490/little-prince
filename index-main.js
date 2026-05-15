@@ -3357,6 +3357,19 @@ const storyData = {
         });
 
         loadB612Chat();
+
+        /** 从星空信箱等外链进入：index.html#b612-chat → B612 页 + 打开对话弹层 */
+        function routeFromHashOpenB612Chat() {
+            if (location.hash !== '#b612-chat') return;
+            const b612Link = document.querySelector('.nav-link[data-page="b612"]');
+            if (b612Link) b612Link.click();
+            window.requestAnimationFrame(() => {
+                openB612ChatModal();
+            });
+        }
+        window.addEventListener('hashchange', routeFromHashOpenB612Chat);
+        routeFromHashOpenB612Chat();
+
         setupTimelineCurves();
         initJourneyMap();
         drawJourneyMapRoute();
