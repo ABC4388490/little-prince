@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星空信箱 · The Little Prince</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@400;500;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --b612-mailbox-bg: #f4f1eb;
+            --b612-mailbox-page-bg-image: url("homebg1.png");
+            --b612-mailbox-hero-title: #8a7268;
+            --b612-mailbox-hero-subtitle: #a1887f;
+            --b612-mailbox-hero-mailbox: #6b8cae;
+            --b612-mailbox-hero-post: #a1887f;
+            --b612-mailbox-card: #FFFFFF;
+            --b612-mailbox-ink: #2C2C2A;
+            --b612-mailbox-muted: #9A948A;
+            --b612-mailbox-btn: #EADFCF;
+            --b612-mailbox-user-bubble: #FFF6DF;
+            --b612-mailbox-prince-bubble: #FFFFFF;
+            --b612-mailbox-prince-border: rgba(154, 148, 138, 0.35);
+            --b612-mailbox-gold-text: #9A7F4A;
+            --b612-mailbox-gold-grad-start: #FCF4E4;
+            --b612-mailbox-gold-grad-end: #F3E4BC;
+            --b612-mailbox-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            --b612-mailbox-font-cn: 'LXGW WenKai', 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            --b612-mailbox-font-hand: 'Segoe Script', 'LXGW WenKai', 'Noto Serif SC', 'Songti SC', serif;
+            --b612-mailbox-radius: 16px;
+            --b612-sidebar-border: rgba(184, 154, 107, 0.28);
+            --b612-sidebar-gold: #B89A6B;
+            --b612-sidebar-allchats-gold: #c9a227;
+            --b612-sidebar-gold-star: #E6B450;
+            --b612-sidebar-date: #5A4A42;
+            --b612-sidebar-preview: #A89B8E;
+            --b612-sidebar-active-bg: #FFF5E1;
+            --b612-sidebar-active-border: rgba(184, 154, 107, 0.5);
+            --b612-sidebar-divider: rgba(168, 155, 142, 0.38);
+            --b612-sidebar-header-bg: rgba(255, 255, 255, 0.65);
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        html {
+            background-color: var(--b612-mailbox-bg);
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            font-family: var(--b612-mailbox-font-cn);
+            color: var(--b612-mailbox-ink);
+            background-color: var(--b612-mailbox-bg);
+            background-image:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 254, 250, 0.66) 100%),
+                var(--b612-mailbox-page-bg-image);
+            background-size: cover, cover;
+            background-position: center, center top;
+            background-repeat: no-repeat, no-repeat;
+            background-attachment: scroll;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .b612-mailbox-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+        }
+
+        .b612-mailbox-hero {
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 24px;
+            padding: 8px 52px 10px;
+            position: relative;
+            background: transparent;
+        }
+
+        .b612-mailbox-hero__left {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .b612-mailbox-hero__icon {
+            flex-shrink: 0;
+            width: 88px;
+            height: 88px;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .b612-mailbox-hero__mailbox-img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center bottom;
+        }
+
+        .b612-mailbox-hero__text {
+            min-width: 0;
+        }
+
+        .b612-mailbox-hero__title {
+            margin: 0 0 8px;
+            font-family: var(--b612-mailbox-font-cn);
+            font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            color: var(--b612-mailbox-hero-title);
+        }
+
+        .b612-mailbox-hero__subtitle {
+            margin: 0;
+            max-width: 36em;
+            font-size: 13px;
+            line-height: 1.75;
+            letter-spacing: 0.06em;
+            color: var(--b612-mailbox-hero-subtitle);
+        }
+
+        .b612-mailbox-layout {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            max-height: calc(100vh - 228px);
+            margin-top: 0;
+            padding: 4px 52px 0;
+            gap: 26px;
+        }
+
+        .b612-mailbox-page-bottom {
+            flex-shrink: 0;
+            position: relative;
+            z-index: 0;
+            margin-top: -10px;
+            padding: 2px 52px 18px;
+            min-height: 0;
+            padding-bottom: max(10px, min(28px, 5vh));
+        }
+
+        .b612-mailbox-page-bottom-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: clamp(12px, 3vw, 28px);
+            min-height: 0;
+        }
+
+        .b612-mailbox-corner-art {
+            position: relative;
+            right: auto;
+            bottom: auto;
+            flex-shrink: 0;
+            width: min(300px, 50vw);
+            height: min(308px, 34vh);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            pointer-events: none;
+        }
+
+        .b612-mailbox-corner-art__img {
+            width: 100%;
+            height: auto;
+            max-height: none;
+            object-fit: contain;
+            object-position: right top;
+            display: block;
+        }
+
+        .b612-mailbox-sidebar--chat {
+            width: 240px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            padding: 18px 14px 12px;
+            background: var(--b612-mailbox-card);
+            border-radius: var(--b612-mailbox-radius);
+            box-shadow: var(--b612-mailbox-shadow);
+            overflow: hidden;
+        }
+
+        .b612-mailbox-sidebar__header-wrap {
+            flex-shrink: 0;
+            width: 100%;
+            margin-bottom: 14px;
+        }
+
+        .b612-mailbox-sidebar__header {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-align: left;
+            background: var(--b612-sidebar-header-bg);
+            border: 1px solid var(--b612-sidebar-border);
+            border-radius: 10px;
+        }
+
+        .b612-mailbox-sidebar__header-title {
+            color: var(--b612-sidebar-allchats-gold);
+            font-weight: 600;
+        }
+
+        .b612-mailbox-sidebar__header-count {
+            color: var(--b612-sidebar-gold);
+            font-weight: 500;
+        }
+
+        .b612-mailbox-list {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            padding: 0 2px 4px 0;
+        }
+
+        .b612-mailbox-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .b612-mailbox-list::-webkit-scrollbar-thumb {
+            background: rgba(184, 154, 107, 0.28);
+            border-radius: 4px;
+        }
+
+        .b612-mailbox-list-item {
+            width: 100%;
+            text-align: left;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 12px 12px 12px 14px;
+            border-radius: 10px;
+            border-bottom: 1px solid var(--b612-sidebar-divider);
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+            font-family: inherit;
+        }
+
+        .b612-mailbox-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .b612-mailbox-list-item:hover:not(.is-active) {
+            background: rgba(255, 245, 225, 0.45);
+        }
+
+        .b612-mailbox-list-item.is-active {
+            background: linear-gradient(180deg, #FFF8EA 0%, var(--b612-sidebar-active-bg) 100%);
+            box-shadow: inset 0 0 0 1px var(--b612-sidebar-active-border);
+            border-bottom-color: transparent;
+        }
+
+        .b612-mailbox-list-item__row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .b612-mailbox-list-item__date {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--b612-sidebar-date);
+            letter-spacing: 0.04em;
+        }
+
+        .b612-mailbox-list-item__star {
+            flex-shrink: 0;
+            font-size: 13px;
+            line-height: 1;
+            color: var(--b612-sidebar-gold-star);
+        }
+
+        .b612-mailbox-list-item__preview {
+            display: block;
+            font-size: 12px;
+            line-height: 1.55;
+            color: var(--b612-sidebar-preview);
+            letter-spacing: 0.02em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .b612-mailbox-sidebar__load-more {
+            flex-shrink: 0;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px 8px 4px;
+            border: none;
+            border-top: 1px solid var(--b612-sidebar-divider);
+            background: transparent;
+            font-family: inherit;
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            color: var(--b612-sidebar-gold);
+            cursor: pointer;
+            text-align: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .b612-mailbox-sidebar__load-more:hover:not([hidden]) {
+            opacity: 0.82;
+        }
+
+        .b612-mailbox-sidebar__load-more:focus-visible {
+            outline: 2px solid var(--b612-sidebar-gold);
+            outline-offset: 2px;
+            border-radius: 8px;
+        }
+
+        .b612-mailbox-sidebar__load-more[hidden] {
+            display: none;
+        }
+
+        .b612-mailbox-main {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--b612-mailbox-card);
+            border-radius: var(--b612-mailbox-radius);
+            box-shadow: var(--b612-mailbox-shadow);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .b612-mailbox-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 32px;
+            text-align: center;
+            gap: 12px;
+        }
+
+        .b612-mailbox-empty[hidden] {
+            display: none !important;
+        }
+
+        .b612-mailbox-empty__line1 {
+            font-size: 18px;
+            color: var(--b612-mailbox-ink);
+            letter-spacing: 0.1em;
+        }
+
+        .b612-mailbox-empty__line2 {
+            font-size: 14px;
+            color: var(--b612-mailbox-muted);
+            letter-spacing: 0.06em;
+        }
+
+        .b612-mailbox-empty__link {
+            margin-top: 8px;
+            display: inline-block;
+            padding: 10px 22px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 14px;
+            color: var(--b612-mailbox-gold-text);
+            background: linear-gradient(180deg, var(--b612-mailbox-gold-grad-start) 0%, var(--b612-mailbox-gold-grad-end) 100%);
+            box-shadow: 0 4px 10px rgba(196, 168, 108, 0.14);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .b612-mailbox-empty__link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(196, 168, 108, 0.18);
+        }
+
+        .b612-mailbox-detail {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .b612-mailbox-detail[hidden] {
+            display: none !important;
+        }
+
+        .b612-mailbox-footer {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+            padding: 0 8px 0 0;
+            text-align: center;
+            font-size: 15px;
+            color: var(--b612-sidebar-gold);
+            letter-spacing: 0.1em;
+            align-self: center;
+        }
+
+        .b612-mailbox-detail-header {
+            flex-shrink: 0;
+            padding: 24px 28px 16px;
+            border-bottom: 1px solid rgba(154, 148, 138, 0.12);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .b612-mailbox-detail-meta {
+            min-width: 0;
+        }
+
+        .b612-mailbox-detail-date {
+            font-size: 13px;
+            color: var(--b612-mailbox-muted);
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .b612-mailbox-detail-title {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.6;
+            color: #B8B2A8;
+            letter-spacing: 0.06em;
+            word-break: break-word;
+        }
+
+        .b612-mailbox-detail-actions {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .b612-mailbox-fav-btn,
+        .b612-mailbox-delete-btn {
+            border: none;
+            border-radius: 0;
+            padding: 4px 0;
+            font-family: inherit;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            background: transparent;
+            box-shadow: none;
+            transition: color 0.2s ease, opacity 0.2s ease;
+        }
+
+        .b612-mailbox-fav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--b612-mailbox-gold-text);
+        }
+
+        .b612-mailbox-fav-btn__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .b612-mailbox-fav-btn__star-path {
+            fill: none;
+            stroke: #b89a6b;
+            stroke-width: 1.15;
+            stroke-linejoin: round;
+            transition: fill 0.2s ease, stroke 0.2s ease;
+        }
+
+        .b612-mailbox-fav-btn:hover .b612-mailbox-fav-btn__star-path {
+            stroke: #9a7f4a;
+        }
+
+        .b612-mailbox-fav-btn.is-favorited {
+            color: var(--b612-mailbox-gold-text);
+        }
+
+        .b612-mailbox-fav-btn.is-favorited .b612-mailbox-fav-btn__star-path {
+            fill: url(#b612MailboxFavStarGrad);
+            stroke: none;
+        }
+
+        .b612-mailbox-fav-btn.is-favorited .b612-mailbox-fav-btn__icon svg {
+            filter: drop-shadow(0 1px 0 rgba(200, 130, 20, 0.4));
+        }
+
+        .b612-mailbox-delete-btn {
+            color: var(--b612-mailbox-muted);
+        }
+
+        .b612-mailbox-delete-btn:hover {
+            opacity: 0.72;
+        }
+
+        .b612-mailbox-fav-btn:hover {
+            opacity: 1;
+        }
+
+        .b612-mailbox-fav-btn:focus-visible,
+        .b612-mailbox-delete-btn:focus-visible {
+            outline: 2px solid rgba(154, 148, 138, 0.45);
+            outline-offset: 2px;
+        }
+
+        .b612-mailbox-chat-scroll {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 20px 28px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .b612-mailbox-chat-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .b612-mailbox-chat-scroll::-webkit-scrollbar-thumb {
+            background: rgba(154, 148, 138, 0.22);
+            border-radius: 4px;
+        }
+
+        .b612-mailbox-msg {
+            display: flex;
+            width: 100%;
+        }
+
+        .b612-mailbox-msg--user {
+            justify-content: flex-end;
+        }
+
+        .b612-mailbox-msg--prince {
+            justify-content: flex-start;
+        }
+
+        .b612-mailbox-bubble {
+            max-width: 72%;
+            padding: 14px 18px;
+            border-radius: var(--b612-mailbox-radius);
+            font-family: var(--b612-mailbox-font-hand);
+            font-size: 14px;
+            line-height: 1.75;
+            letter-spacing: 0.02em;
+            color: rgba(44, 44, 42, 0.92);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .b612-mailbox-msg--user .b612-mailbox-bubble {
+            background: var(--b612-mailbox-user-bubble);
+            border: none;
+            padding: 12px 16px;
+        }
+
+        .b612-mailbox-msg--prince .b612-mailbox-bubble {
+            background: var(--b612-mailbox-prince-bubble);
+            border: 1px solid var(--b612-mailbox-prince-border);
+            max-width: min(94%, 52rem);
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            .b612-mailbox-hero {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 6px 32px 10px;
+                gap: 12px;
+            }
+
+            .b612-mailbox-hero__left {
+                gap: 12px;
+            }
+
+            .b612-mailbox-hero__icon {
+                width: 72px;
+                height: 72px;
+            }
+
+            .b612-mailbox-page-bottom {
+                margin-top: -10px;
+                padding: 2px 32px 16px;
+                min-height: 0;
+                padding-bottom: max(10px, min(24px, 5vh));
+            }
+
+            .b612-mailbox-page-bottom-row {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                min-height: 0;
+            }
+
+            .b612-mailbox-corner-art {
+                align-self: center;
+                width: min(236px, 58vw);
+                height: min(252px, 32vh);
+            }
+
+            .b612-mailbox-corner-art__img {
+                width: 100%;
+                height: auto;
+                max-height: none;
+            }
+
+            .b612-mailbox-footer {
+                margin: 0;
+                padding: 0 8px 0 0;
+                font-size: 14px;
+                text-align: center;
+                color: var(--b612-sidebar-gold);
+            }
+
+            .b612-mailbox-layout {
+                flex-direction: column;
+                max-height: calc(100vh - 188px);
+                margin-top: 0;
+                padding: 4px 32px 0;
+                gap: 16px;
+            }
+
+            .b612-mailbox-sidebar--chat {
+                width: 100%;
+                padding: 16px 14px 10px;
+            }
+
+            .b612-mailbox-list {
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                gap: 0;
+                padding-bottom: 6px;
+            }
+
+            .b612-mailbox-list-item {
+                min-width: 192px;
+                flex-shrink: 0;
+                border-bottom: none;
+                border-right: 1px solid var(--b612-sidebar-divider);
+            }
+
+            .b612-mailbox-list-item:last-child {
+                border-right: none;
+            }
+
+            .b612-mailbox-sidebar__load-more {
+                margin-top: 8px;
+                padding-top: 10px;
+            }
+
+            .b612-mailbox-detail-header {
+                flex-direction: column;
+                padding: 24px 20px 16px;
+            }
+
+            .b612-mailbox-detail-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .b612-mailbox-chat-scroll {
+                padding: 20px 16px 10px;
+            }
+
+            .b612-mailbox-bubble {
+                max-width: 88%;
+            }
+
+            .b612-mailbox-msg--prince .b612-mailbox-bubble {
+                max-width: min(96%, 42rem);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="b612-mailbox-page">
+        <header class="b612-mailbox-hero">
+            <div class="b612-mailbox-hero__left">
+                <div class="b612-mailbox-hero__icon" aria-hidden="true">
+                    <img class="b612-mailbox-hero__mailbox-img" src="letter-mailbox-cutout.png" alt="" width="88" height="88" decoding="async" loading="eager">
+                </div>
+                <div class="b612-mailbox-hero__text">
+                    <h1 class="b612-mailbox-hero__title">星空信箱</h1>
+                    <p class="b612-mailbox-hero__subtitle">你和小王子的每一次对话，都是独一无二的星光。</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="b612-mailbox-layout">
+            <aside class="b612-mailbox-sidebar b612-mailbox-sidebar--chat" aria-label="信件列表">
+                <div class="b612-mailbox-sidebar__header-wrap">
+                    <p class="b612-mailbox-sidebar__header" id="b612MailboxAllChatsLabel" aria-live="polite"><span class="b612-mailbox-sidebar__header-title">全部对话</span><span id="b612MailboxAllChatsCount" class="b612-mailbox-sidebar__header-count"> (0)</span></p>
+                </div>
+                <div class="b612-mailbox-list" id="b612MailboxList" role="listbox" aria-label="按日期排列的信件"></div>
+                <button type="button" class="b612-mailbox-sidebar__load-more" id="b612MailboxLoadMore" hidden>加载更多 <span aria-hidden="true">▼</span></button>
+            </aside>
+
+            <main class="b612-mailbox-main" aria-live="polite">
+                <div class="b612-mailbox-empty" id="b612MailboxEmpty">
+                    <p class="b612-mailbox-empty__line1">这里还没有信件 ✦</p>
+                    <p class="b612-mailbox-empty__line2">去和小王子说说话吧</p>
+                    <a class="b612-mailbox-empty__link" href="index.html#b612">去和小王子说话</a>
+                </div>
+
+                <div class="b612-mailbox-detail" id="b612MailboxDetail" hidden>
+                    <header class="b612-mailbox-detail-header">
+                        <div class="b612-mailbox-detail-meta">
+                            <p class="b612-mailbox-detail-date" id="b612MailboxDetailDate"></p>
+                            <h2 class="b612-mailbox-detail-title" id="b612MailboxDetailTitle"></h2>
+                        </div>
+                        <div class="b612-mailbox-detail-actions">
+                            <button type="button" class="b612-mailbox-fav-btn" id="b612MailboxFavBtn" aria-pressed="false">
+                                <span class="b612-mailbox-fav-btn__icon" aria-hidden="true">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                        <defs>
+                                            <linearGradient id="b612MailboxFavStarGrad" x1="50%" y1="100%" x2="50%" y2="0%">
+                                                <stop offset="0%" stop-color="#f9a825"/>
+                                                <stop offset="55%" stop-color="#ffca28"/>
+                                                <stop offset="100%" stop-color="#fff176"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <path class="b612-mailbox-fav-btn__star-path" d="M12 1.2l2.15 7.35L22 9.25l-5.85 4.55 2.25 7.05L12 17.75 5.6 20.85l2.25-7.05L2 9.25l7.85-0.7L12 1.2z"/>
+                                    </svg>
+                                </span>
+                                <span class="b612-mailbox-fav-btn__label">收藏</span>
+                            </button>
+                            <button type="button" class="b612-mailbox-delete-btn" id="b612MailboxDeleteBtn">删除</button>
+                        </div>
+                    </header>
+                    <div class="b612-mailbox-chat-scroll" id="b612MailboxChatScroll"></div>
+                </div>
+            </main>
+        </div>
+
+        <div class="b612-mailbox-page-bottom">
+            <div class="b612-mailbox-page-bottom-row">
+                <p class="b612-mailbox-footer">真正重要的东西眼睛是看不见的——《小王子》</p>
+                <div class="b612-mailbox-corner-art" aria-hidden="true">
+                    <img class="b612-mailbox-corner-art__img" src="letter1-cutout.png" alt="" decoding="async" loading="lazy">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            const DIARY_KEY = 'b612_diary';
+            const HISTORY_KEY = 'b612_history';
+
+            const listEl = document.getElementById('b612MailboxList');
+            const emptyEl = document.getElementById('b612MailboxEmpty');
+            const detailEl = document.getElementById('b612MailboxDetail');
+            const detailDateEl = document.getElementById('b612MailboxDetailDate');
+            const detailTitleEl = document.getElementById('b612MailboxDetailTitle');
+            const chatScrollEl = document.getElementById('b612MailboxChatScroll');
+            const favBtn = document.getElementById('b612MailboxFavBtn');
+            const deleteBtn = document.getElementById('b612MailboxDeleteBtn');
+            const allChatsLabelEl = document.getElementById('b612MailboxAllChatsLabel');
+            const allChatsCountEl = document.getElementById('b612MailboxAllChatsCount');
+            const loadMoreBtn = document.getElementById('b612MailboxLoadMore');
+
+            const SIDEBAR_PAGE_SIZE = 10;
+            let sidebarVisibleCount = SIDEBAR_PAGE_SIZE;
+
+            let diary = [];
+            let selectedDate = null;
+
+            function escapeHtml(text) {
+                return String(text || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function sortDiaryDesc(items) {
+                return [...items].sort(function (a, b) {
+                    return String(b.date || '').localeCompare(String(a.date || ''));
+                });
+            }
+
+            function getSummary(messages) {
+                const list = Array.isArray(messages) ? messages : [];
+                const firstUser = list.find(function (m) {
+                    return m && m.role === 'user' && String(m.text || '').trim();
+                });
+                const text = firstUser ? String(firstUser.text || '').trim() : '';
+                if (!text) return '（无内容）';
+                const chars = Array.from(text);
+                if (chars.length <= 20) return chars.join('');
+                return chars.slice(0, 20).join('') + '…';
+            }
+
+            function historyDayKey(iso) {
+                const d = new Date(iso);
+                if (isNaN(d.getTime())) return '';
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return y + '-' + m + '-' + day;
+            }
+
+            function loadHistoryRaw() {
+                try {
+                    const raw = localStorage.getItem(HISTORY_KEY);
+                    const data = JSON.parse(raw || '[]');
+                    return Array.isArray(data) ? data : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function loadDiaryRaw() {
+                try {
+                    const raw = localStorage.getItem(DIARY_KEY);
+                    const data = JSON.parse(raw || '[]');
+                    if (!Array.isArray(data)) return [];
+                    return data.filter(function (item) {
+                        return item && item.date && Array.isArray(item.messages);
+                    });
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function convertHistoryToDiary(entries) {
+                const sorted = [...entries].sort(function (a, b) {
+                    const ta = new Date(a && a.createdAt).getTime();
+                    const tb = new Date(b && b.createdAt).getTime();
+                    return (Number.isNaN(ta) ? 0 : ta) - (Number.isNaN(tb) ? 0 : tb);
+                });
+
+                const map = new Map();
+                sorted.forEach(function (entry) {
+                    const day = historyDayKey(entry && entry.createdAt);
+                    if (!day) return;
+                    if (!map.has(day)) {
+                        map.set(day, { date: day, messages: [], favorite: false });
+                    }
+                    const record = map.get(day);
+                    const userText = String((entry && entry.user) || '').trim();
+                    const replyText = String((entry && entry.reply) || '').trim();
+                    if (userText) {
+                        record.messages.push({ role: 'user', text: userText });
+                    }
+                    if (replyText) {
+                        record.messages.push({ role: 'prince', text: replyText });
+                    }
+                });
+
+                return sortDiaryDesc(Array.from(map.values()).filter(function (item) {
+                    return item.messages.length > 0;
+                }));
+            }
+
+            function loadDiary() {
+                const fromDiary = loadDiaryRaw();
+                if (fromDiary.length) {
+                    return sortDiaryDesc(fromDiary);
+                }
+                return convertHistoryToDiary(loadHistoryRaw());
+            }
+
+            function saveDiary(items) {
+                localStorage.setItem(DIARY_KEY, JSON.stringify(items || []));
+            }
+
+            function getSelectedRecord() {
+                if (!selectedDate) return null;
+                return diary.find(function (item) {
+                    return item.date === selectedDate;
+                }) || null;
+            }
+
+            function clampSidebarVisibleCount() {
+                if (!diary.length) {
+                    sidebarVisibleCount = 0;
+                    return;
+                }
+                if (sidebarVisibleCount > diary.length) {
+                    sidebarVisibleCount = diary.length;
+                }
+            }
+
+            function scrollToBottom() {
+                if (!chatScrollEl) return;
+                window.requestAnimationFrame(function () {
+                    chatScrollEl.scrollTop = chatScrollEl.scrollHeight;
+                });
+            }
+
+            function renderList() {
+                if (!listEl) return;
+                listEl.innerHTML = '';
+
+                clampSidebarVisibleCount();
+
+                if (allChatsCountEl) {
+                    allChatsCountEl.textContent = ' (' + diary.length + ')';
+                } else if (allChatsLabelEl) {
+                    allChatsLabelEl.textContent = '全部对话 (' + diary.length + ')';
+                }
+
+                const visible = diary.slice(0, sidebarVisibleCount);
+
+                visible.forEach(function (item) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'b612-mailbox-list-item';
+                    btn.setAttribute('role', 'option');
+                    btn.setAttribute('aria-selected', item.date === selectedDate ? 'true' : 'false');
+                    if (item.date === selectedDate) {
+                        btn.classList.add('is-active');
+                    }
+                    btn.dataset.date = item.date;
+
+                    const row = document.createElement('div');
+                    row.className = 'b612-mailbox-list-item__row';
+
+                    const dateSpan = document.createElement('span');
+                    dateSpan.className = 'b612-mailbox-list-item__date';
+                    dateSpan.textContent = item.date;
+                    row.appendChild(dateSpan);
+
+                    if (item.favorite) {
+                        const starSpan = document.createElement('span');
+                        starSpan.className = 'b612-mailbox-list-item__star';
+                        starSpan.setAttribute('aria-label', '收藏');
+                        starSpan.textContent = '\u2605';
+                        row.appendChild(starSpan);
+                    }
+
+                    btn.appendChild(row);
+
+                    const previewSpan = document.createElement('span');
+                    previewSpan.className = 'b612-mailbox-list-item__preview';
+                    previewSpan.textContent = getSummary(item.messages);
+                    btn.appendChild(previewSpan);
+
+                    btn.addEventListener('click', function () {
+                        selectedDate = item.date;
+                        render();
+                    });
+
+                    listEl.appendChild(btn);
+                });
+
+                if (loadMoreBtn) {
+                    const hasMore = diary.length > 0 && sidebarVisibleCount < diary.length;
+                    loadMoreBtn.hidden = !hasMore;
+                }
+            }
+
+            function renderDetail() {
+                const record = getSelectedRecord();
+                const hasData = diary.length > 0 && record;
+
+                if (emptyEl) {
+                    emptyEl.hidden = !!hasData;
+                }
+                if (detailEl) {
+                    detailEl.hidden = !hasData;
+                }
+
+                if (!hasData) {
+                    if (chatScrollEl) chatScrollEl.innerHTML = '';
+                    return;
+                }
+
+                if (detailDateEl) {
+                    detailDateEl.textContent = record.date;
+                }
+                if (detailTitleEl) {
+                    detailTitleEl.textContent = getSummary(record.messages);
+                }
+                if (favBtn) {
+                    const favorited = !!record.favorite;
+                    favBtn.classList.toggle('is-favorited', favorited);
+                    favBtn.setAttribute('aria-pressed', favorited ? 'true' : 'false');
+                    const favLabel = favBtn.querySelector('.b612-mailbox-fav-btn__label');
+                    if (favLabel) {
+                        favLabel.textContent = '收藏';
+                    }
+                }
+
+                if (chatScrollEl) {
+                    chatScrollEl.innerHTML = '';
+                    (record.messages || []).forEach(function (msg) {
+                        const role = msg && msg.role === 'user' ? 'user' : 'prince';
+                        const wrap = document.createElement('div');
+                        wrap.className = 'b612-mailbox-msg b612-mailbox-msg--' + role;
+
+                        const bubble = document.createElement('div');
+                        bubble.className = 'b612-mailbox-bubble';
+                        bubble.textContent = String((msg && msg.text) || '');
+
+                        wrap.appendChild(bubble);
+                        chatScrollEl.appendChild(wrap);
+                    });
+                }
+
+                scrollToBottom();
+            }
+
+            function render() {
+                renderList();
+                renderDetail();
+            }
+
+            function toggleFavorite() {
+                const record = getSelectedRecord();
+                if (!record) return;
+                record.favorite = !record.favorite;
+                saveDiary(diary);
+                render();
+            }
+
+            function deleteSelected() {
+                const record = getSelectedRecord();
+                if (!record) return;
+                if (!window.confirm('确定删除这封信吗？')) return;
+
+                diary = diary.filter(function (item) {
+                    return item.date !== record.date;
+                });
+                saveDiary(diary);
+
+                clampSidebarVisibleCount();
+
+                if (diary.length) {
+                    selectedDate = diary[0].date;
+                } else {
+                    selectedDate = null;
+                }
+                render();
+            }
+
+            function init() {
+                diary = loadDiary();
+                sidebarVisibleCount = diary.length
+                    ? Math.min(SIDEBAR_PAGE_SIZE, diary.length)
+                    : 0;
+                if (diary.length) {
+                    selectedDate = diary[0].date;
+                } else {
+                    selectedDate = null;
+                }
+
+                if (favBtn) {
+                    favBtn.addEventListener('click', toggleFavorite);
+                }
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', deleteSelected);
+                }
+                if (loadMoreBtn) {
+                    loadMoreBtn.addEventListener('click', function () {
+                        sidebarVisibleCount = Math.min(diary.length, sidebarVisibleCount + SIDEBAR_PAGE_SIZE);
+                        render();
+                    });
+                }
+
+                render();
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
