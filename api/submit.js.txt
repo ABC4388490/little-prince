@@ -1,0 +1,21 @@
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ success: false, message: '请求方法不允许' });
+  }
+
+  try {
+    const reqBody = req.body;
+    console.log('收到投递内容：', reqBody);
+    
+    return res.status(200).json({
+      success: true,
+      message: '投递成功！星星已经种下啦✨'
+    });
+  } catch (error) {
+    console.error('投递出错：', error);
+    return res.status(500).json({
+      success: false,
+      message: '投递失败，请稍后再试'
+    });
+  }
+}
