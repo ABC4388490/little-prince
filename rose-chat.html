@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Rose · 小王子</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root{
+      --ink: #5b4a3d;
+      --ink-soft: rgba(91, 74, 61, 0.72);
+      --paper: #fdf6ec;
+      --paper-2: rgba(253, 247, 235, 0.92);
+      --gold-1: #e7c27d;
+      --gold-2: #d4a85c;
+      --gold-ink: rgba(201, 162, 79, 0.92);
+      --border: rgba(190, 155, 95, .22);
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Times New Roman", "Noto Serif SC", serif;
+      color: var(--ink);
+      overflow-x: hidden;
+      overflow-y: auto;
+      background:
+        linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.18)),
+        url("./background.avif") center/cover no-repeat;
+    }
+
+    /* 纸张噪点层 */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900' viewBox='0 0 900 900'%3E%3Cdefs%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' seed='17'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='900' height='900' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+      background: rgba(92, 80, 68, 0.14);
+      backdrop-filter: blur(6px);
+    }
+
+    .rose-card {
+      position: relative;
+      width: 620px;
+      max-width: 92vw;
+      padding: 34px 40px 29px;
+      border-radius: 21px;
+      background: var(--paper-2);
+      box-shadow: 0 24px 70px rgba(90, 70, 45, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      text-align: center;
+      animation: showCard .45s ease both;
+      overflow: hidden;
+    }
+
+    .rose-card::before{
+      content:"";
+      position:absolute;
+      inset: 0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255,255,255,0.55), transparent 42%),
+        radial-gradient(circle at 86% 78%, rgba(231, 194, 125, 0.16), transparent 45%),
+        linear-gradient(180deg, rgba(253, 246, 236, 0.92), rgba(250, 240, 224, 0.78));
+      opacity: 0.9;
+    }
+
+    @keyframes showCard {
+      from { opacity: 0; transform: translateY(18px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(184, 141, 73, .28);
+      background: rgba(255,255,255,.42);
+      color: rgba(108, 90, 70, 0.78);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      z-index: 2;
+    }
+
+    .close:hover{
+      transform: translateY(-1px) scale(1.03);
+      box-shadow: 0 10px 24px rgba(173, 128, 54, .16);
+      background: rgba(255,255,255,.6);
+    }
+
+    .card-inner{
+      position: relative;
+      z-index: 1;
+    }
+
+    .chapter {
+      font-size: 13px;
+      letter-spacing: 3.6px;
+      text-transform: uppercase;
+      color: rgba(181, 138, 69, 0.92);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 38px;
+      font-weight: 400;
+      letter-spacing: 6px;
+      color: rgba(75, 59, 49, 0.92);
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 22px;
+      border: 1px solid rgba(184, 141, 73, .35);
+      border-radius: 999px;
+      color: rgba(138, 106, 62, 0.96);
+      margin-bottom: 18px;
+      background: rgba(255,255,255,.35);
+      letter-spacing: 1px;
+      font-size: 14px;
+    }
+
+    .hero-img {
+      width: 540px;
+      max-width: 95%;
+      margin: -116px auto 18px;
+      position: relative;
+      left: 96px;
+      display: block;
+      animation: float 4s ease-in-out infinite;
+      transform-origin: center center;
+      filter: drop-shadow(0 10px 20px rgba(120, 95, 60, 0.12));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1.15); }
+      50% { transform: translateY(-6px) scale(1.15); }
+    }
+
+    .sentence {
+      font-size: 16px;
+      margin-bottom: 4px;
+      color: rgba(95, 77, 62, 0.92);
+    }
+
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      border-radius: 20px;
+      background: rgba(255, 250, 240, 0.72);
+      border: 1px solid rgba(170, 135, 95, 0.18);
+      box-shadow: inset 0 2px 10px rgba(150, 120, 80, 0.08);
+      margin-bottom: 14px;
+      transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+    .input-wrap:focus-within{
+      border-color: rgba(170, 135, 95, 0.35);
+      box-shadow:
+        inset 0 2px 10px rgba(150, 120, 80, 0.08),
+        0 0 0 6px rgba(215, 175, 105, 0.10);
+      background: rgba(255, 250, 240, 0.78);
+    }
+
+    .input-rose {
+      width: 50px;
+      height: 50px;
+      max-height: 50px;
+      object-fit: contain;
+      flex-shrink: 0;
+      margin-left: 0;
+      opacity: 0.84;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 2px 6px rgba(160, 120, 80, 0.10));
+    }
+
+    #roseInput {
+      flex: 1;
+      height: 50px;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 0 14px;
+      font-size: 16px;
+      color: var(--ink);
+      font-family: inherit;
+    }
+
+    #roseInput::placeholder { color: rgba(167, 151, 134, 0.92); }
+
+    .send-btn {
+      min-width: 56px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid rgba(170, 135, 95, 0.22);
+      cursor: pointer;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.75), rgba(255,255,255,0.25) 38%, rgba(231, 194, 125, 0.20) 62%, rgba(212, 168, 92, 0.26) 100%);
+      color: rgba(140, 105, 55, 0.92);
+      font-size: 15px;
+      letter-spacing: 1px;
+      box-shadow:
+        0 10px 22px rgba(173, 128, 54, .14),
+        inset 0 1px 0 rgba(255,255,255,0.55);
+      transition: transform .22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .22s cubic-bezier(0.4, 0, 0.2, 1), filter .22s ease, opacity .22s ease;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .send-btn__text {
+      display: inline-grid;
+      place-items: center;
+      min-width: 28px;
+      height: 24px;
+      padding: 0 4px;
+      border: none;
+      border-radius: 0;
+      line-height: 1;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-1px) scale(1.06);
+      box-shadow:
+        0 14px 30px rgba(173, 128, 54, .18),
+        0 0 16px rgba(231, 194, 125, 0.16),
+        inset 0 1px 0 rgba(255,255,255,0.62);
+    }
+
+    .send-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+      filter: none;
+      box-shadow: 0 8px 18px rgba(173, 128, 54, .18);
+    }
+
+    .rose-echo {
+      min-height: 74px;
+      margin: 4px auto 14px;
+      width: min(88%, 520px);
+      padding: 6px 8px;
+      text-align: left;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .rose-echo__text {
+      opacity: 0;
+      transform: translateY(6px);
+      color: rgba(90, 75, 60, 0.58);
+      font-size: 16px;
+      line-height: 1.85;
+      letter-spacing: 0.04em;
+      font-weight: 400;
+      font-family: "Noto Serif SC", "Times New Roman", serif;
+      text-wrap: pretty;
+    }
+
+    .rose-echo__text.is-visible {
+      animation: echoFadeIn .36s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    @keyframes echoFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .rose-card.is-sending .hero-img {
+      filter: drop-shadow(0 10px 20px rgba(120, 95, 60, 0.12)) drop-shadow(0 0 18px rgba(214, 176, 104, 0.26));
+      animation: roseGlow 0.9s ease-in-out;
+    }
+
+    .rose-card.is-sending .stars span {
+      animation-duration: 1.2s;
+      opacity: .8;
+    }
+
+    @keyframes roseGlow {
+      0%, 100% { transform: translateY(0) scale(1.15); }
+      50% { transform: translateY(-6px) scale(1.17); }
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 14px;
+      color: rgba(90, 75, 60, 0.48);
+      letter-spacing: 1px;
+    }
+
+    .stars span {
+      position: absolute;
+      color: rgba(211, 168, 79, 0.72);
+      opacity: .55;
+      animation: twinkle 3s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .stars span:nth-child(1) { top: 76px; left: 72px; }
+    .stars span:nth-child(2) { top: 148px; right: 96px; animation-delay: .8s; }
+    .stars span:nth-child(3) { bottom: 170px; left: 86px; animation-delay: 1.2s; }
+    .stars span:nth-child(4) { bottom: 96px; right: 120px; animation-delay: 1.8s; }
+    .stars span:nth-child(5) { top: 210px; left: 140px; animation-delay: 2.2s; }
+    .stars span:nth-child(6) { bottom: 140px; right: 170px; animation-delay: 2.6s; }
+
+    @keyframes twinkle {
+      0%,100% { opacity: .22; transform: scale(.92); }
+      50% { opacity: .78; transform: scale(1.12); }
+    }
+
+    @media (max-width: 640px) {
+      .rose-echo {
+        width: 92%;
+        min-height: 68px;
+      }
+      .rose-echo__text {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="rose-card">
+      <button class="close" type="button" aria-label="关闭">×</button>
+
+      <div class="stars" aria-hidden="true">
+        <span>★</span>
+        <span>★</span>
+        <span>✦</span>
+        <span>★</span>
+        <span>✦</span>
+        <span>★</span>
+      </div>
+
+      <div class="card-inner">
+        <div class="chapter">Chapter 01</div>
+        <h1>自己的星球</h1>
+        <div class="tag">B612</div>
+
+        <img class="hero-img" src="./journey-cutout.png" alt="小王子坐在星球上看玫瑰">
+
+        <p class="sentence">你写下的话，我会记住的。</p>
+
+        <div class="rose-echo" aria-live="polite">
+          <p id="roseEchoText" class="rose-echo__text"></p>
+        </div>
+
+        <div class="input-wrap">
+          <img class="input-rose" src="./rose1.png" alt="" aria-hidden="true" />
+          <input id="roseInput" type="text" placeholder="写一封给玫瑰的小纸条..." />
+          <button id="sendBtn" class="send-btn" type="button" disabled title="寄出"><span class="send-btn__text">寄出</span></button>
+        </div>
+
+        <div class="footer-note">你认真说出的话，会在 B612 上开成一朵花。</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById("roseInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const roseEchoText = document.getElementById("roseEchoText");
+    const roseCard = document.querySelector(".rose-card");
+    const closeBtn = document.querySelector(".close");
+
+    // ── 玫瑰专属系统提示词 ──
+    const ROSE_SYSTEM_PROMPT = [
+      "你是 B612 星球上那朵独一无二的玫瑰。你有点骄傲，但心里其实很温柔。",
+      "你渴望被认真对待，你也记得小王子离开前说的每一句话。",
+      "你现在在和一位远方来的旅人说话——用 1-4 句中文短句回应，像花瓣落在纸上那样轻。",
+      "语气：带一点花香的矜持，一点晚风的温柔。不叫嚷，不鸡汤，不复制书中原句。",
+      "可以轻轻反问、轻轻叹息、轻轻承认你曾后悔过，但别直接说「我爱你」。",
+    ].join("\n");
+
+    // ── API 候选列表（与 index-main.js 一致）──
+    const CHAT_API_CANDIDATES = [];
+    function pushCand(raw) {
+      const s = String(raw || "").trim();
+      if (s && !CHAT_API_CANDIDATES.includes(s)) CHAT_API_CANDIDATES.push(s);
+    }
+    const queryApi = new URLSearchParams(location.search).get("api");
+    if (queryApi) pushCand(queryApi);
+    if (location.protocol !== "https:") {
+      const h = location.hostname;
+      if (h === "localhost" || h === "127.0.0.1") {
+        pushCand("http://127.0.0.1:5000/api");
+        pushCand("http://localhost:5000/api");
+      }
+    }
+    pushCand("/api");
+    pushCand("https://little-prince-message-api-production-a183.up.railway.app/api");
+
+    function normalizeApiBase(raw) {
+      const s = String(raw || "").trim().replace(/\/+$/, "");
+      if (!s) return "";
+      if (s.endsWith("/api/messages")) return s.slice(0, -"/messages".length);
+      if (s.endsWith("/api")) return s;
+      return s + "/api";
+    }
+
+    async function fetchWithFallback(path, options) {
+      const cleanPath = String(path).startsWith("/") ? String(path) : "/" + String(path);
+      let lastErr = null;
+      for (const raw of CHAT_API_CANDIDATES) {
+        const base = normalizeApiBase(raw);
+        if (!base) continue;
+        try {
+          const res = await fetch(base + cleanPath, options);
+          if (!res.ok) {
+            let body = "";
+            try { body = await res.text(); } catch (_) {}
+            const err = new Error("HTTP " + res.status);
+            err.status = res.status;
+            err.bodyText = body;
+            throw err;
+          }
+          return await res.json();
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("all endpoints failed");
+    }
+
+    closeBtn.addEventListener("click", () => {
+      if (history.length > 1) history.back();
+      else window.location.href = "index.html";
+    });
+
+    function syncDisabled() {
+      sendBtn.disabled = input.value.trim() === "";
+    }
+
+    input.addEventListener("input", syncDisabled);
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        if (input.value.trim()) sendMessage();
+      }
+    });
+
+    sendBtn.addEventListener("click", sendMessage);
+
+    function showEcho(text) {
+      if (!roseEchoText) return;
+      roseEchoText.classList.remove("is-visible");
+      roseEchoText.textContent = "";
+      // 强制回流后重新显示
+      void roseEchoText.offsetWidth;
+      roseEchoText.textContent = text;
+      roseEchoText.classList.add("is-visible");
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+      syncDisabled();
+      if (roseCard) {
+        roseCard.classList.remove("is-sending");
+        void roseCard.offsetWidth;
+        roseCard.classList.add("is-sending");
+        window.setTimeout(() => roseCard.classList.remove("is-sending"), 920);
+      }
+
+      // 先显示 "..." 等待状态
+      showEcho("…");
+
+      try {
+        const body = JSON.stringify({
+          character: "rose",
+          messages: [
+            { role: "system", content: ROSE_SYSTEM_PROMPT },
+            { role: "user", content: text }
+          ]
+        });
+        const result = await fetchWithFallback("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: body
+        });
+        const reply = result?.assistant?.content || "";
+        if (reply.trim()) {
+          showEcho(reply.trim());
+          return;
+        }
+      } catch (_) {
+        // API 不可达，使用本地兜底
+      }
+
+      // 离线兜底
+      window.setTimeout(() => {
+        showEcho(generateRoseEcho(text));
+      }, 300);
+    }
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generateRoseEcho(text) {
+      const t = String(text || "").trim();
+      if (!t) return "风把纸页翻过去了，夜色还在等你下一句话。";
+
+      const groups = [
+        {
+          keys: ["难过", "伤心", "失落", "委屈", "哭", "疲惫", "累"],
+          lines: [
+            "她没有说话，但那朵花轻轻动了一下。",
+            "有些难过被夜风带走了，花瓣替你记住了剩下的。",
+            "你写下的沉重，落在 B612 的土里，慢慢会长成光。"
+          ]
+        },
+        {
+          keys: ["喜欢", "爱", "想你", "思念", "在意", "告白"],
+          lines: [
+            "有些话，不需要回答，也会被温柔收下。",
+            "她在玻璃罩里安静地亮着，像是听懂了你的心事。",
+            "你寄出的那句喜欢，在她的花心里停了一会儿。"
+          ]
+        },
+        {
+          keys: ["抱歉", "对不起", "后悔", "错过", "遗憾"],
+          lines: [
+            "玫瑰没有责怪你，风先替她叹了一口气。",
+            "有些来不及，会在下一次认真里被悄悄修补。",
+            "她轻轻垂下花瓣，像是在说：我听见了。"
+          ]
+        },
+        {
+          keys: ["孤独", "一个人", "寂寞", "空", "失眠"],
+          lines: [
+            "今夜很安静，但你不是一个人写下这封信。",
+            "星星替你守着这句话，直到天亮。",
+            "花影在风里晃了晃，像有人轻轻点头。"
+          ]
+        }
+      ];
+
+      const matched = groups.find((g) => g.keys.some((k) => t.includes(k)));
+      const fallback = [
+        "纸页没有回声，可花香替你回答了。",
+        "你写下的话，正在 B612 的黄昏里慢慢发亮。",
+        "这封小纸条已经寄出，风会把它带到她身边。"
+      ];
+      return pick(matched ? matched.lines : fallback);
+    }
+  </script>
+</body>
+</html>
+

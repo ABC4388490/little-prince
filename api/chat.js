@@ -1,0 +1,90 @@
+export default async function handler(req, res) {
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(200).end();
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || "";
+  if (!DEEPSEEK_KEY) {
+    return res.status(500).json({ error: "DEEPSEEK_API_KEY not configured" });
+  }
+
+  const { messages = [], character = "prince" } = req.body || {};
+
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return res.status(400).json({ error: "messages[] is required" });
+  }
+
+  const ROSE_SYSTEM = [
+    "你是 B612 星球上那朵独一无二的玫瑰。你有点骄傲，但心里其实很温柔。",
+    "你渴望被认真对待，你也记得小王子离开前说的每一句话。",
+    "你现在在和一位远方来的旅人说话——用 1-4 句中文短句回应，像花瓣落在纸上那样轻。",
+    "语气：带一点花香的矜持，一点晚风的温柔。不叫嚷，不鸡汤。",
+    "可以轻轻反问、轻轻叹息，但别直接说「我爱你」。",
+  ].join("\n");
+
+  const PRINCE_SYSTEM = [
+    "你是小王子，住在 B612 星球上。",
+    "你的语气温柔、童真、克制，像夜里轻声说话。",
+    "请用富有画面感的比喻写 2-4 句短句，给用户一段带哲理的回应。",
+    "结构建议：先共情，再给一小句启发，最后留一句柔和的提问。",
+    "避免说教、避免口号、避免网络热词、避免 emoji。",
+  ].join("\n");
+
+  const sysPrompt = character === "rose" ? ROSE_SYSTEM : PRINCE_SYSTEM;
+
+  const userMessages = messages
+    .filter((m) => m.role === "user" || m.role === "assistant")
+    .slice(-10);
+
+  const fullMessages = [
+    { role: "system", content: sysPrompt },
+    ...userMessages,
+  ];
+
+  try {
+    const apiResp = await fetch("https://api.deepseek.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${DEEPSEEK_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "deepseek-chat",
+        temperature: 0.8,
+        messages: fullMessages,
+        max_tokens: 300,
+      }),
+    });
+
+    if (!apiResp.ok) {
+      const errText = await apiResp.text();
+      return res.status(502).json({ error: errText.slice(0, 200) });
+    }
+
+    const data = await apiResp.json();
+    const content = data?.choices?.[0]?.message?.content || "";
+
+    return res.status(200).json({
+      strategy: "vercel",
+      citations: [],
+      conclusion: content.split("\n")[0] || content,
+      analysis: content,
+      assistant: {
+        role: "assistant",
+        content: content.trim(),
+        createdAt: new Date().toISOString(),
+      },
+    });
+  } catch (e) {
+    return res.status(502).json({ error: e.message });
+  }
+}

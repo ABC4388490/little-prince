@@ -1,0 +1,24 @@
+.vercel
+.idea
+.cursor
+node_modules
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Message API
+message-api/.env
+message-api/messages.db
+message-api/target/
+message-api/rag/index.faiss
+message-api/rag/chunk_order.json
+message-api/rag/chunk_meta.json
+
+# Local dev
+serve.js
+server.js

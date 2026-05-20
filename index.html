@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand-drawn Rose - Little Prince</title>
+    <link rel="icon" type="image/png" href="./favicon-pure-rose.png?v=1">
+    <link rel="shortcut icon" href="./favicon.ico?v=1">
+    <link rel="apple-touch-icon" href="./pure-rose.png?v=4">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@400;500;600&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Caveat:wght@400;500;600&family=Indie+Flower&family=Kalam:wght@300;400&family=Liu+Jian+Mao+Cao&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&family=Patrick+Hand&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index-main.css?v=1">
+</head>
+<body>
+    <div class="paper-texture" aria-hidden="true"></div>
+    <div class="paper-creases" aria-hidden="true"></div>
+    <div class="companions-layer" aria-hidden="true">
+        <!-- 伴生元素：不同 data-speed 形成远近层次（数值越小越“远”） -->
+        <span class="companion" data-kind="petal" data-axis="xy" data-speed="0.14" style="--left: 4%; --top: 14vh; --scale: 0.62;"></span>
+        <span class="companion" data-kind="petal" data-axis="xy" data-speed="0.18" style="--left: 70%; --top: 30vh; --scale: 0.46; --rot: 6deg; --op: 0.14;"></span>
+        <span class="companion" data-kind="cactus" data-axis="y" data-speed="0.28" style="--left: 74%; --top: 96vh; --scale: 0.56;"></span>
+        <span class="companion" data-kind="pebble" data-axis="y" data-speed="0.22" style="--left: -8%; --top: 146vh; --scale: 0.52; --op: 0.14;"></span>
+        <span class="companion" data-kind="pebble" data-axis="y" data-speed="0.36" style="--left: 54%; --top: 208vh; --scale: 0.66;"></span>
+    </div>
+    <header>
+        <div class="header-container">
+            <div class="logo">The Little Prince</div>
+            <nav>
+                <a href="#home" class="nav-link active" data-page="home">Home</a>
+                <a href="#journey" class="nav-link" data-page="journey">星球地图</a>
+                <a href="#b612" class="nav-link" data-page="b612">B612 对话</a>
+                <button type="button" class="nav-flight-btn" id="openFlightLog" aria-label="打开飞行日志" title="飞行日志">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 2L11 13" />
+                        <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                    </svg>
+                </button>
+                <a href="star-mailbox.html" class="nav-mailbox-btn" aria-label="星空信箱" title="星空信箱">星空信箱</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <img
+                class="home-journey-cutout"
+                src="journey-cutout.png"
+                alt=""
+                aria-hidden="true"
+            >
+            <img
+                class="home-right-illustration"
+                src="homebg-cutout.png?v=2"
+                alt=""
+                aria-hidden="true"
+            >
+            <p class="home-marginal home-marginal--tl" aria-hidden="true">记得抬头看星星。</p>
+            <p class="home-marginal home-marginal--tr" aria-hidden="true">有些答案，要慢慢等。</p>
+            <header class="home-page__intro">
+                <img
+                    class="home-top-illustration"
+                    src="homebg3-cutout-trim.png?v=2"
+                    alt=""
+                    aria-hidden="true"
+                >
+                <div class="home-page__tape" style="--tape-tilt: -2deg;">
+                    <h1 class="home-page__heading">小王子的星球之旅</h1>
+                </div>
+                <p class="home-page__subtitle">follow the stars, find the heart</p>
+            </header>
+            <div class="home-grid">
+                <div class="scene-card" onclick="openModal('rose')">
+                    <div class="scene-image">
+                        <img src="little-rose.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <div class="scene-title">The Rose</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"You are like my rose.</span>
+                            <span class="scene-quote-line">You are the only one in the world."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene-card" onclick="enterJourneyFromHome(this)">
+                    <div class="scene-image">
+                        <img src="little-plants.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <div class="scene-title">The Planets</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"Grown-ups are certainly</span>
+                            <span class="scene-quote-line">very strange."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene-card" onclick="openModal('fox')">
+                    <div class="scene-image">
+                        <img src="little-fox.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <div class="scene-title">The Fox</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"If you tame me,</span>
+                            <span class="scene-quote-line">we shall need each other."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scene-card" onclick="enterB612FromHome(this)">
+                    <div class="scene-image">
+                        <img src="little-prince.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                    </div>
+                    <div class="scene-content">
+                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <div class="scene-title">The Little Prince</div>
+                        </div>
+                        <div class="scene-quote">
+                            <span class="scene-quote-line">"I was too young to know</span>
+                            <span class="scene-quote-line">how to love her."</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-flow" aria-hidden="true">
+                <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <defs>
+                        <path id="sectionFlowMotionPath" d="M 22 18 Q 190 8 338 24 Q 520 44 662 32 Q 808 20 950 40" />
+                    </defs>
+                    <use class="section-flow__path" href="#sectionFlowMotionPath" />
+                    <use class="section-flow__arrow" href="#sectionFlowMotionPath" opacity="0" />
+                    <path class="section-flow__arrow" d="M 942 34 L 956 40 L 942 46" />
+
+                    <circle class="section-flow__tail" r="6" cx="22" cy="18">
+                        <animateMotion dur="6s" repeatCount="indefinite" keyTimes="0;1" calcMode="linear">
+                            <mpath href="#sectionFlowMotionPath"></mpath>
+                        </animateMotion>
+                        <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0.65;0.5;0" keyTimes="0;0.12;0.78;1" />
+                    </circle>
+                    <circle class="section-flow__dot" r="3.5" cx="22" cy="18">
+                        <animateMotion dur="6s" repeatCount="indefinite" keyTimes="0;1" calcMode="linear">
+                            <mpath href="#sectionFlowMotionPath"></mpath>
+                        </animateMotion>
+                        <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;0.12;0.78;1" />
+                    </circle>
+                </svg>
+                <span class="section-flow__note">往下走，风会带路</span>
+            </div>
+        </div>
+
+        <!-- JOURNEY PAGE -->
+        <div id="journey" class="page">
+            <img
+                class="journey-left-illustration"
+                src="journey-cutout.png"
+                alt=""
+                aria-hidden="true"
+                onerror="this.onerror=null;this.src='journey-pictuer-cutout.png';"
+            >
+            <div class="journey-content">
+                <div class="journey-intro">
+                    <div class="journey-intro__tape">
+                        <h2>The Little Prince's Journey</h2>
+                    </div>
+                    <p class="journey-intro__subtitle">Follow the stars, find the heart</p>
+                    <div class="journey-intro__arc" aria-hidden="true"><span></span>★<span></span></div>
+                </div>
+                <div class="journey-station-nav" aria-label="旅程站点导航">
+                    <a class="journey-station-link" href="#planet-0">B-612</a>
+                    <a class="journey-station-link" href="#planet-1">国王</a>
+                    <a class="journey-station-link" href="#planet-2">虚荣者</a>
+                    <a class="journey-station-link" href="#planet-3">酒鬼星</a>
+                    <a class="journey-station-link" href="#planet-4">商人星</a>
+                    <a class="journey-station-link" href="#planet-5">点灯人</a>
+                    <a class="journey-station-link" href="#planet-6">学者星</a>
+                    <a class="journey-station-link" href="#planet-7">地球</a>
+                </div>
+                <div class="journey-map" id="journeyMap">
+                    <svg class="journey-map__svg" id="journeyMapSvg" aria-hidden="true" role="presentation">
+                        <defs>
+                            <filter id="journeyPathPencil" color-interpolation-filters="sRGB" x="-14%" y="-14%" width="128%" height="128%">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="23" result="journeyNoise" />
+                                <feDisplacementMap in="SourceGraphic" in2="journeyNoise" scale="0.9" xChannelSelector="R" yChannelSelector="G" />
+                            </filter>
+                        </defs>
+                        <!-- 手绘感浅灰细虚线 -->
+                        <path id="journeyMapRouteBase" fill="none" stroke="rgba(132,126,116,0.10)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" d="" />
+                        <path id="journeyMapRoute" fill="none" stroke="rgba(132,126,116,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.2 7.8" stroke-opacity="1" filter="url(#journeyPathPencil)" d="" />
+                        <!-- 1 -> 8 额外连线：样式与主路线一致（底线 + 虚线） -->
+                        <path id="journeyMapRoute18Base" fill="none" stroke="rgba(132,126,116,0.10)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" d="" />
+                        <path id="journeyMapRoute18" fill="none" stroke="rgba(132,126,116,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.2 7.8" stroke-opacity="1" filter="url(#journeyPathPencil)" d="" />
+                    </svg>
+                    <span class="journey-map__ship" id="journeyMapShip" aria-hidden="true">✈</span>
+                    <div class="journey-map__nodes" id="journeyMapNodes">
+                        <button type="button" class="journey-map__node" data-target="planet-0"><span class="journey-map__planet"><img class="journey-map__planet-img" src="B612-cutout.png" alt="01 B612" onerror="this.onerror=null;this.src='B612.png';"></span><span class="journey-map__name"><b>01</b>B612</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-1"><span class="journey-map__planet"><img class="journey-map__planet-img" src="plant+king-cutout.png" alt="02 国王" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>02</b>国王</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-2"><span class="journey-map__planet"><img class="journey-map__planet-img" src="vain-man-cutout.png" alt="03 爱慕虚荣者" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>03</b>爱慕虚荣者</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-3"><span class="journey-map__planet"><img class="journey-map__planet-img" src="drunkard.png?v=2" alt="04 酒鬼" onerror="this.onerror=null;this.src='drunkard.png?v=2';"></span><span class="journey-map__name"><b>04</b>酒鬼</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-4"><span class="journey-map__planet"><img class="journey-map__planet-img" src="business.png?v=2" alt="05 商人" onerror="this.onerror=null;this.src='business.png?v=2';"></span><span class="journey-map__name"><b>05</b>商人</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-5"><span class="journey-map__planet"><img class="journey-map__planet-img" src="lightpeople-cutout.png?v=2" alt="06 点灯人" onerror="this.onerror=null;this.src='lightpeople.png?v=2';"></span><span class="journey-map__name"><b>06</b>点灯人</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-6"><span class="journey-map__planet"><img class="journey-map__planet-img" src="geography-cutout.png?v=2" alt="07 地理学家" onerror="this.onerror=null;this.src='geogrophy.png?v=2';"></span><span class="journey-map__name"><b>07</b>地理学家</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-7"><span class="journey-map__planet"><img class="journey-map__planet-img" src="back.png" alt="08 回到初心" onerror="this.onerror=null;this.src='planet-08.png';"></span><span class="journey-map__name"><b>08</b>回到初心</span></button>
+                    </div>
+                </div>
+                <button type="button" class="journey-start-btn">★ 从第一颗星球开始</button>
+                <div class="timeline">
+                    <svg class="journey-walkpath" id="journeyWalkSvg" aria-hidden="true" role="presentation">
+                        <path id="journeyWalkPath" fill="none" stroke="rgba(120,112,96,0.22)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.2 7.8" d="" />
+                    </svg>
+                    <div class="timeline-curves" id="timelineCurves" aria-hidden="true"></div>
+                <div class="timeline-item" id="planet-0">
+                    <div class="timeline-dot"></div>
+                    <div class="journey-companions" aria-hidden="true">
+                        <span class="journey-companion journey-companion--petal" data-speed="0.06" data-axis="xy" style="left: 5%; top: -8px; --companion-base: rotate(-14deg);">
+                            <img src="assets_companions/petals.png?v=2" alt="">
+                        </span>
+                    </div>
+                    <div class="timeline-card" onclick="openModal('rose')">
+                        <div class="journey-card-media journey-card-media--chapter1" aria-hidden="true">
+                            <img src="plant+rose.png" alt="" />
+                            <div class="chapter-figure-caption">（她在风里轻轻呼吸）</div>
+                        </div>
+                        <h3>第一章 自己的星球</h3>
+                        <p class="narrative">我生活在一个很小很小的星球上，那里只有三座火山和一朵玫瑰。每天清晨，我为她浇水、为她挡风，假装自己什么都懂，其实我只是太害怕失去她... ✎</p>
+                        <p class="timeline-thought">“那时的我太年轻，还不懂怎么去爱她。”</p>
+                    </div>
+                </div>
+
+                <div class="chapter-divider" aria-hidden="true">
+                    <span>✦</span><span>✦</span><span>✦</span>
+                </div>
+
+                <div class="timeline-item" id="planet-1">
+                    <div class="timeline-dot"></div>
+                    <div class="journey-companions" aria-hidden="true">
+                        <span class="journey-companion journey-companion--cactus" data-speed="0.02" data-axis="y" style="left: 42%; top: 8%; --companion-base: rotate(-5deg);">
+                            <img src="assets_companions/cactus.png?v=4" alt="">
+                        </span>
+                        <span class="journey-companion journey-companion--stones" data-speed="0.01" data-axis="y" style="left: 58%; top: 62%; --companion-base: rotate(5deg);">
+                            <img src="assets_companions/stones.png?v=4" alt="">
+                        </span>
+                    </div>
+                    <div class="timeline-card timeline-card--overflow" onclick="openModal('planets')">
+                        <div class="journey-card-media" aria-hidden="true"><img src="plant+king.png?v=2" alt="" /></div>
+                        <h3>第二章 漫游的开始</h3>
+                        <p class="narrative no-indent">后来我离开了自己的星球，在漫长的路上见过国王、自命者、商人和点灯人。他们都很忙，忙到忘了抬头看一眼星空，也忘了问自己为什么要活得这么匆忙... ✉</p>
+                        <p class="timeline-thought">“我看着他们匆匆来去，才发现很少有人愿意抬头看星星。”</p>
+                        <p class="timeline-overflow-note" aria-hidden="true">（他还在赶路）</p>
+                    </div>
+                </div>
+
+                <div class="chapter-divider" aria-hidden="true">
+                    <span>✦</span><span>✦</span><span>✦</span>
+                </div>
+
+                <div class="timeline-item" id="planet-2">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('desert')">
+                        <div class="journey-card-media" aria-hidden="true"><img src="vain man.png?v=2" alt="" /></div>
+                        <h3>第三章 来到地球</h3>
+                        <p class="narrative">我降落在了撒哈拉。这里只有一望无际的沙丘和沉默的星星。直到我遇见了一个飞行员，他为我画了一只装在箱子里的羊……沙漠之所以美丽，是因为它在某个地方藏着一口井。 ✎</p>
+                        <p class="timeline-thought">“我并不怕孤独，我怕的是没有人真正听懂我。”</p>
+                    </div>
+                </div>
+
+                <div class="chapter-divider" aria-hidden="true">
+                    <span>✦</span><span>✦</span><span>✦</span>
+                </div>
+
+                <div class="timeline-item" id="planet-3">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('fox')">
+                        <div class="journey-card-media" aria-hidden="true"><img src="drunkard.png?v=2" alt="" /></div>
+                        <h3>第四章 狐狸的秘密</h3>
+                        <p class="narrative no-indent">在麦田边，我遇见了那只狐狸。它让我明白“驯服”不是占有，而是让彼此在世界里有了名字。原来我为玫瑰花费的每一分钟，都是她独一无二的原因... ✉</p>
+                        <p class="timeline-thought">“当我愿意靠近你时，我们就会彼此需要，彼此独一无二。”</p>
+                    </div>
+                </div>
+
+                <div class="chapter-divider" aria-hidden="true">
+                    <span>✦</span><span>✦</span><span>✦</span>
+                </div>
+
+                <div class="timeline-item" id="planet-4">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('watering')">
+                        <div class="journey-card-media" aria-hidden="true"><img src="business.png?v=4" alt="" /></div>
+                        <h3>第五章 回忆与反思</h3>
+                        <p class="narrative">当我准备离开时，我终于懂了：爱不是把对方留在身边，而是愿意为她负责，愿意在她脆弱的时候回头。很多答案都来得太晚，但我还是想把它们写下来... ✎</p>
+                        <p class="timeline-thought">“直到离开前我才明白：真正重要的东西，用眼睛是看不见的。”</p>
+                    </div>
+                </div>
+
+                <div class="chapter-divider" aria-hidden="true">
+                    <span>✦</span><span>✦</span><span>✦</span>
+                </div>
+
+                <div class="timeline-item" id="planet-5">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('lamplighter')">
+                        <div class="journey-card-media" aria-hidden="true"><img src="lightpeople.png?v=2" alt="" /></div>
+                        <h3>第六章 点灯人的夜</h3>
+                        <p class="narrative no-indent">在最小最忙的星球上，点灯人一遍遍点亮又熄灭路灯。他没有时间看风景，却一直守着光的节奏。那一刻我想：也许责任，常常就是在无人注视时依然重复地温柔。 ✦</p>
+                        <p class="timeline-thought">“他很累，却没有放弃让黑夜有一点点亮。”</p>
+                    </div>
+                </div>
+
+                <div class="chapter-divider" aria-hidden="true">
+                    <span>✦</span><span>✦</span><span>✦</span>
+                </div>
+
+                <div class="timeline-item" id="planet-6">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('scholar')">
+                        <div class="journey-card-media" aria-hidden="true"><img src="geogrophy.png?v=2" alt="" /></div>
+                        <h3>第七章 学者的地图</h3>
+                        <p class="narrative">学者知道山川河流的名字，却从不亲自出发。他教会我“记录”很重要，但更重要的是亲眼看见、亲手触碰。地图能标出路，却不能替你走路。 ✎</p>
+                        <p class="timeline-thought">“知道很多名字，不等于真正认识这个世界。”</p>
+                    </div>
+                </div>
+
+                <div class="chapter-divider" aria-hidden="true">
+                    <span>✦</span><span>✦</span><span>✦</span>
+                </div>
+
+                <div class="timeline-item" id="planet-7">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card" onclick="openModal('return')">
+                        <div class="journey-card-media" aria-hidden="true"><img src="fox+little-prince.png?v=2" alt="" /></div>
+                        <h3>第八章 回到地球</h3>
+                        <p class="narrative no-indent">当我再次望向地球，才明白旅程并不是为了离开，而是为了带着新的眼睛回来。狐狸、玫瑰、沙漠与井，都在我心里有了新的位置。故事没有结束，它只是变成了你继续书写的那一页。 ☄</p>
+                        <p class="timeline-thought">“真正的归途，是带着爱与责任回到最初的地方。”</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="section-flow" aria-hidden="true">
+                <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <path class="section-flow__path" d="M 40 44 Q 210 24 360 34 Q 520 46 700 24 Q 820 10 946 22" />
+                    <path class="section-flow__star" d="M 934 22 L 938 30 L 946 32 L 940 38 L 942 46 L 934 41 L 926 46 L 928 38 L 922 32 L 930 30 Z" />
+                </svg>
+                <span class="section-flow__note">下一页：飞行日志</span>
+            </div>
+        </div>
+
+        <div id="b612" class="page">
+            <div id="starField" class="star-field" aria-hidden="true"></div>
+            <p class="b612-marginal b612-marginal--rose" aria-hidden="true">记得每天给玫瑰浇水。</p>
+            <p class="b612-marginal b612-marginal--desert" aria-hidden="true">如果你在沙漠里遇见他…</p>
+            <p class="b612-marginal b612-marginal--sunset" aria-hidden="true">第 45 次日落开始了。</p>
+            <section class="hero" aria-labelledby="b612-heading">
+
+                <span class="hero-curve" aria-hidden="true"></span>
+                <span class="hero-track" aria-hidden="true"></span>
+                <span class="hero-star hero-star--a" aria-hidden="true">✦</span>
+                <span class="hero-star hero-star--b" aria-hidden="true">✦</span>
+                <span class="hero-star hero-star--c" aria-hidden="true">✦</span>
+                <span class="hero-star hero-star--d" aria-hidden="true">✦</span>
+
+                <div class="hero-center">
+                    <h2 id="b612-heading" class="main-title">如果你爱上了一朵生长在某颗星球上的花。</h2>
+
+                    <div class="divider">
+                        <span></span><i class="divider-star" aria-hidden="true">★</i><span></span>
+                    </div>
+
+                    <p class="sub-line">那么，夜间仰望星空就会感到甜蜜。</p>
+                    <p class="small-line">——所有的星星都会开出花来</p>
+
+                    <p class="hint">先写一句话吧，我会记住的</p>
+
+                    <div class="b612-inline-entry" aria-label="写给小王子的一句话">
+                        <div class="b612-inline-entry__wrap">
+                            <textarea id="b612InlineInput" class="b612-inline-entry__input" maxlength="4000" rows="4" autocomplete="off" placeholder="写一句你想对小王子说的话…"></textarea>
+                        </div>
+                        <button type="button" class="b612-inline-entry__send" id="b612InlineSend" aria-label="送给星星">✦ 送给星星</button>
+                    </div>
+
+                    <div class="wish-box b612-mailbox" style="display:none;" aria-hidden="true">
+                        <div class="wish-label">在这里，种下你的一点微光</div>
+                        <div class="wish-card b612-mailbox__input-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <textarea id="b612MessageInputLegacy" maxlength="4000" rows="4" autocomplete="off"></textarea>
+                        </div>
+                        <button type="button" class="wish-star b612-mailbox__btn" id="b612PlantStarLegacy" aria-label="发送给小王子">⭐ 发送</button>
+                        <p class="b612-mailbox__toast" id="b612ToastLegacy" role="status" aria-live="polite"></p>
+                    </div>
+                </div>
+
+                <div class="hero-illustration">
+                    <img src="journey-pictuer-cutout.png?v=1" alt="little prince corner">
+                </div>
+
+            </section>
+
+            <div class="section-flow" aria-hidden="true">
+                <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <path class="section-flow__path" d="M 24 16 Q 220 40 410 22 Q 590 6 760 22 Q 862 30 956 14" />
+                    <path class="section-flow__arrow" d="M 946 8 L 958 14 L 946 20" />
+                </svg>
+                <span class="section-flow__note">抬头看，航线还在延伸</span>
+            </div>
+        </div>
+
+        <div id="b612StoryModal" class="b612-story-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="b612StoryTitle">
+            <div class="b612-story-modal__panel">
+                <p class="b612-story-modal__chapter" id="b612StoryTitle">B612 · 夜色信箱</p>
+                <h3 class="b612-story-modal__title">B612 · 和小王子说话</h3>
+                <div class="b612-story-modal__illustration" aria-hidden="true">
+                    <img src="chapter-cutout.png" alt="">
+                    <span class="b612-story-modal__sparkle b612-story-modal__sparkle--s1">✦</span>
+                    <span class="b612-story-modal__sparkle b612-story-modal__sparkle--s2">✦</span>
+                    <span class="b612-story-modal__sparkle b612-story-modal__sparkle--s3">✦</span>
+                    <span class="b612-story-modal__sparkle b612-story-modal__sparkle--s4">✦</span>
+                </div>
+                <p class="b612-story-modal__guide">把想说的话交给星星吧，小王子会听见。</p>
+                <div class="b612-story-modal__composer">
+                    <input id="b612MessageInput" class="b612-story-modal__input" maxlength="4000" autocomplete="off" placeholder="写一句你想对小王子说的话…" />
+                    <button type="button" class="b612-story-modal__send" id="b612PlantStar" aria-label="送给星星">✦ 送给星星</button>
+                </div>
+                <p class="b612-mailbox__toast" id="b612Toast" role="status" aria-live="polite"></p>
+            </div>
+        </div>
+
+        <div id="b612ChatModal" class="b612-chat-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="B612 · 对话">
+            <div class="b612-chat-modal__panel">
+                <header class="b612-chat-modal__header">
+                    <button type="button" class="b612-chat-modal__close" id="b612ChatClose" aria-label="关闭">×</button>
+                </header>
+                <section class="b612-chat-modal__messages" aria-label="与小王子的对话">
+                    <p id="b612GenStatus" class="b612-chat-modal__gen-status" hidden role="status" aria-live="polite"></p>
+                    <div class="b612-chat-modal__messages-scroll">
+                        <div class="b612-chat__list" id="b612ChatList" role="log" aria-live="polite" aria-relevant="additions"></div>
+                        <p class="b612-chat__empty" id="b612ChatEmpty" aria-hidden="true">（写一句话吧）</p>
+                    </div>
+                </section>
+                <footer class="b612-chat-modal__footer">
+                    <div class="b612-chat-modal__composer">
+                        <input id="b612ChatInput" type="text" class="b612-chat-modal__input" maxlength="4000" autocomplete="off" placeholder="继续写给小王子的心里话…" title="Enter 发送" />
+                        <button type="button" class="b612-chat-modal__send" id="b612ChatSend" aria-label="送给星星">✨ 送给星星</button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <div id="b612HistoryDrawer" class="b612-history-drawer" aria-hidden="true">
+            <div class="b612-history-drawer__backdrop" id="b612HistoryBackdrop" aria-hidden="true"></div>
+            <aside class="b612-history-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="b612HistoryDrawerTitle" aria-hidden="true">
+                <div class="b612-history-drawer__toolbar">
+                    <span id="b612HistoryDrawerTitle" class="b612-history-drawer__brand">星空信箱</span>
+                    <div class="b612-history-drawer__tools">
+                        <button type="button" class="b612-history-drawer__clear" id="b612HistoryClearBtn">清空信箱</button>
+                        <button type="button" class="b612-history-drawer__x" id="b612HistoryDrawerClose" aria-label="关闭">×</button>
+                    </div>
+                </div>
+                <div id="b612HistoryList" class="b612-history-drawer__scroll"></div>
+                <p class="b612-history-drawer__hint">✦ 点击任意一条 → 展开完整对话</p>
+            </aside>
+            <div id="b612HistoryConfirm" class="b612-history-confirm" aria-hidden="true" role="dialog" aria-modal="true" aria-label="确认清空">
+                <div class="b612-history-confirm__card">
+                    <p>确认要忘记这些星星吗？</p>
+                    <div class="b612-history-confirm__actions">
+                        <button type="button" class="b612-history-confirm__forget" id="b612HistoryConfirmForget">忘记</button>
+                        <button type="button" id="b612HistoryConfirmKeep">留着</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JOURNEY CHAPTER MODAL -->
+        <div id="journeyChapterModal" class="journey-chapter-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="journeyChapterTitle">
+            <div class="journey-chapter-modal__backdrop" data-journey-modal-close></div>
+            <div class="journey-chapter-modal__panel" role="document" tabindex="-1">
+                <div class="journey-chapter-modal__card">
+                    <button type="button" class="journey-chapter-modal__close" aria-label="关闭" data-journey-modal-close>
+                        <span aria-hidden="true">×</span>
+                    </button>
+
+                    <div class="journey-chapter-modal__layout">
+                        <div class="journey-chapter-modal__left" aria-hidden="true">
+                            <img id="journeyChapterImage" class="journey-chapter-modal__image" src="" alt="">
+                            <div class="journey-chapter-modal__mist" aria-hidden="true"></div>
+                        </div>
+
+                        <div class="journey-chapter-modal__right">
+                            <p class="journey-chapter-modal__chapter" id="journeyChapterChapter">Chapter 01</p>
+                            <h2 class="journey-chapter-modal__title" id="journeyChapterTitle">自己的星球</h2>
+                            <p class="journey-chapter-modal__subtitle" id="journeyChapterSubtitle">B612</p>
+
+                            <div class="journey-chapter-modal__divider" aria-hidden="true">
+                                <span class="journey-chapter-modal__divider-line"></span>
+                                <span class="journey-chapter-modal__divider-star">★</span>
+                                <span class="journey-chapter-modal__divider-line"></span>
+                            </div>
+
+                            <div class="journey-chapter-modal__content" id="journeyChapterContent">
+                                <div class="journey-chapter-modal__text" id="journeyChapterText"></div>
+                                <p class="journey-chapter-modal__quote" id="journeyChapterQuote"></p>
+                            </div>
+
+                            <div class="journey-chapter-modal__pager" aria-label="章节分页">
+                                <div class="journey-chapter-modal__dots" id="journeyChapterDots" aria-hidden="true"></div>
+                                <div class="journey-chapter-modal__count" aria-live="polite">
+                                    <span class="journey-chapter-modal__count-star" aria-hidden="true">★</span>
+                                    <span id="journeyChapterIndex">01</span> / <span id="journeyChapterTotal">08</span>
+                                    <span class="journey-chapter-modal__count-star" aria-hidden="true">★</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="journey-chapter-modal__side-nav" aria-label="切换章节">
+                <div class="journey-chapter-modal__side journey-chapter-modal__side--prev">
+                    <button type="button" class="journey-chapter-modal__side-btn" id="journeyChapterPrev" aria-label="上一章">
+                        <span aria-hidden="true">←</span>
+                    </button>
+                    <span class="journey-chapter-modal__side-label" aria-hidden="true">上一章</span>
+                </div>
+                <div class="journey-chapter-modal__side journey-chapter-modal__side--next">
+                    <button type="button" class="journey-chapter-modal__side-btn" id="journeyChapterNext" aria-label="下一章">
+                        <span aria-hidden="true">→</span>
+                    </button>
+                    <span class="journey-chapter-modal__side-label" aria-hidden="true">下一章</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FULLSCREEN FLIGHT LOG -->
+    <div id="flightLogModal" class="flight-modal" aria-hidden="true" role="dialog" aria-labelledby="flightLogHeading">
+        <button type="button" class="flight-modal__close" id="closeFlightLog" aria-label="关闭">×</button>
+        <p class="flight-log-marginal flight-log-marginal--l1" aria-hidden="true">“沙子钻进了表盘里，时间好像停了。”</p>
+        <p class="flight-log-marginal flight-log-marginal--l2" aria-hidden="true">“水只剩最后三口了，但我一点也不慌。”</p>
+        <p class="flight-log-marginal flight-log-marginal--l3" aria-hidden="true">“B612......那是他的家？”</p>
+        <p class="flight-log-marginal flight-log-marginal--r1" aria-hidden="true">“他说，大人们真的非常奇怪。”</p>
+        <p class="flight-log-marginal flight-log-marginal--r2" aria-hidden="true">“这里的夕阳，没有他的星球好看。<br>我画的盒子，他竟然真的看得到羊。”</p>
+        <div class="collectibles" id="collectibles" aria-hidden="true">
+            <span class="collectible collectible--soft" data-symbol="⚘">⚘</span>
+            <span class="collectible" data-symbol="[ ✉ ]">[ ✉ ]</span>
+            <span class="collectible collectible--soft" data-symbol="☁">☁</span>
+            <span class="collectible collectible--soft" data-symbol="✦">✦</span>
+        </div>
+        <div class="flight-modal__scroll" id="flightLogScroll">
+            <p class="flight-log-title" id="flightLogHeading">
+                <span class="flight-log-title-line">1935 - 坠落与初见</span>
+                <span class="flight-log-title-line">1943 - 这一份思念，有了名字</span>
+            </p>
+
+            <div class="flight-timeline-wrap">
+                <div class="flight-center-line" aria-hidden="true">
+                    <svg preserveAspectRatio="none" viewBox="0 0 28 1200" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 14 0 Q 11 100 15 200 Q 12 320 16 440 Q 13 560 15 680 Q 11 800 14 920 Q 16 1040 14 1200" fill="none" stroke="#b2aca2" stroke-width="0.9" stroke-linecap="round" stroke-dasharray="3 6 2 7 4 5" opacity="0.55" />
+                        <path d="M 14 40 Q 16 140 12 240 Q 15 360 13 460" fill="none" stroke="#c8c2b6" stroke-width="0.45" stroke-linecap="round" stroke-dasharray="1 8" opacity="0.35" />
+                    </svg>
+                </div>
+
+                <article class="flight-node flight-node--left flight-node--collage">
+                    <svg class="flight-node__marker" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M 11.2 5.8 Q 14 4.5 16.2 6.4 Q 18 9 16.8 12 Q 15.4 14.8 12 15.6 Q 8.2 14.9 6.8 11.2 Q 6 8.2 8.2 6.2 Q 9.6 5 11.2 5.8 Z" fill="none" stroke="#9e988c" stroke-width="0.85" stroke-linejoin="round" opacity="0.75" />
+                    </svg>
+                    <div class="flight-node__inner" data-flight-reveal>
+                        <div class="flight-node__sketch">
+                            <img src="illustration-1.jpg" alt="撒哈拉的坠落插画">
+                            <div class="flight-node__sketch-notes">
+                                <p>（这是我能想象出的，宇宙最温柔的起点）</p>
+                                <p>（一张画坏了的草图，但我舍不得丢掉）</p>
+                                <p>（星星看起来像是一颗发光的糖果）</p>
+                            </div>
+                        </div>
+                        <p class="flight-node__bridge-note" aria-hidden="true">那是他初次提起的星球</p>
+                        <div class="flight-node__body flight-node__body--has-strip" data-year-wm="1935">
+                            <p class="flight-node__overlap-note" aria-hidden="true">（别碰，墨还没干）</p>
+                            <div class="flight-node__date">
+                                <span class="flight-node__year-wrap">
+                                    <span class="flight-node__year">1935.12</span>
+                                    <svg class="flight-node__year-underline" viewBox="0 0 140 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M 2 8 Q 32 3 58 8 T 110 6 T 136 8" />
+                                    </svg>
+                                </span>
+                                <span class="flight-node__whisper">坠落与寻找</span>
+                            </div>
+                            <h2>撒哈拉的坠落</h2>
+                            <p class="flight-node__text"><span class="flight-node__ink-breath">引擎熄火的那一刻，世界突然变得好安静。漫天的星辰是我唯一的坐标，那一刻我意识到：远离人群的孤独并不算什么，可怕的是身处人群却无人能懂。</span></p>
+                            <p class="flight-node__text">就在最绝望的清晨，我听见一个细小的、像银铃般的声音：“请......给我画一只羊。”</p>
+                            <p class="flight-node__text">那个金头发的小人儿，就那样站在沙丘上，仿佛他一直就在那里等我。</p>
+                            <p class="flight-node__note">——安托万·德·圣埃克苏佩里真实坠机于撒哈拉，后成为《小王子》开篇原型。</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="flight-node flight-node--right flight-node--collage flight-node--cloud">
+                    <svg class="flight-node__marker" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M 11.2 5.8 Q 14 4.5 16.2 6.4 Q 18 9 16.8 12 Q 15.4 14.8 12 15.6 Q 8.2 14.9 6.8 11.2 Q 6 8.2 8.2 6.2 Q 9.6 5 11.2 5.8 Z" fill="none" stroke="#9e988c" stroke-width="0.85" stroke-linejoin="round" opacity="0.75" />
+                    </svg>
+                    <div class="flight-node__inner" data-flight-reveal>
+                        <div class="flight-node__sketch flight-node__sketch--paper">
+                            <img src="illustration-2.jpg" alt="" aria-hidden="true">
+                            <p class="flight-node__sketch-caption">（这是一页被风翻到天空里的草稿）<br>（云把思绪揉得很轻，像没写完的话）<br>（星星看起来像铅笔尖蹭出来的亮点）</p>
+                        </div>
+                        <div class="flight-node__body" data-year-wm="1930">
+                            <div class="flight-node__date">
+                                <span class="flight-node__year-wrap">
+                                    <span class="flight-node__year">1930s</span>
+                                    <svg class="flight-node__year-underline" viewBox="0 0 140 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M 2 7 Q 36 4 62 7 T 108 5.5 T 136 7.5" />
+                                    </svg>
+                                </span>
+                                <span class="flight-node__whisper">云层与凝望</span>
+                            </div>
+                            <h2>云端上的观察</h2>
+                            <p class="flight-node__text">当我驾驶着那架破旧的飞机穿过云层，底下的城市缩小成了发光的点。</p>
+                            <p class="flight-node__text">那些大人们忙着计数、忙着争吵、忙着占领土地，他们拥有数不清的星星，却从未真正看向天空。</p>
+                            <p class="flight-node__text">只有孩子知道，最重要的东西，眼睛是看不见的。</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="flight-node flight-node--left flight-node--collage">
+                    <svg class="flight-node__marker" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M 11.2 5.8 Q 14 4.5 16.2 6.4 Q 18 9 16.8 12 Q 15.4 14.8 12 15.6 Q 8.2 14.9 6.8 11.2 Q 6 8.2 8.2 6.2 Q 9.6 5 11.2 5.8 Z" fill="none" stroke="#9e988c" stroke-width="0.85" stroke-linejoin="round" opacity="0.75" />
+                    </svg>
+                    <div class="flight-node__inner" data-flight-reveal>
+                        <div class="flight-node__sketch">
+                            <img src="illustration-3.jpg" alt="最后的失踪插画">
+                            <div class="flight-node__sketch-notes">
+                                <p>（这是最后一次起飞前，风的样子）</p>
+                                <p>（海雾把航线揉皱了，像一张旧纸）</p>
+                                <p>（我把告别，轻轻折进了星光里）</p>
+                            </div>
+                        </div>
+                        <div class="flight-node__body" data-year-wm="1944">
+                            <div class="flight-node__date">
+                                <span class="flight-node__year-wrap">
+                                    <span class="flight-node__year">1944.07</span>
+                                    <svg class="flight-node__year-underline" viewBox="0 0 140 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M 2 8 Q 30 4 56 8 T 104 6 T 134 8" />
+                                    </svg>
+                                </span>
+                                <span class="flight-node__whisper">告别与星辰</span>
+                            </div>
+                            <h2>最后的失踪</h2>
+                            <p class="flight-node__text">1944年7月31日，最后一次起飞。我没有留下任何告别，就像那个离开地球的小男孩一样。</p>
+                            <p class="flight-node__text">如果有人在夜里看向星空，请记得：其中一颗星上住着我的玫瑰，另一颗星上，藏着我的飞机。</p>
+                            <p class="flight-node__text">我只是回到了我该去的地方。</p>
+                            <p class="flight-node__note">——执行侦察任务时于地中海上空失踪。</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <p class="flight-log-closing">“如果你刚好路过那里，请写信告诉我，他回来了。”</p>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="storyModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div id="foxTamingModal" class="fox-taming-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="foxStepTitle">
+        <div class="fox-taming-modal__backdrop" data-fox-action="close"></div>
+        <div class="fox-taming-modal__panel" role="document">
+            <button type="button" class="fox-taming-modal__close" aria-label="关闭" data-fox-action="close">×</button>
+            <span class="fox-taming-modal__decor fox-taming-modal__decor--star-a" aria-hidden="true">✦</span>
+            <span class="fox-taming-modal__decor fox-taming-modal__decor--star-c" aria-hidden="true">❀</span>
+            <div id="foxStepContainer" class="fox-taming-modal__content"></div>
+            <p id="foxModalToast" class="fox-toast" role="status" aria-live="polite"></p>
+        </div>
+    </div>
+
+    <div id="replyModal" class="reply-slip-anchor" aria-hidden="true">
+        <div class="reply-slip" role="dialog" aria-label="回信便签" tabindex="-1">
+            <div class="reply-slip__fall" id="replySlipFall">
+                <div class="reply-slip__panel">
+                    <div class="reply-slip__inner" id="replySlipInner">
+                        <div class="reply-slip__letter">
+                            <p id="replyModalUserText" class="reply-slip__body reply-slip__body--user"></p>
+                            <p id="replyModalReplyText" class="reply-slip__body reply-slip__body--reply"></p>
+                        </div>
+                        <button type="button" class="reply-slip__rose" id="replyModalRose" aria-label="收起便签">
+                            <img
+                                class="reply-slip__rose-img"
+                                src="pure-rose.png?v=2"
+                                alt=""
+                                loading="eager"
+                                decoding="async"
+                                draggable="false"
+                                onerror="this.onerror=null;this.src='pure-rose.svg';"
+                            />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <div id="b612PostcardCaptureRoot" aria-hidden="true">
+        <div class="b612-postcard-cap__header">
+            <p class="b612-postcard-cap__kicker">B612 · STAR MAIL</p>
+            <p class="b612-postcard-cap__title">星际电报</p>
+        </div>
+        <div class="b612-postcard-cap__art">
+            <img
+                id="b612PostcardTplImg"
+                src="head-avatar.png"
+                alt=""
+                width="96"
+                height="96"
+                decoding="async"
+            />
+        </div>
+        <div id="b612PostcardBody" class="b612-postcard-cap__body"></div>
+        <div class="b612-postcard-cap__footer">
+            <span id="b612PostcardTplDate" class="b612-postcard-cap__date"></span>
+            <span class="b612-postcard-cap__site">✦ little-prince.xyz</span>
+        </div>
+    </div>
+
+    <div id="b612PostcardModal" class="b612-postcard-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="b612PostcardModalTitle">
+        <div class="b612-postcard-modal__backdrop" id="b612PostcardModalBackdrop" aria-hidden="true"></div>
+        <div class="b612-postcard-modal__panel" role="document">
+            <h3 id="b612PostcardModalTitle" class="b612-postcard-modal__title">你的星际明信片</h3>
+            <div id="b612PostcardPreviewHost" class="b612-postcard-modal__preview"></div>
+            <div class="b612-postcard-modal__actions">
+                <button type="button" class="b612-postcard-modal__save" id="b612PostcardSaveBtn">保存图片</button>
+                <button type="button" id="b612PostcardCloseBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="index-main.js?v=1" defer></script>
+</body>
+</html>
