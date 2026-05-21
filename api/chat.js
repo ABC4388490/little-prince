@@ -1,24 +1,19 @@
-import chaptersData from "./chapters.json" with { type: "json" };
+import { readFileSync } from "fs";
+import { join } from "path";
 
-// 扁平化原著段落，用于关键词检索
-const ALL_PASSAGES = (() => {
-  const out = [];
-  const chs = chaptersData?.chapters || [];
-  for (const ch of chs) {
-    const passages = ch?.passages || [];
-    for (const p of passages) {
-      const quotes = p?.quotes || [];
-      const text = quotes.join(" ");
-      if (text.trim()) {
-        out.push({
-          chapter: ch.title || "",
-          text: text,
-        });
-      }
+// 从 chapters.json 扁平化为 {chapter, text} 数组
+const rawChapters = JSON.parse(
+  readFileSync(join(process.cwd(), "api", "chapters.json"), "utf-8")
+);
+const ALL_PASSAGES = [];
+for (const ch of rawChapters.chapters || []) {
+  for (const p of ch.passages || []) {
+    const text = (p.quotes || []).join(" ");
+    if (text.trim()) {
+      ALL_PASSAGES.push({ chapter: ch.title || "", text });
     }
   }
-  return out;
-})();
+}
 
 // 简单关键词检索：取用户最后一条消息，选最相关的 N 段
 function retrievePassages(userText, topN = 4) {
