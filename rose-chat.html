@@ -285,7 +285,7 @@
       animation: echoFadeIn .36s cubic-bezier(0.4, 0, 0.2, 1) both;
     }
 
-    /* ── 反馈按钮（手绘风格）── */
+    /* ── 反馈按钮（手绘 SVG 图标）── */
     .rose-feedback {
       display: flex;
       align-items: center;
@@ -298,36 +298,31 @@
       border: 1px solid rgba(150, 130, 90, 0.22);
       border-radius: 11px 14px 10px 13px;
       cursor: pointer;
-      font-size: 13px;
-      font-family: 'Times New Roman', 'Noto Serif SC', serif;
-      padding: 7px 13px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      width: 36px;
+      height: 34px;
+      padding: 6px;
+      display: grid;
+      place-items: center;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+                  border-color 0.25s ease, background 0.25s ease,
+                  box-shadow 0.25s ease, color 0.25s ease;
       color: rgba(110, 90, 60, 0.55);
       box-shadow:
         0 1px 2px rgba(120, 100, 70, 0.04),
         inset 0 0 0 0.5px rgba(180, 160, 130, 0.06);
-      transform: rotate(-0.5deg);
+      transform: rotate(-0.8deg);
     }
     .rose-feedback__btn:nth-child(2) {
       border-radius: 13px 11px 14px 12px;
-      transform: rotate(0.4deg);
+      transform: rotate(0.6deg);
     }
-    .rose-feedback__icon {
-      font-size: 14px;
-      line-height: 1;
-      opacity: 0.85;
-    }
-    .rose-feedback__label {
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      opacity: 0.7;
+    .rose-feedback__svg {
+      width: 18px;
+      height: 18px;
+      display: block;
     }
     .rose-feedback__btn:hover {
-      transform: scale(1.06) rotate(0deg);
+      transform: scale(1.08) rotate(0deg);
       border-color: rgba(160, 130, 85, 0.42);
       color: rgba(80, 60, 30, 0.78);
       box-shadow:
@@ -337,7 +332,7 @@
     .rose-feedback__btn.is-active {
       background: rgba(241, 222, 165, 0.25);
       border-color: rgba(175, 140, 75, 0.45);
-      color: rgba(140, 100, 30, 0.82);
+      color: rgba(160, 115, 30, 0.82);
       box-shadow:
         0 1px 3px rgba(160, 120, 60, 0.07),
         inset 0 0 0 0.5px rgba(175, 140, 75, 0.18);
@@ -429,8 +424,8 @@
         <div class="rose-echo" aria-live="polite">
           <p id="roseEchoText" class="rose-echo__text"></p>
           <div class="rose-feedback" id="roseFeedback" style="display:none">
-            <button type="button" class="rose-feedback__btn" id="roseLikeBtn" aria-label="喜欢这个回复"><span class="rose-feedback__icon">👍</span><span class="rose-feedback__label">有用</span></button>
-            <button type="button" class="rose-feedback__btn" id="roseDislikeBtn" aria-label="不太满意"><span class="rose-feedback__icon">👎</span><span class="rose-feedback__label">不太好</span></button>
+            <button type="button" class="rose-feedback__btn" id="roseLikeBtn" aria-label="喜欢这个回复"><svg class="rose-feedback__svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22H4a2 2 0 01-2-2v-8a2 2 0 012-2h3"/><path d="M7 10l4.5-6.5a2 2 0 013.3 1.3L16 10h4.5a1.5 1.5 0 011.5 1.5v.5a2 2 0 01-.3 1L18 19a3 3 0 01-2.7 1.5H7"/></svg></button>
+            <button type="button" class="rose-feedback__btn" id="roseDislikeBtn" aria-label="不太满意"><svg class="rose-feedback__svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2h3a2 2 0 012 2v8a2 2 0 01-2 2h-3"/><path d="M17 14l-4.5 6.5a2 2 0 01-3.3-1.3L8 14H3.5A1.5 1.5 0 012 12.5v-.5a2 2 0 01.3-1L6 5a3 3 0 012.7-1.5H17"/></svg></button>
           </div>
         </div>
 

@@ -2239,13 +2239,13 @@ const storyData = {
                 const fb = document.createElement('div');
                 fb.className = 'b612-feedback';
                 const likeBtn = document.createElement('button');
-                likeBtn.className = 'b612-feedback__btn b612-feedback__btn--like';
+                likeBtn.className = 'b612-feedback__btn';
                 likeBtn.setAttribute('aria-label', '喜欢这个回复');
-                likeBtn.innerHTML = '<span class="b612-feedback__icon">👍</span><span class="b612-feedback__label">有用</span>';
+                likeBtn.innerHTML = '<svg class="b612-feedback__svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22H4a2 2 0 01-2-2v-8a2 2 0 012-2h3"/><path d="M7 10l4.5-6.5a2 2 0 013.3 1.3L16 10h4.5a1.5 1.5 0 011.5 1.5v.5a2 2 0 01-.3 1L18 19a3 3 0 01-2.7 1.5H7"/></svg>';
                 const dislikeBtn = document.createElement('button');
-                dislikeBtn.className = 'b612-feedback__btn b612-feedback__btn--dislike';
+                dislikeBtn.className = 'b612-feedback__btn';
                 dislikeBtn.setAttribute('aria-label', '不太满意');
-                dislikeBtn.innerHTML = '<span class="b612-feedback__icon">👎</span><span class="b612-feedback__label">不太好</span>';
+                dislikeBtn.innerHTML = '<svg class="b612-feedback__svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2h3a2 2 0 012 2v8a2 2 0 01-2 2h-3"/><path d="M17 14l-4.5 6.5a2 2 0 01-3.3-1.3L8 14H3.5A1.5 1.5 0 012 12.5v-.5a2 2 0 01.3-1L6 5a3 3 0 012.7-1.5H17"/></svg>';
 
                 const fbKey = 'b612_fb_' + (msgMeta && msgMeta.fbKey ? msgMeta.fbKey : Date.now());
                 const prevRating = loadFeedback(fbKey);
