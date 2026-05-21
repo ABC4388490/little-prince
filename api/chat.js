@@ -15,25 +15,46 @@ for (const ch of rawChapters.chapters || []) {
   }
 }
 
-// 简单关键词检索：取用户最后一条消息，选最相关的 N 段
+// 从用户消息中提取关键词（2-4 字的中文词组）
+function extractKeywords(text) {
+  const cleaned = text.replace(/[，。！？、；：""''（）\s]/g, "");
+  const keywords = [];
+  // 2字词
+  for (let i = 0; i < cleaned.length - 1; i++) {
+    keywords.push(cleaned.slice(i, i + 2));
+  }
+  // 3字词
+  for (let i = 0; i < cleaned.length - 2; i++) {
+    keywords.push(cleaned.slice(i, i + 3));
+  }
+  // 4字词
+  for (let i = 0; i < cleaned.length - 3; i++) {
+    keywords.push(cleaned.slice(i, i + 4));
+  }
+  return keywords;
+}
+
+// 关键词检索：取用户最后一条消息，用中文词组匹配最相关的 N 段
 function retrievePassages(userText, topN = 4) {
   if (!userText || !ALL_PASSAGES.length) return [];
-  const query = userText.toLowerCase();
+  const keywords = extractKeywords(userText);
 
   const scored = ALL_PASSAGES.map((p) => {
-    const t = p.text.toLowerCase();
     let score = 0;
-    // 字面匹配
-    for (let i = 0; i < query.length - 1; i++) {
-      const bigram = query.slice(i, i + 2);
-      if (t.includes(bigram)) score++;
+    // 标题匹配权重更高
+    const chTitle = p.chapter.toLowerCase();
+    for (const kw of keywords) {
+      if (chTitle.includes(kw)) score += 3;
+    }
+    // 正文匹配
+    const t = p.text.toLowerCase();
+    for (const kw of keywords) {
+      if (t.includes(kw)) score += 1;
     }
     return { ...p, score };
   });
 
   scored.sort((a, b) => b.score - a.score);
-
-  // 只保留有实际匹配的
   const matched = scored.filter((s) => s.score > 0).slice(0, topN);
 
   // 去重
