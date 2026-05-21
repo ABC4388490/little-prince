@@ -2239,13 +2239,13 @@ const storyData = {
                 const fb = document.createElement('div');
                 fb.className = 'b612-feedback';
                 const likeBtn = document.createElement('button');
-                likeBtn.className = 'b612-feedback__btn';
+                likeBtn.className = 'b612-feedback__btn b612-feedback__btn--like';
                 likeBtn.setAttribute('aria-label', '喜欢这个回复');
-                likeBtn.textContent = '★';
+                likeBtn.innerHTML = '<span class="b612-feedback__icon">👍</span><span class="b612-feedback__label">有用</span>';
                 const dislikeBtn = document.createElement('button');
-                dislikeBtn.className = 'b612-feedback__btn';
+                dislikeBtn.className = 'b612-feedback__btn b612-feedback__btn--dislike';
                 dislikeBtn.setAttribute('aria-label', '不太满意');
-                dislikeBtn.textContent = '✕';
+                dislikeBtn.innerHTML = '<span class="b612-feedback__icon">👎</span><span class="b612-feedback__label">不太好</span>';
 
                 const fbKey = 'b612_fb_' + (msgMeta && msgMeta.fbKey ? msgMeta.fbKey : Date.now());
                 const prevRating = loadFeedback(fbKey);
