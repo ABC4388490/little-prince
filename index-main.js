@@ -2223,7 +2223,10 @@ const storyData = {
             msg.appendChild(avatar);
             const bubble = document.createElement('div');
             bubble.className = 'b612-chat__bubble';
-            bubble.textContent = String(content || '').trim();
+            const textSpan = document.createElement('span');
+            textSpan.className = 'b612-chat__text';
+            textSpan.textContent = String(content || '').trim();
+            bubble.appendChild(textSpan);
             msg.appendChild(bubble);
             if (createdAt) {
                 const meta = document.createElement('div');
@@ -2345,16 +2348,23 @@ const storyData = {
                     resolve();
                     return;
                 }
+                // 在气泡内找到或创建文字 span，避免覆盖反馈按钮和 meta
+                let textSpan = targetBubble.querySelector('.b612-chat__text');
+                if (!textSpan) {
+                    textSpan = document.createElement('span');
+                    textSpan.className = 'b612-chat__text';
+                    targetBubble.insertBefore(textSpan, targetBubble.firstChild);
+                }
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !text) {
-                    targetBubble.textContent = text;
+                    textSpan.textContent = text;
                     resolve();
                     return;
                 }
-                targetBubble.textContent = '';
+                textSpan.textContent = '';
                 let i = 0;
                 const timer = window.setInterval(() => {
                     i += 1;
-                    targetBubble.textContent = text.slice(0, i);
+                    textSpan.textContent = text.slice(0, i);
                     if (i >= text.length) {
                         window.clearInterval(timer);
                         resolve();

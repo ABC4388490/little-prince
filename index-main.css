@@ -2124,6 +2124,12 @@
             transform: rotate(-6deg);
         }
 
+        .b612-chat__text {
+            display: block;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
         /* 气泡：共用排版，背景/宽度/内边距由角色选择器承担 */
         .b612-chat__bubble {
             box-sizing: border-box;
