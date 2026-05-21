@@ -2240,12 +2240,12 @@ const storyData = {
                 fb.className = 'b612-feedback';
                 const likeBtn = document.createElement('button');
                 likeBtn.className = 'b612-feedback__btn';
-                likeBtn.title = '喜欢这个回复';
-                likeBtn.textContent = '👍';
+                likeBtn.setAttribute('aria-label', '喜欢这个回复');
+                likeBtn.textContent = '★';
                 const dislikeBtn = document.createElement('button');
                 dislikeBtn.className = 'b612-feedback__btn';
-                dislikeBtn.title = '不太满意';
-                dislikeBtn.textContent = '👎';
+                dislikeBtn.setAttribute('aria-label', '不太满意');
+                dislikeBtn.textContent = '✕';
 
                 const fbKey = 'b612_fb_' + (msgMeta && msgMeta.fbKey ? msgMeta.fbKey : Date.now());
                 const prevRating = loadFeedback(fbKey);
