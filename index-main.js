@@ -1907,6 +1907,58 @@ const storyData = {
             }
         }
 
+        // ── 用户反馈存储 ──
+        const FEEDBACK_KEY = 'b612_feedback';
+        function loadFeedback(fbKey) {
+            try {
+                const map = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '{}');
+                return (map && map[fbKey]) || null;
+            } catch (_) { return null; }
+        }
+        function saveFeedback(fbKey, rating) {
+            try {
+                const map = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '{}');
+                if (rating) map[fbKey] = rating;
+                else delete map[fbKey];
+                localStorage.setItem(FEEDBACK_KEY, JSON.stringify(map));
+            } catch (_) {}
+        }
+        function loadAllFeedback() {
+            try {
+                return JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '{}');
+            } catch (_) { return {}; }
+        }
+        function countFeedbackStats() {
+            const map = loadAllFeedback();
+            let likes = 0, dislikes = 0;
+            Object.values(map).forEach(function (v) {
+                if (v === 'like') likes++;
+                else if (v === 'dislike') dislikes++;
+            });
+            return { likes: likes, dislikes: dislikes, total: likes + dislikes };
+        }
+
+        // ── AI / 离线来源追踪 ──
+        const AI_SOURCE_KEY = 'b612_ai_source';
+        function saveAISource(fbKey, isAI) {
+            try {
+                const map = JSON.parse(localStorage.getItem(AI_SOURCE_KEY) || '{}');
+                map[fbKey] = isAI ? 'ai' : 'fallback';
+                localStorage.setItem(AI_SOURCE_KEY, JSON.stringify(map));
+            } catch (_) {}
+        }
+        function loadAISourceStats() {
+            try {
+                const map = JSON.parse(localStorage.getItem(AI_SOURCE_KEY) || '{}');
+                let ai = 0, fb = 0;
+                Object.values(map).forEach(function (v) {
+                    if (v === 'ai') ai++;
+                    else fb++;
+                });
+                return { ai: ai, fallback: fb };
+            } catch (_) { return { ai: 0, fallback: 0 }; }
+        }
+
         // ===== 新增：b612_diary 同步（星空信箱） =====
         function loadB612Diary() {
             try {
@@ -2135,10 +2187,12 @@ const storyData = {
             b612ChatEmpty.style.display = has ? 'none' : 'block';
         }
 
-        function appendChatMessage(role, content, createdAt, extraClass = '') {
+        function appendChatMessage(role, content, createdAt, extraClass = '', msgMeta = null) {
             if (!b612ChatList) return null;
             const msg = document.createElement('div');
             const isUser = role === 'user';
+            const isAssistant = role === 'assistant';
+            const isLoading = extraClass && extraClass.includes('loading');
             msg.className =
                 'b612-chat__msg b612-chat__msg--enter ' +
                 (isUser ? 'b612-chat__msg--user' : 'b612-chat__msg--assistant') +
@@ -2176,6 +2230,39 @@ const storyData = {
                 meta.className = 'b612-chat__meta';
                 meta.textContent = formatTime(createdAt);
                 bubble.appendChild(meta);
+            }
+            // 反馈按钮（AI 回复且非加载占位）
+            if (isAssistant && !isLoading) {
+                const fb = document.createElement('div');
+                fb.className = 'b612-feedback';
+                const likeBtn = document.createElement('button');
+                likeBtn.className = 'b612-feedback__btn';
+                likeBtn.title = '喜欢这个回复';
+                likeBtn.textContent = '👍';
+                const dislikeBtn = document.createElement('button');
+                dislikeBtn.className = 'b612-feedback__btn';
+                dislikeBtn.title = '不太满意';
+                dislikeBtn.textContent = '👎';
+
+                const fbKey = 'b612_fb_' + (msgMeta && msgMeta.fbKey ? msgMeta.fbKey : Date.now());
+                const prevRating = loadFeedback(fbKey);
+                if (prevRating === 'like') likeBtn.classList.add('is-active');
+                if (prevRating === 'dislike') dislikeBtn.classList.add('is-active');
+
+                likeBtn.addEventListener('click', () => {
+                    const cur = loadFeedback(fbKey);
+                    if (cur === 'like') { saveFeedback(fbKey, null); likeBtn.classList.remove('is-active'); }
+                    else { saveFeedback(fbKey, 'like'); likeBtn.classList.add('is-active'); dislikeBtn.classList.remove('is-active'); }
+                });
+                dislikeBtn.addEventListener('click', () => {
+                    const cur = loadFeedback(fbKey);
+                    if (cur === 'dislike') { saveFeedback(fbKey, null); dislikeBtn.classList.remove('is-active'); }
+                    else { saveFeedback(fbKey, 'dislike'); dislikeBtn.classList.add('is-active'); likeBtn.classList.remove('is-active'); }
+                });
+
+                fb.appendChild(likeBtn);
+                fb.appendChild(dislikeBtn);
+                bubble.appendChild(fb);
             }
             b612ChatList.appendChild(msg);
             b612ChatList.scrollTop = b612ChatList.scrollHeight;
@@ -2722,6 +2809,8 @@ const storyData = {
             if (b612ChatSend) b612ChatSend.disabled = true;
             if (b612InlineSend) b612InlineSend.disabled = true;
 
+            const fbKey = 'b612_' + Date.now();
+
             appendChatMessage('user', content, new Date().toISOString());
             const loadingNode = appendChatMessage('assistant', '小王子正在看星星…', null, 'b612-chat__msg--loading');
 
@@ -2767,7 +2856,8 @@ const storyData = {
                 }
                 if (b612Toast) b612Toast.textContent = '我已经收到了。';
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
-                const assistantNode = appendChatMessage('assistant', '', finalCreatedAt);
+                const assistantNode = appendChatMessage('assistant', '', finalCreatedAt, '', { fbKey: fbKey });
+                saveAISource(fbKey, true);
                 await typewriterToBubble(assistantNode && assistantNode.bubble, finalReply);
                 appendB612HistoryEntry({ user: content, reply: finalReply, createdAt: finalCreatedAt });
             } catch (e) {
@@ -2776,7 +2866,8 @@ const storyData = {
                     b612GenStatus.hidden = true;
                 }
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
-                const assistantNode = appendChatMessage('assistant', '', new Date().toISOString());
+                const assistantNode = appendChatMessage('assistant', '', new Date().toISOString(), '', { fbKey: fbKey });
+                saveAISource(fbKey, false);
                 const finalReplyOffline = fingerprintEchoPick(content);
                 const offlineAt = new Date().toISOString();
                 await typewriterToBubble(assistantNode && assistantNode.bubble, finalReplyOffline);

@@ -285,6 +285,39 @@
       animation: echoFadeIn .36s cubic-bezier(0.4, 0, 0.2, 1) both;
     }
 
+    /* ── 反馈按钮 ── */
+    .rose-feedback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .rose-feedback__btn {
+      background: rgba(255, 255, 255, 0.32);
+      border: 1px solid rgba(184, 141, 73, 0.22);
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      color: rgba(140, 120, 90, 0.55);
+    }
+    .rose-feedback__btn:hover {
+      transform: scale(1.12);
+      border-color: rgba(184, 141, 73, 0.45);
+      color: rgba(100, 80, 50, 0.85);
+    }
+    .rose-feedback__btn.is-active {
+      background: rgba(231, 194, 125, 0.2);
+      border-color: rgba(184, 141, 73, 0.5);
+      color: rgba(140, 105, 40, 0.9);
+    }
+
     @keyframes echoFadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
@@ -370,6 +403,10 @@
 
         <div class="rose-echo" aria-live="polite">
           <p id="roseEchoText" class="rose-echo__text"></p>
+          <div class="rose-feedback" id="roseFeedback" style="display:none">
+            <button type="button" class="rose-feedback__btn" id="roseLikeBtn" title="喜欢这个回复">👍</button>
+            <button type="button" class="rose-feedback__btn" id="roseDislikeBtn" title="不太满意">👎</button>
+          </div>
         </div>
 
         <div class="input-wrap">
@@ -469,11 +506,62 @@
 
     sendBtn.addEventListener("click", sendMessage);
 
+    // ── 反馈存储（与 index-main.js 共享同个 localStorage key）──
+    const ROSE_FB = document.getElementById('roseFeedback');
+    const ROSE_LIKE = document.getElementById('roseLikeBtn');
+    const ROSE_DISLIKE = document.getElementById('roseDislikeBtn');
+    let roseFbKey = null;
+    let roseIsAI = false;
+
+    function loadRoseFeedback(k) {
+      try {
+        const map = JSON.parse(localStorage.getItem('b612_feedback') || '{}');
+        return map[k] || null;
+      } catch (_) { return null; }
+    }
+    function saveRoseFeedback(k, rating) {
+      try {
+        const map = JSON.parse(localStorage.getItem('b612_feedback') || '{}');
+        if (rating) map[k] = rating; else delete map[k];
+        localStorage.setItem('b612_feedback', JSON.stringify(map));
+      } catch (_) {}
+    }
+    function saveRoseSource(k, isAI) {
+      try {
+        const map = JSON.parse(localStorage.getItem('b612_ai_source') || '{}');
+        map[k] = isAI ? 'ai' : 'fallback';
+        localStorage.setItem('b612_ai_source', JSON.stringify(map));
+      } catch (_) {}
+    }
+    function resetRoseFeedback(k, isAI) {
+      roseFbKey = k;
+      roseIsAI = isAI;
+      const prev = loadRoseFeedback(k);
+      ROSE_LIKE.classList.toggle('is-active', prev === 'like');
+      ROSE_DISLIKE.classList.toggle('is-active', prev === 'dislike');
+      if (ROSE_FB) ROSE_FB.style.display = 'flex';
+    }
+    if (ROSE_LIKE) {
+      ROSE_LIKE.addEventListener('click', function () {
+        if (!roseFbKey) return;
+        const cur = loadRoseFeedback(roseFbKey);
+        if (cur === 'like') { saveRoseFeedback(roseFbKey, null); ROSE_LIKE.classList.remove('is-active'); }
+        else { saveRoseFeedback(roseFbKey, 'like'); ROSE_LIKE.classList.add('is-active'); ROSE_DISLIKE.classList.remove('is-active'); }
+      });
+    }
+    if (ROSE_DISLIKE) {
+      ROSE_DISLIKE.addEventListener('click', function () {
+        if (!roseFbKey) return;
+        const cur = loadRoseFeedback(roseFbKey);
+        if (cur === 'dislike') { saveRoseFeedback(roseFbKey, null); ROSE_DISLIKE.classList.remove('is-active'); }
+        else { saveRoseFeedback(roseFbKey, 'dislike'); ROSE_DISLIKE.classList.add('is-active'); ROSE_LIKE.classList.remove('is-active'); }
+      });
+    }
+
     function showEcho(text) {
       if (!roseEchoText) return;
       roseEchoText.classList.remove("is-visible");
       roseEchoText.textContent = "";
-      // 强制回流后重新显示
       void roseEchoText.offsetWidth;
       roseEchoText.textContent = text;
       roseEchoText.classList.add("is-visible");
@@ -510,6 +598,7 @@
         const reply = result?.assistant?.content || "";
         if (reply.trim()) {
           showEcho(reply.trim());
+          resetRoseFeedback('rose_' + Date.now(), true);
           return;
         }
       } catch (_) {
@@ -518,7 +607,9 @@
 
       // 离线兜底
       window.setTimeout(() => {
-        showEcho(generateRoseEcho(text));
+        const fallbackText = generateRoseEcho(text);
+        showEcho(fallbackText);
+        resetRoseFeedback('rose_' + Date.now(), false);
       }, 300);
     }
 

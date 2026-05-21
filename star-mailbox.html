@@ -600,6 +600,57 @@
             box-sizing: border-box;
         }
 
+        /* ── 数据看板 ── */
+        .b612-mailbox-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 52px 8px;
+            flex-shrink: 0;
+        }
+        .b612-mailbox-stats__card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(184, 154, 107, 0.2);
+            border-radius: 14px;
+            min-width: 110px;
+            backdrop-filter: blur(4px);
+        }
+        .b612-mailbox-stats__icon {
+            font-size: 20px;
+            opacity: 0.72;
+        }
+        .b612-mailbox-stats__num {
+            font-family: var(--b612-mailbox-font-cn);
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--b612-sidebar-gold);
+            letter-spacing: 0.04em;
+        }
+        .b612-mailbox-stats__label {
+            font-size: 12px;
+            color: var(--b612-mailbox-muted);
+            letter-spacing: 0.06em;
+        }
+        @media (max-width: 768px) {
+            .b612-mailbox-stats {
+                gap: 10px;
+                padding: 0 24px 6px;
+                flex-wrap: wrap;
+            }
+            .b612-mailbox-stats__card {
+                padding: 12px 18px;
+                min-width: 80px;
+            }
+            .b612-mailbox-stats__num {
+                font-size: 18px;
+            }
+        }
+
         @media (max-width: 768px) {
             .b612-mailbox-hero {
                 flex-direction: column;
@@ -727,6 +778,24 @@
                 </div>
             </div>
         </header>
+
+        <div class="b612-mailbox-stats" id="b612MailboxStats" aria-label="信箱统计">
+            <div class="b612-mailbox-stats__card">
+                <span class="b612-mailbox-stats__icon">💬</span>
+                <span class="b612-mailbox-stats__num" id="statsTotalMsgs">0</span>
+                <span class="b612-mailbox-stats__label">总消息</span>
+            </div>
+            <div class="b612-mailbox-stats__card">
+                <span class="b612-mailbox-stats__icon">🤖</span>
+                <span class="b612-mailbox-stats__num" id="statsAIRate">--</span>
+                <span class="b612-mailbox-stats__label">AI 回复率</span>
+            </div>
+            <div class="b612-mailbox-stats__card">
+                <span class="b612-mailbox-stats__icon">❤️</span>
+                <span class="b612-mailbox-stats__num" id="statsLikeRate">--</span>
+                <span class="b612-mailbox-stats__label">好评率</span>
+            </div>
+        </div>
 
         <div class="b612-mailbox-layout">
             <aside class="b612-mailbox-sidebar b612-mailbox-sidebar--chat" aria-label="信件列表">
@@ -1108,7 +1177,49 @@
                 render();
             }
 
+            // ── 数据看板 ──
+            function renderStats() {
+                const totalEl = document.getElementById('statsTotalMsgs');
+                const aiRateEl = document.getElementById('statsAIRate');
+                const likeRateEl = document.getElementById('statsLikeRate');
+                if (!totalEl && !aiRateEl && !likeRateEl) return;
+
+                // 总消息数：从 diary 中统计
+                let totalMsgs = 0;
+                diary.forEach(function (item) {
+                    if (Array.isArray(item.messages)) totalMsgs += item.messages.length;
+                });
+                if (totalEl) totalEl.textContent = totalMsgs;
+
+                // AI vs 离线
+                try {
+                    const srcMap = JSON.parse(localStorage.getItem('b612_ai_source') || '{}');
+                    const vals = Object.values(srcMap);
+                    const aiCount = vals.filter(function (v) { return v === 'ai'; }).length;
+                    const total = vals.length;
+                    if (aiRateEl) {
+                        aiRateEl.textContent = total > 0 ? Math.round(aiCount / total * 100) + '%' : '--';
+                    }
+                } catch (_) {
+                    if (aiRateEl) aiRateEl.textContent = '--';
+                }
+
+                // 好评率
+                try {
+                    const fbMap = JSON.parse(localStorage.getItem('b612_feedback') || '{}');
+                    const fbVals = Object.values(fbMap);
+                    const likes = fbVals.filter(function (v) { return v === 'like'; }).length;
+                    const total = fbVals.length;
+                    if (likeRateEl) {
+                        likeRateEl.textContent = total > 0 ? Math.round(likes / total * 100) + '%' : '--';
+                    }
+                } catch (_) {
+                    if (likeRateEl) likeRateEl.textContent = '--';
+                }
+            }
+
             init();
+            renderStats();
         })();
     </script>
 </body>
