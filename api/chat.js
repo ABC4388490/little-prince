@@ -1,19 +1,4 @@
-import { readFileSync } from "fs";
-import { join } from "path";
-
-// 从 chapters.json 扁平化为 {chapter, text} 数组
-const rawChapters = JSON.parse(
-  readFileSync(join(process.cwd(), "api", "chapters.json"), "utf-8")
-);
-const ALL_PASSAGES = [];
-for (const ch of rawChapters.chapters || []) {
-  for (const p of ch.passages || []) {
-    const text = (p.quotes || []).join(" ");
-    if (text.trim()) {
-      ALL_PASSAGES.push({ chapter: ch.title || "", text });
-    }
-  }
-}
+import ALL_PASSAGES from "./chapters-data.js";
 
 // 从用户消息中提取关键词（2-4 字的中文词组）
 function extractKeywords(text) {

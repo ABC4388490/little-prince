@@ -22,3 +22,4 @@ message-api/rag/chunk_meta.json
 # Local dev
 serve.js
 server.js
+.env*.local
