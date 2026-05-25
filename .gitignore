@@ -17,7 +17,7 @@ message-api/messages.db
 message-api/target/
 message-api/rag/index.faiss
 message-api/rag/chunk_order.json
-message-api/rag/chunk_meta.json
+# message-api/rag/chunk_meta.json — 保留，用于部署
 
 # Local dev
 serve.js
