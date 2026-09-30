@@ -1,3 +1,29 @@
+// Activate images only when their page or overlay is opened, then as they approach the viewport.
+function activateDeferredImage(image) {
+    const source = image.dataset.src;
+    if (!source) return;
+    image.decoding = 'async';
+    image.loading = 'eager';
+    image.src = source;
+    delete image.dataset.src;
+}
+
+const deferredImageObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        activateDeferredImage(entry.target);
+        observer.unobserve(entry.target);
+    });
+}, { rootMargin: '160px' }) : null;
+
+function loadDeferredImages(root, immediate = false) {
+    if (!root) return;
+    root.querySelectorAll('img[data-src]').forEach((image) => {
+        if (immediate || !deferredImageObserver) activateDeferredImage(image);
+        else deferredImageObserver.observe(image);
+    });
+}
+
 const storyData = {
             rose: {
             title: '关于她',
@@ -586,7 +612,7 @@ const storyData = {
                         <h3 class="fox-step__question">${titleMap[step]}</h3>
                         <div class="fox-step__body">
                             <div class="fox-step__illustration">
-                                <img src="./images/fox-memory.png" alt="" onerror="this.onerror=null;this.src='fox-memory.png';">
+                                <img src="fox-memory.png" alt="" decoding="async">
                             </div>
                             <div class="fox-step__input-wrap">
                                 <textarea id="foxStepInput" class="fox-step__input" maxlength="50" placeholder="${placeholderMap[step]}">${escapeHtml(value)}</textarea>
@@ -615,7 +641,7 @@ const storyData = {
                             <p class="fox-step__subtitle">关于驯服与连接</p>
                             <p class="fox-step__quote">“如果你驯服了我，我们就彼此需要了。”</p>
                             <div class="fox-step__scene">
-                                <img src="fox-scene.png" alt="" onerror="this.onerror=null;this.src='fox+little-prince.png';">
+                                    <img src="fox+little-prince.png" alt="" decoding="async">
                             </div>
                         </div>
                         <div class="fox-step__welcome-btn-wrap">
@@ -654,7 +680,7 @@ const storyData = {
                         <div>
                             <div class="fox-loading__stars">✦ ✧ ✦</div>
                             <div class="fox-loading__scene">
-                                <img src="fox-scene.png" alt="" onerror="this.onerror=null;this.src='fox+little-prince.png';">
+                                    <img src="fox+little-prince.png" alt="" decoding="async">
                             </div>
                             <p>狐狸正在思考…<br>关于你们之间独一无二的关系</p>
                         </div>
@@ -676,7 +702,7 @@ const storyData = {
                         <div class="fox-result__layout">
                             <div class="fox-result__paper">${escapeHtml(foxState.quote)}</div>
                             <div class="fox-result__scene">
-                                <img src="fox-prince.png" alt="" onerror="this.onerror=null;this.src='fox+little-prince.png';">
+                                    <img src="fox+little-prince.png" alt="" decoding="async">
                             </div>
                         </div>
                         <p class="fox-result__footnote">谢谢你愿意理解驯服的意义。</p>
@@ -1147,6 +1173,7 @@ const storyData = {
 
         function openFlightLog() {
             flightLogModal.classList.add('active');
+            loadDeferredImages(flightLogModal);
             flightLogModal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
             flightLogScroll.scrollTop = 0;
@@ -1214,6 +1241,13 @@ const storyData = {
         //   https://little-prince.xyz/?api=https://little-prince-production.up.railway.app/api
         const queryApiBase = new URLSearchParams(location.search).get('api');
         const envApiBase = (window.LITTLE_PRINCE_API_BASE || '').trim();
+        let b612SyncStarted = false;
+        function startB612Sync() {
+            if (b612SyncStarted) return;
+            b612SyncStarted = true;
+            void loadB612Chat();
+            void syncProfileFromServer();
+        }
         const CHAT_API_CANDIDATES = [];
         function pushChatApiCand(raw) {
             const s = String(raw || '').trim();
@@ -1232,6 +1266,12 @@ const storyData = {
         }
         pushChatApiCand('/api');
         pushChatApiCand('https://little-prince-message-api-production-a183.up.railway.app/api');
+
+        // Profile and conversations live in the memory service; same-origin chat remains first for chat.
+        const MEMORY_API_CANDIDATES = [...new Set([
+            queryApiBase, envApiBase,
+            ...CHAT_API_CANDIDATES.filter((base) => base !== '/api'), '/api'
+        ].filter(Boolean))];
 
         function normalizeApiBase(raw) {
             const s = String(raw || '').trim().replace(/\/+$/, '');
@@ -1807,6 +1847,7 @@ const storyData = {
             replyModal.classList.remove('active');
             if (replySlipFall) void replySlipFall.offsetHeight;
             replyModal.classList.add('active');
+            loadDeferredImages(replyModal);
             replyModal.setAttribute('aria-hidden', 'false');
             playReplyBell();
 
@@ -1861,12 +1902,15 @@ const storyData = {
         async function fetchChatWithFallback(path, options) {
             const cleanPath = String(path || '').startsWith('/') ? String(path) : '/' + String(path || '');
             let lastError = null;
-            for (const rawBase of CHAT_API_CANDIDATES) {
+            const candidates = /^\/(profile|conversations)(\/|\?|$)/.test(cleanPath) ? MEMORY_API_CANDIDATES : CHAT_API_CANDIDATES;
+            for (const rawBase of candidates) {
                 const base = normalizeApiBase(rawBase);
                 if (!base) continue;
+                const controller = !options?.signal && (!options?.method || options.method === 'GET') ? new AbortController() : null;
+                const timer = controller ? window.setTimeout(() => controller.abort(), 10000) : null;
                 try {
                     const url = base + cleanPath;
-                    const res = await fetch(url, options);
+                    const res = await fetch(url, controller ? { ...options, signal: controller.signal } : options);
                     if (!res.ok) {
                         let bodyText = '';
                         try {
@@ -1880,6 +1924,8 @@ const storyData = {
                     return await res.json();
                 } catch (err) {
                     lastError = err;
+                } finally {
+                    if (timer !== null) window.clearTimeout(timer);
                 }
             }
             throw lastError || new Error('all endpoints failed');
@@ -2221,7 +2267,7 @@ const storyData = {
             img.alt = '';
             img.decoding = 'async';
             img.loading = 'lazy';
-            img.src = isUser ? 'letter3.png' : 'head-avatar.png';
+            img.src = isUser ? 'letter3.png' : 'head-avatar.webp';
             img.onerror = () => {
                 if (isUser && img.dataset.fallbackRose !== '1') {
                     img.dataset.fallbackRose = '1';
@@ -2331,6 +2377,8 @@ const storyData = {
         function openB612StoryModal() {
             if (!b612StoryModal) return;
             b612StoryModal.classList.add('active');
+            loadDeferredImages(b612StoryModal);
+            startB612Sync();
             b612StoryModal.setAttribute('aria-hidden', 'false');
             if (b612Input) b612Input.focus();
         }
@@ -2344,6 +2392,7 @@ const storyData = {
         function openB612ChatModal() {
             if (!b612ChatModal) return;
             b612ChatModal.classList.add('active');
+            startB612Sync();
             b612ChatModal.setAttribute('aria-hidden', 'false');
             ensureOpeningAssistantMessage();
             maybeOpenWithFoxContext();
@@ -2405,9 +2454,11 @@ const storyData = {
             return b612ConversationId;
         }
 
-        async function loadB612Chat() {
+        async function loadB612Chat(initialUserCount = b612ChatList?.querySelectorAll('.b612-chat__msg--user').length || 0) {
+            const hasNewLocalMessages = () => (b612ChatList?.querySelectorAll('.b612-chat__msg--user').length || 0) !== initialUserCount;
             if (b612UseLegacyApi) {
                 const items = await fetchChatWithFallback('/messages', { method: 'GET' });
+                if (hasNewLocalMessages()) return;
                 if (Array.isArray(items)) {
                     renderChatHistory(
                         items.flatMap((m) => {
@@ -2432,6 +2483,7 @@ const storyData = {
             try {
                 const cid = await ensureConversation();
                 const items = await fetchChatWithFallback('/conversations/' + cid + '/messages', { method: 'GET' });
+                if (hasNewLocalMessages()) return;
                 if (Array.isArray(items)) {
                     renderChatHistory(items);
                     renderStarsFromChat(items);
@@ -2440,7 +2492,7 @@ const storyData = {
                 if (isDatabaseNotConfiguredError(e)) {
                     b612UseLegacyApi = true;
                     b612ConversationId = null;
-                    return loadB612Chat();
+                    return loadB612Chat(initialUserCount);
                 }
                 // 后端不可达时保持安静，仅提示一次
                 if (b612Toast) b612Toast.textContent = '暂时连不上 B612 的邮局（后端）。你仍可以写下话，但跨设备记忆需要后端恢复。';
@@ -2697,7 +2749,38 @@ const storyData = {
             return `${y}-${m}-${day}`;
         }
 
+        let postcardLibraryPromise = null;
+        let postcardRenderId = 0;
+
+        function loadPostcardLibrary() {
+            if (typeof window.html2canvas === 'function') return Promise.resolve();
+            if (postcardLibraryPromise) return postcardLibraryPromise;
+            postcardLibraryPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'vendor/html2canvas-1.4.1.min.js';
+                script.async = true;
+                let settled = false;
+                const finish = (error) => {
+                    if (settled) return;
+                    settled = true;
+                    window.clearTimeout(timer);
+                    script.onload = script.onerror = null;
+                    if (error) {
+                        script.remove();
+                        postcardLibraryPromise = null;
+                        reject(error);
+                    } else resolve();
+                };
+                const timer = window.setTimeout(() => finish(new Error('postcard library timeout')), 15000);
+                script.onload = () => finish(typeof window.html2canvas === 'function' ? null : new Error('postcard library unavailable'));
+                script.onerror = () => finish(new Error('postcard library failed'));
+                document.head.appendChild(script);
+            });
+            return postcardLibraryPromise;
+        }
+
         function clearB612PostcardModalPreview() {
+            postcardRenderId += 1;
             const host = document.getElementById('b612PostcardPreviewHost');
             if (!host) return;
             host.querySelectorAll('canvas').forEach((c) => {
@@ -2726,11 +2809,10 @@ const storyData = {
             const dateEl = document.getElementById('b612PostcardTplDate');
             const imgEl = document.getElementById('b612PostcardTplImg');
             if (!modal || !host || !root || !bodyEl || !dateEl) return;
-            if (typeof html2canvas !== 'function') {
-                if (b612Toast) b612Toast.textContent = '明信片组件未加载完成，请刷新页面再试。';
-                return;
-            }
             clearB612PostcardModalPreview();
+            const renderId = postcardRenderId;
+            const saveButton = document.getElementById('b612PostcardSaveBtn');
+            if (saveButton) saveButton.disabled = true;
             bodyEl.textContent = String(replyText || '').trim();
             dateEl.textContent = formatPostcardDateDots(createdAtIso);
             b612PostcardLastFilename = 'b612-postcard-' + formatPostcardFilenameDate(createdAtIso) + '.png';
@@ -2744,6 +2826,9 @@ const storyData = {
 
             const run = async () => {
                 try {
+                    await loadPostcardLibrary();
+                    if (renderId !== postcardRenderId) return;
+                    loadDeferredImages(root, true);
                     if (imgEl && !imgEl.complete) {
                         await new Promise((resolve) => {
                             imgEl.addEventListener('load', resolve, { once: true });
@@ -2757,10 +2842,16 @@ const storyData = {
                         useCORS: true,
                         logging: false,
                     });
+                    if (renderId !== postcardRenderId) {
+                        canvas.width = canvas.height = 0;
+                        return;
+                    }
                     b612PostcardLastCanvas = canvas;
                     host.innerHTML = '';
                     host.appendChild(canvas);
+                    if (saveButton) saveButton.disabled = false;
                 } catch (err) {
+                    if (renderId !== postcardRenderId) return;
                     host.innerHTML = '';
                     const errP = document.createElement('p');
                     errP.className = 'b612-postcard-modal__loading';
@@ -3505,9 +3596,12 @@ const storyData = {
             document.querySelectorAll('.page').forEach((page) => {
                 page.classList.toggle('active', page.id === pageId);
             });
+            loadDeferredImages(document.getElementById(pageId));
+            document.documentElement.classList.toggle('page-home', pageId === 'home');
             document.body.classList.toggle('page-home', pageId === 'home');
             document.body.classList.toggle('page-b612', pageId === 'b612');
             document.body.classList.toggle('page-journey', pageId === 'journey');
+            if (pageId === 'b612') startB612Sync();
             if (pageId !== 'b612') {
                 closeB612StoryModal();
                 closeB612ChatModal();
@@ -3572,9 +3666,6 @@ const storyData = {
                 closeModal();
             }
         });
-
-        loadB612Chat();
-        syncProfileFromServer();
 
         setupTimelineCurves();
         initJourneyMap();

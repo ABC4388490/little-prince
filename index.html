@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="page-home">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,11 @@
     <link rel="apple-touch-icon" href="./pure-rose.png?v=4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@400;500;600&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Caveat:wght@400;500;600&family=Indie+Flower&family=Kalam:wght@300;400&family=Liu+Jian+Mao+Cao&family=Long+Cang&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&family=Patrick+Hand&family=Shadows+Into+Light&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="index-main.css?v=1">
+    <link rel="stylesheet" href="index-main.css?v=3">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap"></noscript>
 </head>
-<body>
+<body class="page-home">
     <!-- 手绘风格 SVG 滤镜：给线条加轻微抖动，模拟铅笔/钢笔手绘感 -->
     <svg style="position:absolute;width:0;height:0" aria-hidden="true">
         <filter id="b612-sketch-filter" x="-20%" y="-20%" width="140%" height="140%">
@@ -53,13 +54,15 @@
         <div id="home" class="page active">
             <img
                 class="home-journey-cutout"
-                src="journey-cutout.png"
+                data-src="journey-cutout.webp"
+                width="1024"
+                height="683"
                 alt=""
                 aria-hidden="true"
             >
             <img
                 class="home-right-illustration"
-                src="homebg-cutout.webp?v=1"
+                data-src="homebg-cutout.webp?v=1"
                 alt=""
                 aria-hidden="true"
                 width="1254"
@@ -71,7 +74,11 @@
             <header class="home-page__intro">
                 <img
                     class="home-top-illustration"
-                    src="homebg3-cutout-trim.png?v=2"
+                    src="homebg3-cutout-trim.webp"
+                    width="600"
+                    height="496"
+                    fetchpriority="high"
+                    decoding="async"
                     alt=""
                     aria-hidden="true"
                 >
@@ -80,10 +87,11 @@
                 </div>
                 <p class="home-page__subtitle">follow the stars, find the heart</p>
             </header>
+            <p class="home-scroll-hint">四段故事，慢慢往下读 <span aria-hidden="true">↓</span></p>
             <div class="home-grid">
                 <button type="button" class="scene-card" data-home-action="rose">
                     <span class="scene-image">
-                        <img src="little-rose.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                        <img src="little-rose-384.webp" srcset="little-rose-384.webp 384w, little-rose.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="768" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
                     </span>
                     <span class="scene-content">
                         <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
@@ -99,7 +107,7 @@
 
                 <button type="button" class="scene-card" data-home-action="journey">
                     <span class="scene-image">
-                        <img src="little-plants.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                        <img src="little-plants-384.webp" srcset="little-plants-384.webp 384w, little-plants.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="512" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
                     </span>
                     <span class="scene-content">
                         <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
@@ -115,7 +123,7 @@
 
                 <button type="button" class="scene-card" data-home-action="fox">
                     <span class="scene-image">
-                        <img src="little-fox.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                        <img src="little-fox-384.webp" srcset="little-fox-384.webp 384w, little-fox.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="768" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
                     </span>
                     <span class="scene-content">
                         <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
@@ -131,7 +139,7 @@
 
                 <button type="button" class="scene-card" data-home-action="b612">
                     <span class="scene-image">
-                        <img src="little-prince.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                        <img src="little-prince-384.webp" srcset="little-prince-384.webp 384w, little-prince.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="512" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
                     </span>
                     <span class="scene-content">
                         <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
@@ -175,7 +183,7 @@
         <div id="journey" class="page">
             <img
                 class="journey-left-illustration"
-                src="journey-cutout.png"
+                data-src="journey-cutout.png"
                 alt=""
                 aria-hidden="true"
                 onerror="this.onerror=null;this.src='journey-pictuer-cutout.png';"
@@ -215,14 +223,14 @@
                     </svg>
                     <span class="journey-map__ship" id="journeyMapShip" aria-hidden="true">✈</span>
                     <div class="journey-map__nodes" id="journeyMapNodes">
-                        <button type="button" class="journey-map__node" data-target="planet-0"><span class="journey-map__planet"><img class="journey-map__planet-img" src="B612-cutout.png" alt="01 B612" onerror="this.onerror=null;this.src='B612.png';"></span><span class="journey-map__name"><b>01</b>B612</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-1"><span class="journey-map__planet"><img class="journey-map__planet-img" src="plant+king-cutout.png" alt="02 国王" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>02</b>国王</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-2"><span class="journey-map__planet"><img class="journey-map__planet-img" src="vain-man-cutout.png" alt="03 爱慕虚荣者" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>03</b>爱慕虚荣者</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-3"><span class="journey-map__planet"><img class="journey-map__planet-img" src="drunkard.png?v=2" alt="04 酒鬼" onerror="this.onerror=null;this.src='drunkard.png?v=2';"></span><span class="journey-map__name"><b>04</b>酒鬼</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-4"><span class="journey-map__planet"><img class="journey-map__planet-img" src="business.png?v=2" alt="05 商人" onerror="this.onerror=null;this.src='business.png?v=2';"></span><span class="journey-map__name"><b>05</b>商人</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-5"><span class="journey-map__planet"><img class="journey-map__planet-img" src="lightpeople-cutout.png?v=2" alt="06 点灯人" onerror="this.onerror=null;this.src='lightpeople.png?v=2';"></span><span class="journey-map__name"><b>06</b>点灯人</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-6"><span class="journey-map__planet"><img class="journey-map__planet-img" src="geography-cutout.png?v=2" alt="07 地理学家" onerror="this.onerror=null;this.src='geogrophy.png?v=2';"></span><span class="journey-map__name"><b>07</b>地理学家</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-7"><span class="journey-map__planet"><img class="journey-map__planet-img" src="back.png" alt="08 回到初心" onerror="this.onerror=null;this.src='planet-08.png';"></span><span class="journey-map__name"><b>08</b>回到初心</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-0"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="B612-cutout.png" alt="01 B612" onerror="this.onerror=null;this.src='B612.png';"></span><span class="journey-map__name"><b>01</b>B612</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-1"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="plant+king-cutout.png" alt="02 国王" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>02</b>国王</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-2"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="vain-man-cutout.png" alt="03 爱慕虚荣者" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>03</b>爱慕虚荣者</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-3"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="drunkard.png?v=2" alt="04 酒鬼" onerror="this.onerror=null;this.src='drunkard.png?v=2';"></span><span class="journey-map__name"><b>04</b>酒鬼</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-4"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="business.png?v=2" alt="05 商人" onerror="this.onerror=null;this.src='business.png?v=2';"></span><span class="journey-map__name"><b>05</b>商人</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-5"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="lightpeople-cutout.png?v=2" alt="06 点灯人" onerror="this.onerror=null;this.src='lightpeople.png?v=2';"></span><span class="journey-map__name"><b>06</b>点灯人</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-6"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="geography-cutout.png?v=2" alt="07 地理学家" onerror="this.onerror=null;this.src='geogrophy.png?v=2';"></span><span class="journey-map__name"><b>07</b>地理学家</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-7"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="back.png" alt="08 回到初心" onerror="this.onerror=null;this.src='planet-08.png';"></span><span class="journey-map__name"><b>08</b>回到初心</span></button>
                     </div>
                 </div>
                 <button type="button" class="journey-start-btn">★ 从第一颗星球开始</button>
@@ -235,12 +243,12 @@
                     <div class="timeline-dot"></div>
                     <div class="journey-companions" aria-hidden="true">
                         <span class="journey-companion journey-companion--petal" data-speed="0.06" data-axis="xy" style="left: 5%; top: -8px; --companion-base: rotate(-14deg);">
-                            <img src="assets_companions/petals.png?v=2" alt="">
+                            <img data-src="assets/companions/petals.png?v=2" alt="">
                         </span>
                     </div>
                     <div class="timeline-card" onclick="openModal('rose')">
                         <div class="journey-card-media journey-card-media--chapter1" aria-hidden="true">
-                            <img src="plant+rose.png" alt="" />
+                            <img data-src="plant+rose.png" alt="" />
                             <div class="chapter-figure-caption">（她在风里轻轻呼吸）</div>
                         </div>
                         <h3>第一章 自己的星球</h3>
@@ -257,14 +265,14 @@
                     <div class="timeline-dot"></div>
                     <div class="journey-companions" aria-hidden="true">
                         <span class="journey-companion journey-companion--cactus" data-speed="0.02" data-axis="y" style="left: 42%; top: 8%; --companion-base: rotate(-5deg);">
-                            <img src="assets_companions/cactus.png?v=4" alt="">
+                            <img data-src="assets/companions/cactus.png?v=4" alt="">
                         </span>
                         <span class="journey-companion journey-companion--stones" data-speed="0.01" data-axis="y" style="left: 58%; top: 62%; --companion-base: rotate(5deg);">
-                            <img src="assets_companions/stones.png?v=4" alt="">
+                            <img data-src="assets/companions/stones.png?v=4" alt="">
                         </span>
                     </div>
                     <div class="timeline-card timeline-card--overflow" onclick="openModal('planets')">
-                        <div class="journey-card-media" aria-hidden="true"><img src="plant+king.png?v=2" alt="" /></div>
+                        <div class="journey-card-media" aria-hidden="true"><img data-src="plant+king.png?v=2" alt="" /></div>
                         <h3>第二章 漫游的开始</h3>
                         <p class="narrative no-indent">后来我离开了自己的星球，在漫长的路上见过国王、自命者、商人和点灯人。他们都很忙，忙到忘了抬头看一眼星空，也忘了问自己为什么要活得这么匆忙... ✉</p>
                         <p class="timeline-thought">“我看着他们匆匆来去，才发现很少有人愿意抬头看星星。”</p>
@@ -279,7 +287,7 @@
                 <div class="timeline-item" id="planet-2">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('desert')">
-                        <div class="journey-card-media" aria-hidden="true"><img src="vain man.png?v=2" alt="" /></div>
+                        <div class="journey-card-media" aria-hidden="true"><img data-src="vain man.png?v=2" alt="" /></div>
                         <h3>第三章 来到地球</h3>
                         <p class="narrative">我降落在了撒哈拉。这里只有一望无际的沙丘和沉默的星星。直到我遇见了一个飞行员，他为我画了一只装在箱子里的羊……沙漠之所以美丽，是因为它在某个地方藏着一口井。 ✎</p>
                         <p class="timeline-thought">“我并不怕孤独，我怕的是没有人真正听懂我。”</p>
@@ -293,7 +301,7 @@
                 <div class="timeline-item" id="planet-3">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('fox')">
-                        <div class="journey-card-media" aria-hidden="true"><img src="drunkard.png?v=2" alt="" /></div>
+                        <div class="journey-card-media" aria-hidden="true"><img data-src="drunkard.png?v=2" alt="" /></div>
                         <h3>第四章 狐狸的秘密</h3>
                         <p class="narrative no-indent">在麦田边，我遇见了那只狐狸。它让我明白“驯服”不是占有，而是让彼此在世界里有了名字。原来我为玫瑰花费的每一分钟，都是她独一无二的原因... ✉</p>
                         <p class="timeline-thought">“当我愿意靠近你时，我们就会彼此需要，彼此独一无二。”</p>
@@ -307,7 +315,7 @@
                 <div class="timeline-item" id="planet-4">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('watering')">
-                        <div class="journey-card-media" aria-hidden="true"><img src="business.png?v=4" alt="" /></div>
+                        <div class="journey-card-media" aria-hidden="true"><img data-src="business.png?v=4" alt="" /></div>
                         <h3>第五章 回忆与反思</h3>
                         <p class="narrative">当我准备离开时，我终于懂了：爱不是把对方留在身边，而是愿意为她负责，愿意在她脆弱的时候回头。很多答案都来得太晚，但我还是想把它们写下来... ✎</p>
                         <p class="timeline-thought">“直到离开前我才明白：真正重要的东西，用眼睛是看不见的。”</p>
@@ -321,7 +329,7 @@
                 <div class="timeline-item" id="planet-5">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('lamplighter')">
-                        <div class="journey-card-media" aria-hidden="true"><img src="lightpeople.png?v=2" alt="" /></div>
+                        <div class="journey-card-media" aria-hidden="true"><img data-src="lightpeople.png?v=2" alt="" /></div>
                         <h3>第六章 点灯人的夜</h3>
                         <p class="narrative no-indent">在最小最忙的星球上，点灯人一遍遍点亮又熄灭路灯。他没有时间看风景，却一直守着光的节奏。那一刻我想：也许责任，常常就是在无人注视时依然重复地温柔。 ✦</p>
                         <p class="timeline-thought">“他很累，却没有放弃让黑夜有一点点亮。”</p>
@@ -335,7 +343,7 @@
                 <div class="timeline-item" id="planet-6">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('scholar')">
-                        <div class="journey-card-media" aria-hidden="true"><img src="geogrophy.png?v=2" alt="" /></div>
+                        <div class="journey-card-media" aria-hidden="true"><img data-src="geogrophy.png?v=2" alt="" /></div>
                         <h3>第七章 学者的地图</h3>
                         <p class="narrative">学者知道山川河流的名字，却从不亲自出发。他教会我“记录”很重要，但更重要的是亲眼看见、亲手触碰。地图能标出路，却不能替你走路。 ✎</p>
                         <p class="timeline-thought">“知道很多名字，不等于真正认识这个世界。”</p>
@@ -349,7 +357,7 @@
                 <div class="timeline-item" id="planet-7">
                     <div class="timeline-dot"></div>
                     <div class="timeline-card" onclick="openModal('return')">
-                        <div class="journey-card-media" aria-hidden="true"><img src="fox+little-prince.png?v=2" alt="" /></div>
+                        <div class="journey-card-media" aria-hidden="true"><img data-src="fox+little-prince.png?v=2" alt="" /></div>
                         <h3>第八章 回到地球</h3>
                         <p class="narrative no-indent">当我再次望向地球，才明白旅程并不是为了离开，而是为了带着新的眼睛回来。狐狸、玫瑰、沙漠与井，都在我心里有了新的位置。故事没有结束，它只是变成了你继续书写的那一页。 ☄</p>
                         <p class="timeline-thought">“真正的归途，是带着爱与责任回到最初的地方。”</p>
@@ -413,7 +421,7 @@
                 </div>
 
                 <div class="hero-illustration">
-                    <img src="journey-pictuer-cutout.png?v=1" alt="little prince corner">
+                    <img data-src="journey-pictuer-cutout.png?v=1" alt="little prince corner">
                 </div>
 
             </section>
@@ -432,7 +440,7 @@
                 <p class="b612-story-modal__chapter" id="b612StoryTitle">B612 · 夜色信箱</p>
                 <h3 class="b612-story-modal__title">B612 · 和小王子说话</h3>
                 <div class="b612-story-modal__illustration" aria-hidden="true">
-                    <img src="chapter-cutout.png" alt="">
+                    <img data-src="chapter-cutout.png" alt="">
                     <span class="b612-story-modal__sparkle b612-story-modal__sparkle--s1">✦</span>
                     <span class="b612-story-modal__sparkle b612-story-modal__sparkle--s2">✦</span>
                     <span class="b612-story-modal__sparkle b612-story-modal__sparkle--s3">✦</span>
@@ -503,7 +511,7 @@
 
                     <div class="journey-chapter-modal__layout">
                         <div class="journey-chapter-modal__left" aria-hidden="true">
-                            <img id="journeyChapterImage" class="journey-chapter-modal__image" src="" alt="">
+                            <img id="journeyChapterImage" class="journey-chapter-modal__image"  alt="">
                             <div class="journey-chapter-modal__mist" aria-hidden="true"></div>
                         </div>
 
@@ -588,7 +596,7 @@
                     </svg>
                     <div class="flight-node__inner" data-flight-reveal>
                         <div class="flight-node__sketch">
-                            <img src="illustration-1.jpg" alt="撒哈拉的坠落插画">
+                            <img data-src="illustration-1.jpg" alt="撒哈拉的坠落插画">
                             <div class="flight-node__sketch-notes">
                                 <p>（这是我能想象出的，宇宙最温柔的起点）</p>
                                 <p>（一张画坏了的草图，但我舍不得丢掉）</p>
@@ -622,7 +630,7 @@
                     </svg>
                     <div class="flight-node__inner" data-flight-reveal>
                         <div class="flight-node__sketch flight-node__sketch--paper">
-                            <img src="illustration-2.jpg" alt="" aria-hidden="true">
+                            <img data-src="illustration-2.jpg" alt="" aria-hidden="true">
                             <p class="flight-node__sketch-caption">（这是一页被风翻到天空里的草稿）<br>（云把思绪揉得很轻，像没写完的话）<br>（星星看起来像铅笔尖蹭出来的亮点）</p>
                         </div>
                         <div class="flight-node__body" data-year-wm="1930">
@@ -649,7 +657,7 @@
                     </svg>
                     <div class="flight-node__inner" data-flight-reveal>
                         <div class="flight-node__sketch">
-                            <img src="illustration-3.jpg" alt="最后的失踪插画">
+                            <img data-src="illustration-3.jpg" alt="最后的失踪插画">
                             <div class="flight-node__sketch-notes">
                                 <p>（这是最后一次起飞前，风的样子）</p>
                                 <p>（海雾把航线揉皱了，像一张旧纸）</p>
@@ -713,7 +721,7 @@
                         <button type="button" class="reply-slip__rose" id="replyModalRose" aria-label="收起便签">
                             <img
                                 class="reply-slip__rose-img"
-                                src="pure-rose.png?v=2"
+                                data-src="pure-rose.png?v=2"
                                 alt=""
                                 loading="eager"
                                 decoding="async"
@@ -727,7 +735,6 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <div id="b612PostcardCaptureRoot" aria-hidden="true">
         <div class="b612-postcard-cap__header">
@@ -737,7 +744,7 @@
         <div class="b612-postcard-cap__art">
             <img
                 id="b612PostcardTplImg"
-                src="head-avatar.png"
+                data-src="head-avatar.webp"
                 alt=""
                 width="96"
                 height="96"
@@ -763,6 +770,6 @@
         </div>
     </div>
 
-    <script src="index-main.js?v=1" defer></script>
+    <script src="index-main.js?v=3" defer></script>
 </body>
 </html>
