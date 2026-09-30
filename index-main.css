@@ -24,7 +24,7 @@
             --bubble-prince-border: rgba(150, 160, 180, 0.2);
             --bubble-prince-text: #555;
             /* 优先使用 Windows 的 Segoe Script；其余为回退 */
-            --font-hand: 'Segoe Script', 'Indie Flower', 'Caveat', 'Shadows Into Light', 'Patrick Hand', 'Segoe Print', cursive;
+            --font-hand: 'Segoe Script', 'Caveat', 'Segoe Print', cursive;
             --font-cn: 'LXGW WenKai', 'STKaiti', 'KaiTi', serif;
             --font-en-title: var(--font-hand), 'Cormorant Garamond', serif;
             --ink: #3d2b1f;
@@ -70,7 +70,7 @@
             background-color: #f4eee2;
             background-image:
                 linear-gradient(rgba(246, 242, 234, 0.24), rgba(246, 242, 234, 0.24)),
-                url("b612background.png");
+                url("b612background.webp");
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -91,7 +91,7 @@
             background-color: #f8f4ed;
             background-image:
                 linear-gradient(rgba(248, 244, 237, 0.62), rgba(248, 244, 237, 0.62)),
-                url("b612background.png");
+                url("b612background.webp");
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -3934,6 +3934,12 @@
         .scene-card {
             --rotate: 0deg;
             --float-y: 0px;
+            width: 100%;
+            padding: 0;
+            appearance: none;
+            font: inherit;
+            color: inherit;
+            text-align: left;
             background: var(--bg-white);
             border-radius: 12px;
             overflow: hidden;
@@ -3959,12 +3965,19 @@
 
         /* 单卡 hover：被风轻轻托起 */
         .home-grid:hover .scene-card:hover,
-        .scene-card:hover {
+        .home-grid:hover .scene-card:focus-visible,
+        .scene-card:hover,
+        .scene-card:focus-visible {
             opacity: 1;
             transform: translateY(calc(var(--float-y) - 8px)) scale(1.03) rotate(var(--rotate));
             box-shadow: 0 18px 42px rgba(0, 0, 0, 0.14);
             border-color: rgba(206, 171, 101, 0.55);
             filter: brightness(1.04);
+        }
+
+        .scene-card:focus-visible {
+            outline: 2px solid #806344;
+            outline-offset: 5px;
         }
 
         .scene-image img {
@@ -4029,6 +4042,7 @@
         }
 
         .scene-content {
+            display: block;
             padding: 0.94rem 0.9rem 1.08rem;
             text-align: left;
             background: transparent;
@@ -4047,6 +4061,7 @@
         }
 
         .scene-title {
+            display: block;
             font-size: 1.05rem;
             color: var(--primary-color);
             margin: 0;
@@ -4058,17 +4073,29 @@
         }
 
         .scene-quote {
-            font-size: 0.88rem;
-            color: rgba(107, 105, 98, 0.78);
+            display: block;
+            font-size: 0.96rem;
+            color: #5b554c;
             font-style: italic;
-            line-height: 2.5;
+            line-height: 1.9;
             letter-spacing: 0.02em;
             max-width: 100%;
-            min-height: 7.5em;
+            min-height: 6.8em;
         }
 
         .scene-quote-line {
             display: block;
+        }
+
+        .scene-cta {
+            display: inline-block;
+            margin-top: 0.3rem;
+            color: #664f34;
+            font-family: var(--font-cn);
+            font-size: 0.88rem;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         /* 字体与排版系统（不影响插图/背景纹理） */
@@ -4618,7 +4645,7 @@
             content: "";
             position: fixed;
             inset: 0;
-            background-image: url("star.png");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23c9a84c' opacity='.28'%3E%3Cpath d='M28 22l2 6 6 2-6 2-2 6-2-6-6-2 6-2zM136 114l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z'/%3E%3C/g%3E%3C/svg%3E");
             opacity: 0.3;
             animation: floatStar 20s linear infinite;
             pointer-events: none;
@@ -8270,27 +8297,84 @@
             line-height: 1.7;
         }
 
+        /* Closed overlays should not compete with the first screen for images. */
+        .b612-chat-modal:not(.active) .b612-chat-modal__panel,
+        .fox-taming-modal:not(.active) .fox-taming-modal__panel,
+        .journey-chapter-modal:not(.active) .journey-chapter-modal__panel {
+            background-image: none;
+        }
+
+        html.page-home,
+        body.page-home {
+            overflow-x: clip;
+        }
+
+        .home-scroll-hint {
+            display: none;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
+            html,
+            body.page-home {
+                overflow-x: clip;
+            }
+
             .header-container {
                 flex-direction: column;
                 gap: 1rem;
             }
 
             nav {
-                gap: 1rem;
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 0.25rem 0.45rem;
                 justify-content: center;
             }
 
             nav a,
             nav .nav-mailbox-btn {
-                font-size: 0.85rem;
-                letter-spacing: 2.1px;
-                line-height: 2.1em;
+                flex-shrink: 0;
+                padding: 0.65rem 0.15rem;
+                font-size: 0.82rem;
+                letter-spacing: 0.03em;
+                line-height: 1.5;
+                white-space: nowrap;
+            }
+
+            .nav-flight-btn {
+                flex-shrink: 0;
+                width: 40px;
+                height: 40px;
+                margin: 0;
+            }
+
+            body.page-b612 .header-container {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+
+            body.page-b612 nav {
+                gap: 0.25rem 0.45rem;
+                margin-right: 0;
+            }
+
+            body.page-b612 nav a,
+            body.page-b612 nav .nav-mailbox-btn {
+                letter-spacing: 0.03em;
             }
 
             .home-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .home-scroll-hint {
+                display: block;
+                margin: 0.45rem 0 1rem;
+                text-align: center;
+                color: #7a6a5a;
+                font-size: 0.8rem;
+                letter-spacing: 0.08em;
             }
 
             .scene-image {
@@ -9219,4 +9303,72 @@
             0% { transform: rotate(0.6deg) scale(1); }
             40% { transform: rotate(-3deg) scale(1.15); }
             100% { transform: rotate(0.6deg) scale(1); }
+        }
+
+        /* Keep every planet readable and independently tappable on narrow screens. */
+        @media (max-width: 768px) {
+            #journey.page .journey-intro__tape h2 {
+                font-size: 1.9rem;
+                line-height: 1.45;
+                max-width: 100%;
+            }
+
+            #journey.page .journey-intro__subtitle {
+                font-size: 0.85rem;
+                line-height: 1.7;
+            }
+
+            #journey.page .journey-map {
+                width: 100%;
+                height: auto;
+                padding: 0;
+                margin: 1rem auto;
+            }
+
+            #journey.page .journey-map__nodes {
+                position: relative;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.25rem 0.5rem;
+                inset: auto;
+            }
+
+            #journey.page .journey-map__node:nth-child(n) {
+                position: relative;
+                left: auto !important;
+                top: auto !important;
+                width: 100%;
+                min-height: 142px;
+                padding: 0.4rem;
+                flex-direction: column;
+                justify-content: center;
+                gap: 0.5rem;
+                transform: none !important;
+                --node-size: 84px;
+            }
+
+            #journey.page .journey-map__node .journey-map__planet {
+                transform: none !important;
+                animation: none;
+            }
+
+            #journey.page .journey-map__node:nth-child(n) .journey-map__name {
+                margin-top: 0;
+                text-align: center;
+                font-size: 0.86rem;
+                white-space: normal;
+                line-height: 1.4;
+            }
+
+            #journey.page .journey-map__node:focus-visible {
+                outline: 2px solid #806344 !important;
+                outline-offset: 2px;
+                border-radius: 12px;
+            }
+
+            #journey.page .journey-map__svg,
+            #journey.page .journey-map__ship,
+            #journey.page .journey-map__anchor-prince {
+                display: none;
+            }
         }
