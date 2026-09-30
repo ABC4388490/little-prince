@@ -3934,6 +3934,12 @@
         .scene-card {
             --rotate: 0deg;
             --float-y: 0px;
+            width: 100%;
+            padding: 0;
+            appearance: none;
+            font: inherit;
+            color: inherit;
+            text-align: left;
             background: var(--bg-white);
             border-radius: 12px;
             overflow: hidden;
@@ -3959,12 +3965,19 @@
 
         /* 单卡 hover：被风轻轻托起 */
         .home-grid:hover .scene-card:hover,
-        .scene-card:hover {
+        .home-grid:hover .scene-card:focus-visible,
+        .scene-card:hover,
+        .scene-card:focus-visible {
             opacity: 1;
             transform: translateY(calc(var(--float-y) - 8px)) scale(1.03) rotate(var(--rotate));
             box-shadow: 0 18px 42px rgba(0, 0, 0, 0.14);
             border-color: rgba(206, 171, 101, 0.55);
             filter: brightness(1.04);
+        }
+
+        .scene-card:focus-visible {
+            outline: 2px solid #806344;
+            outline-offset: 5px;
         }
 
         .scene-image img {
@@ -4029,6 +4042,7 @@
         }
 
         .scene-content {
+            display: block;
             padding: 0.94rem 0.9rem 1.08rem;
             text-align: left;
             background: transparent;
@@ -4047,6 +4061,7 @@
         }
 
         .scene-title {
+            display: block;
             font-size: 1.05rem;
             color: var(--primary-color);
             margin: 0;
@@ -4058,17 +4073,29 @@
         }
 
         .scene-quote {
-            font-size: 0.88rem;
-            color: rgba(107, 105, 98, 0.78);
+            display: block;
+            font-size: 0.96rem;
+            color: #5b554c;
             font-style: italic;
-            line-height: 2.5;
+            line-height: 1.9;
             letter-spacing: 0.02em;
             max-width: 100%;
-            min-height: 7.5em;
+            min-height: 6.8em;
         }
 
         .scene-quote-line {
             display: block;
+        }
+
+        .scene-cta {
+            display: inline-block;
+            margin-top: 0.3rem;
+            color: #664f34;
+            font-family: var(--font-cn);
+            font-size: 0.88rem;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         /* 字体与排版系统（不影响插图/背景纹理） */
@@ -8272,21 +8299,53 @@
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
+            html,
+            body.page-home {
+                overflow-x: clip;
+            }
+
             .header-container {
                 flex-direction: column;
                 gap: 1rem;
             }
 
             nav {
-                gap: 1rem;
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 0.25rem 0.45rem;
                 justify-content: center;
             }
 
             nav a,
             nav .nav-mailbox-btn {
-                font-size: 0.85rem;
-                letter-spacing: 2.1px;
-                line-height: 2.1em;
+                flex-shrink: 0;
+                padding: 0.65rem 0.15rem;
+                font-size: 0.82rem;
+                letter-spacing: 0.03em;
+                line-height: 1.5;
+                white-space: nowrap;
+            }
+
+            .nav-flight-btn {
+                flex-shrink: 0;
+                width: 40px;
+                height: 40px;
+                margin: 0;
+            }
+
+            body.page-b612 .header-container {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+
+            body.page-b612 nav {
+                gap: 0.25rem 0.45rem;
+                margin-right: 0;
+            }
+
+            body.page-b612 nav a,
+            body.page-b612 nav .nav-mailbox-btn {
+                letter-spacing: 0.03em;
             }
 
             .home-grid {

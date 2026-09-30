@@ -59,9 +59,12 @@
             >
             <img
                 class="home-right-illustration"
-                src="homebg-cutout.png?v=2"
+                src="homebg-cutout.webp?v=1"
                 alt=""
                 aria-hidden="true"
+                width="1254"
+                height="1254"
+                decoding="async"
             >
             <p class="home-marginal home-marginal--tl" aria-hidden="true">记得抬头看星星。</p>
             <p class="home-marginal home-marginal--tr" aria-hidden="true">有些答案，要慢慢等。</p>
@@ -78,65 +81,69 @@
                 <p class="home-page__subtitle">follow the stars, find the heart</p>
             </header>
             <div class="home-grid">
-                <div class="scene-card" onclick="openModal('rose')">
-                    <div class="scene-image">
-                        <img src="little-rose.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;">
-                    </div>
-                    <div class="scene-content">
-                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <div class="scene-title">The Rose</div>
-                        </div>
-                        <div class="scene-quote">
+                <button type="button" class="scene-card" data-home-action="rose">
+                    <span class="scene-image">
+                        <img src="little-rose.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                    </span>
+                    <span class="scene-content">
+                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <span class="scene-title">The Rose</span>
+                        </span>
+                        <span class="scene-quote">
                             <span class="scene-quote-line">"You are like my rose.</span>
                             <span class="scene-quote-line">You are the only one in the world."</span>
-                        </div>
-                    </div>
-                </div>
+                        </span>
+                        <span class="scene-cta">听玫瑰讲故事 <span aria-hidden="true">↗</span></span>
+                    </span>
+                </button>
 
-                <div class="scene-card" onclick="enterJourneyFromHome(this)">
-                    <div class="scene-image">
+                <button type="button" class="scene-card" data-home-action="journey">
+                    <span class="scene-image">
                         <img src="little-plants.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </div>
-                    <div class="scene-content">
-                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <div class="scene-title">The Planets</div>
-                        </div>
-                        <div class="scene-quote">
+                    </span>
+                    <span class="scene-content">
+                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <span class="scene-title">The Planets</span>
+                        </span>
+                        <span class="scene-quote">
                             <span class="scene-quote-line">"Grown-ups are certainly</span>
                             <span class="scene-quote-line">very strange."</span>
-                        </div>
-                    </div>
-                </div>
+                        </span>
+                        <span class="scene-cta">开启星球之旅 <span aria-hidden="true">↗</span></span>
+                    </span>
+                </button>
 
-                <div class="scene-card" onclick="openModal('fox')">
-                    <div class="scene-image">
-                        <img src="little-fox.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;">
-                    </div>
-                    <div class="scene-content">
-                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <div class="scene-title">The Fox</div>
-                        </div>
-                        <div class="scene-quote">
+                <button type="button" class="scene-card" data-home-action="fox">
+                    <span class="scene-image">
+                        <img src="little-fox.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
+                    </span>
+                    <span class="scene-content">
+                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <span class="scene-title">The Fox</span>
+                        </span>
+                        <span class="scene-quote">
                             <span class="scene-quote-line">"If you tame me,</span>
                             <span class="scene-quote-line">we shall need each other."</span>
-                        </div>
-                    </div>
-                </div>
+                        </span>
+                        <span class="scene-cta">认识狐狸 <span aria-hidden="true">↗</span></span>
+                    </span>
+                </button>
 
-                <div class="scene-card" onclick="enterB612FromHome(this)">
-                    <div class="scene-image">
+                <button type="button" class="scene-card" data-home-action="b612">
+                    <span class="scene-image">
                         <img src="little-prince.png" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </div>
-                    <div class="scene-content">
-                        <div class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <div class="scene-title">The Little Prince</div>
-                        </div>
-                        <div class="scene-quote">
+                    </span>
+                    <span class="scene-content">
+                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
+                            <span class="scene-title">The Little Prince</span>
+                        </span>
+                        <span class="scene-quote">
                             <span class="scene-quote-line">"I was too young to know</span>
                             <span class="scene-quote-line">how to love her."</span>
-                        </div>
-                    </div>
-                </div>
+                        </span>
+                        <span class="scene-cta">和小王子对话 <span aria-hidden="true">↗</span></span>
+                    </span>
+                </button>
             </div>
             <div class="section-flow" aria-hidden="true">
                 <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">

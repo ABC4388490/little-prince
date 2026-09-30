@@ -777,6 +777,17 @@ const storyData = {
             }, 360);
         }
 
+        document.querySelectorAll('.scene-card[data-home-action]').forEach((card) => {
+            card.addEventListener('click', () => {
+                switch (card.dataset.homeAction) {
+                    case 'rose': openModal('rose'); break;
+                    case 'journey': enterJourneyFromHome(card); break;
+                    case 'fox': openModal('fox'); break;
+                    case 'b612': enterB612FromHome(card); break;
+                }
+            });
+        });
+
         // ===== Journey 星球章节弹窗 =====
         const journeyChapterModal = document.getElementById('journeyChapterModal');
         const journeyChapterPanel = journeyChapterModal ? journeyChapterModal.querySelector('.journey-chapter-modal__panel') : null;
@@ -844,6 +855,7 @@ const storyData = {
             journeyModalIndex = safe;
             const data = journeyChapters[safe];
             if (!data) return;
+            setActivePlanet(safe);
 
             const plainIllustration = data.plainIllustration === true;
             if (journeyChapterModal) {
@@ -894,11 +906,14 @@ const storyData = {
             window.requestAnimationFrame(layoutJourneyChapterSideNav);
         }
 
-        function closeJourneyChapter() {
+        function closeJourneyChapter(updateUrl = true) {
             if (!journeyChapterModal) return;
             journeyChapterModal.classList.remove('active');
             journeyChapterModal.setAttribute('aria-hidden', 'true');
             unlockJourneyBackground();
+            if (updateUrl && /^#planet-[0-7]$/.test(location.hash)) {
+                history.replaceState(null, '', '#journey');
+            }
         }
 
         function switchJourneyTo(nextIndex) {
@@ -3339,21 +3354,9 @@ const storyData = {
             if (activeNode) activeNode.classList.add('is-active');
             moveJourneyShipTo(safe, false);
             const id = journeyPlanetTargets[safe];
-            if (location.hash !== `#${id}`) {
+            if (document.getElementById('journey').classList.contains('active') && location.hash !== `#${id}`) {
                 history.replaceState(null, '', `#${id}`);
             }
-        }
-
-        function smoothScrollToPlanet(id) {
-            const el = id ? document.getElementById(id) : null;
-            if (!el) return;
-            const headerEl = document.querySelector('header');
-            const headerH = headerEl ? headerEl.offsetHeight : 0;
-            const mapH = (journeyMap && journeyMap.offsetHeight) ? journeyMap.offsetHeight : 0;
-            // 顶部有 sticky 导航 + sticky 地图，按实际遮挡高度计算定位偏移
-            const topOffset = headerH + mapH + 20;
-            const top = window.scrollY + el.getBoundingClientRect().top - topOffset;
-            window.scrollTo({ top, behavior: 'smooth' });
         }
 
         function prepareJourneyQuotes() {
@@ -3387,7 +3390,8 @@ const storyData = {
                     e.preventDefault();
                     const href = link.getAttribute('href') || '';
                     const id = href.startsWith('#') ? href.slice(1) : '';
-                    if (id) smoothScrollToPlanet(id);
+                    const idx = journeyPlanetTargets.indexOf(id);
+                    if (idx !== -1) openJourneyChapter(idx);
                 });
             });
 
@@ -3429,7 +3433,8 @@ const storyData = {
             drawJourneyMapRoute();
             drawJourneyWalkPath();
             moveJourneyShipTo(journeyMapActiveIndex, true);
-            setActivePlanet(0);
+            const initialPlanet = journeyPlanetTargets.indexOf(location.hash.slice(1));
+            setActivePlanet(initialPlanet === -1 ? 0 : initialPlanet);
         }
 
         window.addEventListener('resize', setupTimelineCurves);
@@ -3489,42 +3494,70 @@ const storyData = {
             render();
         }
 
-        // Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Keep the visible page in sync with its shareable URL and browser history.
+        function showPage(pageId) {
+            document.querySelectorAll('.nav-link').forEach((link) => {
+                const isActive = link.dataset.page === pageId;
+                link.classList.toggle('active', isActive);
+                if (isActive) link.setAttribute('aria-current', 'page');
+                else link.removeAttribute('aria-current');
+            });
+            document.querySelectorAll('.page').forEach((page) => {
+                page.classList.toggle('active', page.id === pageId);
+            });
+            document.body.classList.toggle('page-home', pageId === 'home');
+            document.body.classList.toggle('page-b612', pageId === 'b612');
+            document.body.classList.toggle('page-journey', pageId === 'journey');
+            if (pageId !== 'b612') {
+                closeB612StoryModal();
+                closeB612ChatModal();
+            }
+            if (pageId === 'journey') {
+                setupTimelineCurves();
+                window.requestAnimationFrame(() => {
+                    drawJourneyMapRoute();
+                    moveJourneyShipTo(journeyMapActiveIndex, true);
+                });
+            }
+            updateChapterWatermarkParallax();
+        }
+
+        function routeFromHash() {
+            const hash = location.hash.slice(1);
+            const planetIndex = journeyPlanetTargets.indexOf(hash);
+            const pageId = planetIndex !== -1 ? 'journey' :
+                hash === 'b612-chat' ? 'b612' :
+                ['home', 'journey', 'b612'].includes(hash) ? hash : 'home';
+            if (planetIndex === -1 && journeyChapterModal.classList.contains('active')) {
+                closeJourneyChapter(false);
+            }
+            showPage(pageId);
+
+            if (planetIndex !== -1) {
+                if (journeyChapterModal.classList.contains('active')) {
+                    renderJourneyChapter(planetIndex);
+                } else {
+                    window.requestAnimationFrame(() => openJourneyChapter(planetIndex));
+                }
+            } else if (hash === 'b612-chat') {
+                window.requestAnimationFrame(() => {
+                    if (!b612ChatModal.classList.contains('active')) openB612ChatModal();
+                });
+            } else if (hash) {
+                window.scrollTo({ top: 0, behavior: 'auto' });
+            }
+        }
+
+        document.querySelectorAll('.nav-link').forEach((link) => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const pageId = link.getAttribute('data-page');
-                
-                // Update active states
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                
-                link.classList.add('active');
-                document.getElementById(pageId).classList.add('active');
-                document.body.classList.toggle('page-home', pageId === 'home');
-                document.body.classList.toggle('page-b612', pageId === 'b612');
-                document.body.classList.toggle('page-journey', pageId === 'journey');
-                // 进入 B612 保持停留在页面本体；只有“发送”后才进入对话弹层
-                if (pageId !== 'b612') {
-                    closeB612StoryModal();
-                    closeB612ChatModal();
-                }
-                if (pageId === 'journey') {
-                    setupTimelineCurves();
-                    window.requestAnimationFrame(() => {
-                        drawJourneyMapRoute();
-                        moveJourneyShipTo(journeyMapActiveIndex, true);
-                    });
-                }
-                updateChapterWatermarkParallax();
+                const hash = `#${link.dataset.page}`;
+                if (location.hash !== hash) history.pushState(null, '', hash);
+                routeFromHash();
             });
         });
-
-        const activePage = document.querySelector('.page.active');
-        document.body.classList.toggle('page-home', !!activePage && activePage.id === 'home');
-        document.body.classList.toggle('page-b612', !!activePage && activePage.id === 'b612');
-        document.body.classList.toggle('page-journey', !!activePage && activePage.id === 'journey');
-        // 初始进入 B612 也不自动弹出入口/聊天
+        window.addEventListener('hashchange', routeFromHash);
+        window.addEventListener('popstate', routeFromHash);
 
         // Close modal when clicking outside
         document.getElementById('storyModal').addEventListener('click', (e) => {
@@ -3543,20 +3576,9 @@ const storyData = {
         loadB612Chat();
         syncProfileFromServer();
 
-        /** 从星空信箱等外链进入：index.html#b612-chat → B612 页 + 打开对话弹层 */
-        function routeFromHashOpenB612Chat() {
-            if (location.hash !== '#b612-chat') return;
-            const b612Link = document.querySelector('.nav-link[data-page="b612"]');
-            if (b612Link) b612Link.click();
-            window.requestAnimationFrame(() => {
-                openB612ChatModal();
-            });
-        }
-        window.addEventListener('hashchange', routeFromHashOpenB612Chat);
-        routeFromHashOpenB612Chat();
-
         setupTimelineCurves();
         initJourneyMap();
+        routeFromHash();
         drawJourneyMapRoute();
         drawJourneyWalkPath();
         updateChapterWatermarkParallax();
