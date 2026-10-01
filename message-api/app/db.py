@@ -29,8 +29,16 @@ def db_path() -> str:
     return os.path.join(_API_ROOT, "messages.db")
 
 
+class ClosingSQLiteConnection(sqlite3.Connection):
+    def __exit__(self, exc_type, exc, tb):
+        try:
+            return super().__exit__(exc_type, exc, tb)
+        finally:
+            self.close()
+
+
 def connect_sqlite() -> sqlite3.Connection:
-    conn = sqlite3.connect(db_path())
+    conn = sqlite3.connect(db_path(), factory=ClosingSQLiteConnection)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -69,6 +77,15 @@ def init_sqlite() -> None:
                 round_count INTEGER NOT NULL DEFAULT 0,
                 updated_at TEXT NOT NULL,
                 created_at TEXT NOT NULL
+            )
+            """
+        )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS visitor_sessions (
+                token_hash TEXT PRIMARY KEY,
+                visitor_id TEXT NOT NULL UNIQUE,
+                expires_at BIGINT NOT NULL
             )
             """
         )
@@ -130,6 +147,15 @@ def init_postgres() -> None:
         )
         conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_user_profiles_visitor_id ON user_profiles (visitor_id);"
+        )
+        conn.execute(
+            """
+            CREATE TABLE IF NOT EXISTS visitor_sessions (
+                token_hash TEXT PRIMARY KEY,
+                visitor_id TEXT NOT NULL UNIQUE,
+                expires_at BIGINT NOT NULL
+            )
+            """
         )
         conn.commit()
 

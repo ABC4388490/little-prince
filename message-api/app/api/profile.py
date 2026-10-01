@@ -5,10 +5,16 @@ from typing import Any, Optional
 
 from flask import Blueprint, jsonify, request
 
-from app.api.common import require_visitor_id
+from app.auth import require_session_visitor
 from app.db import connect_pg, connect_sqlite, db_url, utc_iso_now
 
 bp = Blueprint("profile", __name__, url_prefix="/api")
+
+@bp.after_request
+def private_response(response):
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
 
 _EMOTIONS = frozenset({"neutral", "low", "high"})
 
@@ -223,7 +229,7 @@ def _upsert_profile(visitor_id: str, profile: dict[str, Any]) -> dict[str, Any]:
 @bp.get("/profile")
 def get_profile() -> Any:
     try:
-        visitor_id = require_visitor_id(request)
+        visitor_id = require_session_visitor()
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
@@ -240,7 +246,7 @@ def get_profile() -> Any:
 def post_profile() -> Any:
     data = request.get_json(silent=True) or {}
     try:
-        visitor_id = require_visitor_id(request)
+        visitor_id = require_session_visitor()
         profile = _normalize_profile_fields(data)
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
