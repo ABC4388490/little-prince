@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: '22'
       - name: Credential routing
-        run: node --test tests/memory-api.test.cjs
+        run: node --test tests/*.test.cjs
       - run: node --check index-main.js
       - uses: actions/setup-python@v5
         with:
