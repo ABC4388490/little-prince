@@ -1,3 +1,29 @@
+// Activate images only when their page or overlay is opened, then as they approach the viewport.
+function activateDeferredImage(image) {
+    const source = image.dataset.src;
+    if (!source) return;
+    image.decoding = 'async';
+    image.loading = 'eager';
+    image.src = source;
+    delete image.dataset.src;
+}
+
+const deferredImageObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        activateDeferredImage(entry.target);
+        observer.unobserve(entry.target);
+    });
+}, { rootMargin: '160px' }) : null;
+
+function loadDeferredImages(root, immediate = false) {
+    if (!root) return;
+    root.querySelectorAll('img[data-src]').forEach((image) => {
+        if (immediate || !deferredImageObserver) activateDeferredImage(image);
+        else deferredImageObserver.observe(image);
+    });
+}
+
 const storyData = {
             rose: {
             title: '关于她',
@@ -586,7 +612,7 @@ const storyData = {
                         <h3 class="fox-step__question">${titleMap[step]}</h3>
                         <div class="fox-step__body">
                             <div class="fox-step__illustration">
-                                <img src="./images/fox-memory.png" alt="" onerror="this.onerror=null;this.src='fox-memory.png';">
+                                <img src="fox-memory.png" alt="" decoding="async">
                             </div>
                             <div class="fox-step__input-wrap">
                                 <textarea id="foxStepInput" class="fox-step__input" maxlength="50" placeholder="${placeholderMap[step]}">${escapeHtml(value)}</textarea>
@@ -615,7 +641,7 @@ const storyData = {
                             <p class="fox-step__subtitle">关于驯服与连接</p>
                             <p class="fox-step__quote">“如果你驯服了我，我们就彼此需要了。”</p>
                             <div class="fox-step__scene">
-                                <img src="fox-scene.png" alt="" onerror="this.onerror=null;this.src='fox+little-prince.png';">
+                                    <img src="fox+little-prince.png" alt="" decoding="async">
                             </div>
                         </div>
                         <div class="fox-step__welcome-btn-wrap">
@@ -654,7 +680,7 @@ const storyData = {
                         <div>
                             <div class="fox-loading__stars">✦ ✧ ✦</div>
                             <div class="fox-loading__scene">
-                                <img src="fox-scene.png" alt="" onerror="this.onerror=null;this.src='fox+little-prince.png';">
+                                    <img src="fox+little-prince.png" alt="" decoding="async">
                             </div>
                             <p>狐狸正在思考…<br>关于你们之间独一无二的关系</p>
                         </div>
@@ -676,7 +702,7 @@ const storyData = {
                         <div class="fox-result__layout">
                             <div class="fox-result__paper">${escapeHtml(foxState.quote)}</div>
                             <div class="fox-result__scene">
-                                <img src="fox-prince.png" alt="" onerror="this.onerror=null;this.src='fox+little-prince.png';">
+                                    <img src="fox+little-prince.png" alt="" decoding="async">
                             </div>
                         </div>
                         <p class="fox-result__footnote">谢谢你愿意理解驯服的意义。</p>
@@ -777,6 +803,17 @@ const storyData = {
             }, 360);
         }
 
+        document.querySelectorAll('.scene-card[data-home-action]').forEach((card) => {
+            card.addEventListener('click', () => {
+                switch (card.dataset.homeAction) {
+                    case 'rose': openModal('rose'); break;
+                    case 'journey': enterJourneyFromHome(card); break;
+                    case 'fox': openModal('fox'); break;
+                    case 'b612': enterB612FromHome(card); break;
+                }
+            });
+        });
+
         // ===== Journey 星球章节弹窗 =====
         const journeyChapterModal = document.getElementById('journeyChapterModal');
         const journeyChapterPanel = journeyChapterModal ? journeyChapterModal.querySelector('.journey-chapter-modal__panel') : null;
@@ -844,6 +881,7 @@ const storyData = {
             journeyModalIndex = safe;
             const data = journeyChapters[safe];
             if (!data) return;
+            setActivePlanet(safe);
 
             const plainIllustration = data.plainIllustration === true;
             if (journeyChapterModal) {
@@ -894,11 +932,14 @@ const storyData = {
             window.requestAnimationFrame(layoutJourneyChapterSideNav);
         }
 
-        function closeJourneyChapter() {
+        function closeJourneyChapter(updateUrl = true) {
             if (!journeyChapterModal) return;
             journeyChapterModal.classList.remove('active');
             journeyChapterModal.setAttribute('aria-hidden', 'true');
             unlockJourneyBackground();
+            if (updateUrl && /^#planet-[0-7]$/.test(location.hash)) {
+                history.replaceState(null, '', '#journey');
+            }
         }
 
         function switchJourneyTo(nextIndex) {
@@ -1132,6 +1173,7 @@ const storyData = {
 
         function openFlightLog() {
             flightLogModal.classList.add('active');
+            loadDeferredImages(flightLogModal);
             flightLogModal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
             flightLogScroll.scrollTop = 0;
@@ -1199,6 +1241,13 @@ const storyData = {
         //   https://little-prince.xyz/?api=https://little-prince-production.up.railway.app/api
         const queryApiBase = new URLSearchParams(location.search).get('api');
         const envApiBase = (window.LITTLE_PRINCE_API_BASE || '').trim();
+        let b612SyncStarted = false;
+        function startB612Sync() {
+            if (b612SyncStarted) return;
+            b612SyncStarted = true;
+            void loadB612Chat();
+            void syncProfileFromServer();
+        }
         const CHAT_API_CANDIDATES = [];
         function pushChatApiCand(raw) {
             const s = String(raw || '').trim();
@@ -1217,6 +1266,12 @@ const storyData = {
         }
         pushChatApiCand('/api');
         pushChatApiCand('https://little-prince-message-api-production-a183.up.railway.app/api');
+
+        // Profile and conversations live in the memory service; same-origin chat remains first for chat.
+        const MEMORY_API_CANDIDATES = [...new Set([
+            queryApiBase, envApiBase,
+            ...CHAT_API_CANDIDATES.filter((base) => base !== '/api'), '/api'
+        ].filter(Boolean))];
 
         function normalizeApiBase(raw) {
             const s = String(raw || '').trim().replace(/\/+$/, '');
@@ -1792,6 +1847,7 @@ const storyData = {
             replyModal.classList.remove('active');
             if (replySlipFall) void replySlipFall.offsetHeight;
             replyModal.classList.add('active');
+            loadDeferredImages(replyModal);
             replyModal.setAttribute('aria-hidden', 'false');
             playReplyBell();
 
@@ -1846,12 +1902,15 @@ const storyData = {
         async function fetchChatWithFallback(path, options) {
             const cleanPath = String(path || '').startsWith('/') ? String(path) : '/' + String(path || '');
             let lastError = null;
-            for (const rawBase of CHAT_API_CANDIDATES) {
+            const candidates = /^\/(profile|conversations)(\/|\?|$)/.test(cleanPath) ? MEMORY_API_CANDIDATES : CHAT_API_CANDIDATES;
+            for (const rawBase of candidates) {
                 const base = normalizeApiBase(rawBase);
                 if (!base) continue;
+                const controller = !options?.signal && (!options?.method || options.method === 'GET') ? new AbortController() : null;
+                const timer = controller ? window.setTimeout(() => controller.abort(), 10000) : null;
                 try {
                     const url = base + cleanPath;
-                    const res = await fetch(url, options);
+                    const res = await fetch(url, controller ? { ...options, signal: controller.signal } : options);
                     if (!res.ok) {
                         let bodyText = '';
                         try {
@@ -1865,6 +1924,8 @@ const storyData = {
                     return await res.json();
                 } catch (err) {
                     lastError = err;
+                } finally {
+                    if (timer !== null) window.clearTimeout(timer);
                 }
             }
             throw lastError || new Error('all endpoints failed');
@@ -2206,7 +2267,7 @@ const storyData = {
             img.alt = '';
             img.decoding = 'async';
             img.loading = 'lazy';
-            img.src = isUser ? 'letter3.png' : 'head-avatar.png';
+            img.src = isUser ? 'letter3.png' : 'head-avatar.webp';
             img.onerror = () => {
                 if (isUser && img.dataset.fallbackRose !== '1') {
                     img.dataset.fallbackRose = '1';
@@ -2316,6 +2377,8 @@ const storyData = {
         function openB612StoryModal() {
             if (!b612StoryModal) return;
             b612StoryModal.classList.add('active');
+            loadDeferredImages(b612StoryModal);
+            startB612Sync();
             b612StoryModal.setAttribute('aria-hidden', 'false');
             if (b612Input) b612Input.focus();
         }
@@ -2329,6 +2392,7 @@ const storyData = {
         function openB612ChatModal() {
             if (!b612ChatModal) return;
             b612ChatModal.classList.add('active');
+            startB612Sync();
             b612ChatModal.setAttribute('aria-hidden', 'false');
             ensureOpeningAssistantMessage();
             maybeOpenWithFoxContext();
@@ -2390,9 +2454,11 @@ const storyData = {
             return b612ConversationId;
         }
 
-        async function loadB612Chat() {
+        async function loadB612Chat(initialUserCount = b612ChatList?.querySelectorAll('.b612-chat__msg--user').length || 0) {
+            const hasNewLocalMessages = () => (b612ChatList?.querySelectorAll('.b612-chat__msg--user').length || 0) !== initialUserCount;
             if (b612UseLegacyApi) {
                 const items = await fetchChatWithFallback('/messages', { method: 'GET' });
+                if (hasNewLocalMessages()) return;
                 if (Array.isArray(items)) {
                     renderChatHistory(
                         items.flatMap((m) => {
@@ -2417,6 +2483,7 @@ const storyData = {
             try {
                 const cid = await ensureConversation();
                 const items = await fetchChatWithFallback('/conversations/' + cid + '/messages', { method: 'GET' });
+                if (hasNewLocalMessages()) return;
                 if (Array.isArray(items)) {
                     renderChatHistory(items);
                     renderStarsFromChat(items);
@@ -2425,7 +2492,7 @@ const storyData = {
                 if (isDatabaseNotConfiguredError(e)) {
                     b612UseLegacyApi = true;
                     b612ConversationId = null;
-                    return loadB612Chat();
+                    return loadB612Chat(initialUserCount);
                 }
                 // 后端不可达时保持安静，仅提示一次
                 if (b612Toast) b612Toast.textContent = '暂时连不上 B612 的邮局（后端）。你仍可以写下话，但跨设备记忆需要后端恢复。';
@@ -2682,7 +2749,38 @@ const storyData = {
             return `${y}-${m}-${day}`;
         }
 
+        let postcardLibraryPromise = null;
+        let postcardRenderId = 0;
+
+        function loadPostcardLibrary() {
+            if (typeof window.html2canvas === 'function') return Promise.resolve();
+            if (postcardLibraryPromise) return postcardLibraryPromise;
+            postcardLibraryPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'vendor/html2canvas-1.4.1.min.js';
+                script.async = true;
+                let settled = false;
+                const finish = (error) => {
+                    if (settled) return;
+                    settled = true;
+                    window.clearTimeout(timer);
+                    script.onload = script.onerror = null;
+                    if (error) {
+                        script.remove();
+                        postcardLibraryPromise = null;
+                        reject(error);
+                    } else resolve();
+                };
+                const timer = window.setTimeout(() => finish(new Error('postcard library timeout')), 15000);
+                script.onload = () => finish(typeof window.html2canvas === 'function' ? null : new Error('postcard library unavailable'));
+                script.onerror = () => finish(new Error('postcard library failed'));
+                document.head.appendChild(script);
+            });
+            return postcardLibraryPromise;
+        }
+
         function clearB612PostcardModalPreview() {
+            postcardRenderId += 1;
             const host = document.getElementById('b612PostcardPreviewHost');
             if (!host) return;
             host.querySelectorAll('canvas').forEach((c) => {
@@ -2711,11 +2809,10 @@ const storyData = {
             const dateEl = document.getElementById('b612PostcardTplDate');
             const imgEl = document.getElementById('b612PostcardTplImg');
             if (!modal || !host || !root || !bodyEl || !dateEl) return;
-            if (typeof html2canvas !== 'function') {
-                if (b612Toast) b612Toast.textContent = '明信片组件未加载完成，请刷新页面再试。';
-                return;
-            }
             clearB612PostcardModalPreview();
+            const renderId = postcardRenderId;
+            const saveButton = document.getElementById('b612PostcardSaveBtn');
+            if (saveButton) saveButton.disabled = true;
             bodyEl.textContent = String(replyText || '').trim();
             dateEl.textContent = formatPostcardDateDots(createdAtIso);
             b612PostcardLastFilename = 'b612-postcard-' + formatPostcardFilenameDate(createdAtIso) + '.png';
@@ -2729,6 +2826,9 @@ const storyData = {
 
             const run = async () => {
                 try {
+                    await loadPostcardLibrary();
+                    if (renderId !== postcardRenderId) return;
+                    loadDeferredImages(root, true);
                     if (imgEl && !imgEl.complete) {
                         await new Promise((resolve) => {
                             imgEl.addEventListener('load', resolve, { once: true });
@@ -2742,10 +2842,16 @@ const storyData = {
                         useCORS: true,
                         logging: false,
                     });
+                    if (renderId !== postcardRenderId) {
+                        canvas.width = canvas.height = 0;
+                        return;
+                    }
                     b612PostcardLastCanvas = canvas;
                     host.innerHTML = '';
                     host.appendChild(canvas);
+                    if (saveButton) saveButton.disabled = false;
                 } catch (err) {
+                    if (renderId !== postcardRenderId) return;
                     host.innerHTML = '';
                     const errP = document.createElement('p');
                     errP.className = 'b612-postcard-modal__loading';
@@ -3339,21 +3445,9 @@ const storyData = {
             if (activeNode) activeNode.classList.add('is-active');
             moveJourneyShipTo(safe, false);
             const id = journeyPlanetTargets[safe];
-            if (location.hash !== `#${id}`) {
+            if (document.getElementById('journey').classList.contains('active') && location.hash !== `#${id}`) {
                 history.replaceState(null, '', `#${id}`);
             }
-        }
-
-        function smoothScrollToPlanet(id) {
-            const el = id ? document.getElementById(id) : null;
-            if (!el) return;
-            const headerEl = document.querySelector('header');
-            const headerH = headerEl ? headerEl.offsetHeight : 0;
-            const mapH = (journeyMap && journeyMap.offsetHeight) ? journeyMap.offsetHeight : 0;
-            // 顶部有 sticky 导航 + sticky 地图，按实际遮挡高度计算定位偏移
-            const topOffset = headerH + mapH + 20;
-            const top = window.scrollY + el.getBoundingClientRect().top - topOffset;
-            window.scrollTo({ top, behavior: 'smooth' });
         }
 
         function prepareJourneyQuotes() {
@@ -3387,7 +3481,8 @@ const storyData = {
                     e.preventDefault();
                     const href = link.getAttribute('href') || '';
                     const id = href.startsWith('#') ? href.slice(1) : '';
-                    if (id) smoothScrollToPlanet(id);
+                    const idx = journeyPlanetTargets.indexOf(id);
+                    if (idx !== -1) openJourneyChapter(idx);
                 });
             });
 
@@ -3429,7 +3524,8 @@ const storyData = {
             drawJourneyMapRoute();
             drawJourneyWalkPath();
             moveJourneyShipTo(journeyMapActiveIndex, true);
-            setActivePlanet(0);
+            const initialPlanet = journeyPlanetTargets.indexOf(location.hash.slice(1));
+            setActivePlanet(initialPlanet === -1 ? 0 : initialPlanet);
         }
 
         window.addEventListener('resize', setupTimelineCurves);
@@ -3489,42 +3585,73 @@ const storyData = {
             render();
         }
 
-        // Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Keep the visible page in sync with its shareable URL and browser history.
+        function showPage(pageId) {
+            document.querySelectorAll('.nav-link').forEach((link) => {
+                const isActive = link.dataset.page === pageId;
+                link.classList.toggle('active', isActive);
+                if (isActive) link.setAttribute('aria-current', 'page');
+                else link.removeAttribute('aria-current');
+            });
+            document.querySelectorAll('.page').forEach((page) => {
+                page.classList.toggle('active', page.id === pageId);
+            });
+            loadDeferredImages(document.getElementById(pageId));
+            document.documentElement.classList.toggle('page-home', pageId === 'home');
+            document.body.classList.toggle('page-home', pageId === 'home');
+            document.body.classList.toggle('page-b612', pageId === 'b612');
+            document.body.classList.toggle('page-journey', pageId === 'journey');
+            if (pageId === 'b612') startB612Sync();
+            if (pageId !== 'b612') {
+                closeB612StoryModal();
+                closeB612ChatModal();
+            }
+            if (pageId === 'journey') {
+                setupTimelineCurves();
+                window.requestAnimationFrame(() => {
+                    drawJourneyMapRoute();
+                    moveJourneyShipTo(journeyMapActiveIndex, true);
+                });
+            }
+            updateChapterWatermarkParallax();
+        }
+
+        function routeFromHash() {
+            const hash = location.hash.slice(1);
+            const planetIndex = journeyPlanetTargets.indexOf(hash);
+            const pageId = planetIndex !== -1 ? 'journey' :
+                hash === 'b612-chat' ? 'b612' :
+                ['home', 'journey', 'b612'].includes(hash) ? hash : 'home';
+            if (planetIndex === -1 && journeyChapterModal.classList.contains('active')) {
+                closeJourneyChapter(false);
+            }
+            showPage(pageId);
+
+            if (planetIndex !== -1) {
+                if (journeyChapterModal.classList.contains('active')) {
+                    renderJourneyChapter(planetIndex);
+                } else {
+                    window.requestAnimationFrame(() => openJourneyChapter(planetIndex));
+                }
+            } else if (hash === 'b612-chat') {
+                window.requestAnimationFrame(() => {
+                    if (!b612ChatModal.classList.contains('active')) openB612ChatModal();
+                });
+            } else if (hash) {
+                window.scrollTo({ top: 0, behavior: 'auto' });
+            }
+        }
+
+        document.querySelectorAll('.nav-link').forEach((link) => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const pageId = link.getAttribute('data-page');
-                
-                // Update active states
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                
-                link.classList.add('active');
-                document.getElementById(pageId).classList.add('active');
-                document.body.classList.toggle('page-home', pageId === 'home');
-                document.body.classList.toggle('page-b612', pageId === 'b612');
-                document.body.classList.toggle('page-journey', pageId === 'journey');
-                // 进入 B612 保持停留在页面本体；只有“发送”后才进入对话弹层
-                if (pageId !== 'b612') {
-                    closeB612StoryModal();
-                    closeB612ChatModal();
-                }
-                if (pageId === 'journey') {
-                    setupTimelineCurves();
-                    window.requestAnimationFrame(() => {
-                        drawJourneyMapRoute();
-                        moveJourneyShipTo(journeyMapActiveIndex, true);
-                    });
-                }
-                updateChapterWatermarkParallax();
+                const hash = `#${link.dataset.page}`;
+                if (location.hash !== hash) history.pushState(null, '', hash);
+                routeFromHash();
             });
         });
-
-        const activePage = document.querySelector('.page.active');
-        document.body.classList.toggle('page-home', !!activePage && activePage.id === 'home');
-        document.body.classList.toggle('page-b612', !!activePage && activePage.id === 'b612');
-        document.body.classList.toggle('page-journey', !!activePage && activePage.id === 'journey');
-        // 初始进入 B612 也不自动弹出入口/聊天
+        window.addEventListener('hashchange', routeFromHash);
+        window.addEventListener('popstate', routeFromHash);
 
         // Close modal when clicking outside
         document.getElementById('storyModal').addEventListener('click', (e) => {
@@ -3540,23 +3667,9 @@ const storyData = {
             }
         });
 
-        loadB612Chat();
-        syncProfileFromServer();
-
-        /** 从星空信箱等外链进入：index.html#b612-chat → B612 页 + 打开对话弹层 */
-        function routeFromHashOpenB612Chat() {
-            if (location.hash !== '#b612-chat') return;
-            const b612Link = document.querySelector('.nav-link[data-page="b612"]');
-            if (b612Link) b612Link.click();
-            window.requestAnimationFrame(() => {
-                openB612ChatModal();
-            });
-        }
-        window.addEventListener('hashchange', routeFromHashOpenB612Chat);
-        routeFromHashOpenB612Chat();
-
         setupTimelineCurves();
         initJourneyMap();
+        routeFromHash();
         drawJourneyMapRoute();
         drawJourneyWalkPath();
         updateChapterWatermarkParallax();
