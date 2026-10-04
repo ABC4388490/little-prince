@@ -1281,18 +1281,7 @@ const storyData = {
             return s;
         }
 
-        function getVisitorId() {
-            try {
-                const key = 'lp_visitor_id';
-                const existing = localStorage.getItem(key);
-                if (existing && existing.length >= 8) return existing;
-                const id = (crypto && crypto.randomUUID) ? crypto.randomUUID() : ('v-' + Math.random().toString(16).slice(2) + Date.now().toString(16));
-                localStorage.setItem(key, id);
-                return id;
-            } catch (e) {
-                return 'v-' + Math.random().toString(16).slice(2) + Date.now().toString(16);
-            }
-        }
+        const memoryClient = window.createMemoryClient(MEMORY_API_CANDIDATES, normalizeApiBase);
 
         const starFieldEl = document.getElementById('starField');
         const b612Input = document.getElementById('b612MessageInput');
@@ -1407,7 +1396,6 @@ const storyData = {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        visitorId,
                         emotion: payload.emotion,
                         worries: payload.worries,
                         likes: payload.likes,
@@ -1422,7 +1410,7 @@ const storyData = {
             const local = loadLittlePrinceMemory();
             try {
                 const remote = await fetchChatWithFallback(
-                    '/profile?visitorId=' + encodeURIComponent(visitorId),
+                    '/profile',
                     { method: 'GET' }
                 );
                 if (remote && remote.degraded) return;
@@ -1902,7 +1890,8 @@ const storyData = {
         async function fetchChatWithFallback(path, options) {
             const cleanPath = String(path || '').startsWith('/') ? String(path) : '/' + String(path || '');
             let lastError = null;
-            const candidates = /^\/(profile|conversations)(\/|\?|$)/.test(cleanPath) ? MEMORY_API_CANDIDATES : CHAT_API_CANDIDATES;
+            if (/^\/(profile|conversations)(\/|\?|$)/.test(cleanPath)) return memoryClient.request(cleanPath, options);
+            const candidates = CHAT_API_CANDIDATES;
             for (const rawBase of candidates) {
                 const base = normalizeApiBase(rawBase);
                 if (!base) continue;
@@ -1929,12 +1918,6 @@ const storyData = {
                 }
             }
             throw lastError || new Error('all endpoints failed');
-        }
-
-        function isDatabaseNotConfiguredError(err) {
-            const status = err && err.status;
-            const body = String((err && err.bodyText) || '').toLowerCase();
-            return status === 503 && body.includes('database_url');
         }
 
         function formatTime(ts) {
@@ -2444,58 +2427,28 @@ const storyData = {
         }
 
         let b612ConversationId = null;
-        let b612UseLegacyApi = false;
-        const visitorId = getVisitorId();
 
         async function ensureConversation() {
             if (b612ConversationId) return b612ConversationId;
-            const res = await fetchChatWithFallback('/conversations/me?visitorId=' + encodeURIComponent(visitorId), { method: 'GET' });
+            const res = await fetchChatWithFallback('/conversations/me', { method: 'GET' });
             b612ConversationId = res?.conversationId;
             return b612ConversationId;
         }
 
         async function loadB612Chat(initialUserCount = b612ChatList?.querySelectorAll('.b612-chat__msg--user').length || 0) {
             const hasNewLocalMessages = () => (b612ChatList?.querySelectorAll('.b612-chat__msg--user').length || 0) !== initialUserCount;
-            if (b612UseLegacyApi) {
-                const items = await fetchChatWithFallback('/messages', { method: 'GET' });
-                if (hasNewLocalMessages()) return;
-                if (Array.isArray(items)) {
-                    renderChatHistory(
-                        items.flatMap((m) => {
-                            const user = {
-                                role: 'user',
-                                content: m.content,
-                                createdAt: m.createdAt,
-                                posX: m.posX,
-                                posY: m.posY,
-                            };
-                            const assistant = m.reply
-                                ? [{ role: 'assistant', content: m.reply, createdAt: m.replyCreatedAt || m.createdAt }]
-                                : [];
-                            return [user, ...assistant];
-                        })
-                    );
-                    renderStarsFromChat(items.map((m) => ({ role: 'user', id: m.id, content: m.content, posX: m.posX, posY: m.posY })));
-                }
-                if (b612Toast) b612Toast.textContent = '当前为本地记忆模式（仅本机可见）。';
-                return;
-            }
             try {
                 const cid = await ensureConversation();
                 const items = await fetchChatWithFallback('/conversations/' + cid + '/messages', { method: 'GET' });
                 if (hasNewLocalMessages()) return;
-                if (Array.isArray(items)) {
+                if (Array.isArray(items) && items.length) {
                     renderChatHistory(items);
                     renderStarsFromChat(items);
                 }
             } catch (e) {
-                if (isDatabaseNotConfiguredError(e)) {
-                    b612UseLegacyApi = true;
-                    b612ConversationId = null;
-                    return loadB612Chat(initialUserCount);
-                }
-                // 后端不可达时保持安静，仅提示一次
-                if (b612Toast) b612Toast.textContent = '暂时连不上 B612 的邮局（后端）。你仍可以写下话，但跨设备记忆需要后端恢复。';
+                if (b612Toast) b612Toast.textContent = e.status === 401
+                    ? '云端记忆的访问凭证已失效。本地记录仍保留，请勿清除浏览器数据。'
+                    : '暂时无法读取云端记忆。你仍可以聊天，本地记录保留在此浏览器。';
                 updateChatEmptyState();
             }
         }
@@ -2970,7 +2923,7 @@ const storyData = {
                     b612GenStatus.textContent = '';
                     b612GenStatus.hidden = true;
                 }
-                if (b612Toast) b612Toast.textContent = '我已经收到了。';
+                if (b612Toast) b612Toast.textContent = '回信已收到，聊天记录保存在此浏览器。';
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
                 const assistantNode = appendChatMessage('assistant', '', finalCreatedAt, '', { fbKey: fbKey });
                 saveAISource(fbKey, true);

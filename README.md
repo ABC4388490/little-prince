@@ -42,7 +42,7 @@
 ### 📬 数据层
 - **星空信箱**：对话归档、收藏、删除
 - localStorage + URL hash 跨页面数据共享
-- PostgreSQL 对话持久化，配置后支持跨设备历史同步
+- PostgreSQL 提供服务器持久化；匿名身份绑定当前浏览器，暂不支持自动跨设备找回
 
 ---
 
@@ -108,7 +108,7 @@
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/yourname/little-prince.git
+git clone https://github.com/ABC4388490/little-prince.git
 cd little-prince/message-api
 
 # 2. 创建虚拟环境并安装依赖
@@ -137,7 +137,7 @@ uvicorn asgi:app --reload --host 127.0.0.1 --port 5000
 | 变量 | 必填 | 说明 |
 |------|:----:|------|
 | `DEEPSEEK_API_KEY` | ✅ | DeepSeek API 密钥 |
-| `DATABASE_URL` | ❌ | Postgres 连接串，配置后启用跨设备对话同步 |
+| `DATABASE_URL` | ❌ | Postgres 连接串，用于服务器持久化；跨设备身份需另行实现 |
 | `CORS_ORIGINS` | ❌ | 允许访问的前端域名（逗号分隔） |
 | `RAG_FAISS_TOP_K` | ❌ | 向量检索候选条数（默认 10） |
 | `RAG_FINAL_TOP_K` | ❌ | 重排后注入模型的条数（默认 3） |
@@ -188,3 +188,17 @@ little-prince/
 ---
 
 *made with ✦ and a little longing for the stars*
+
+
+## 匿名记忆与前后端职责
+
+- `memory-api.js` 管理匿名访问凭证，在进入 B612 后首次请求 `/api/session`。同一页面的并发请求共享初始化，刷新后复用本浏览器凭证。
+- 凭证放在 Authorization 请求头中，并绑定签发服务；私有请求失败后不切换服务、不重建身份，也不回退到公开留言墙。
+- 旧 `lp_visitor_id` 不能认领云端历史；本地 `b612_history` 保留。页面说明凭证失效或云端不可用状态。
+- 当前 `/api/chat` 回复仍由前端保存到本地历史，没有新增云端对话写入流程。画像同步与旧云端历史读取使用独立记忆服务，不能把这两者视为完整聊天同步。
+- 根目录 `api/` 是同源聊天服务，独立 `ABC4388490/little-prince-message-api` 仓库提供 Railway 记忆/画像服务；本仓库 `message-api/` 保留共享后端副本，改动时必须核对两份代码。实际部署来源需在 Railway 控制台确认。
+- 先部署后端访问保护，再部署前端；部署与旧数据迁移说明见 `docs/private-memory-rollout.md`。
+- 前端回归：`node --test tests/memory-api.test.cjs`；后端隔离测试：在 `message-api` 下运行 `python -m unittest discover -s tests -p test_memory_security.py -v`。
+
+前端本地预览：在仓库根目录运行 `python -m http.server 5500`，打开 `http://127.0.0.1:5500/`。
+后端另开终端按上面的步骤启动。匿名凭证是访问云端记忆的凭证，请勿分享；尚未实现登录、跨设备恢复或完整云端删除。
