@@ -2269,21 +2269,26 @@ const storyData = {
             };
             avatar.appendChild(img);
             msg.appendChild(avatar);
+            const body = document.createElement('div');
+            body.className = 'b612-chat__body';
+            msg.appendChild(body);
             const bubble = document.createElement('div');
             bubble.className = 'b612-chat__bubble';
             const textSpan = document.createElement('span');
             textSpan.className = 'b612-chat__text';
             textSpan.textContent = String(content || '').trim();
             bubble.appendChild(textSpan);
-            msg.appendChild(bubble);
+            body.appendChild(bubble);
+            const details = document.createElement('div');
+            details.className = 'b612-chat__details';
             if (createdAt) {
                 const meta = document.createElement('div');
                 meta.className = 'b612-chat__meta';
                 meta.textContent = formatTime(createdAt);
-                bubble.appendChild(meta);
+                details.appendChild(meta);
             }
             // 反馈按钮（AI 回复且非加载占位）
-            if (isAssistant && !isLoading) {
+            if (isAssistant && !isLoading && !msgMeta?.skipFeedback) {
                 const fb = document.createElement('div');
                 fb.className = 'b612-feedback';
                 const likeBtn = document.createElement('button');
@@ -2313,8 +2318,9 @@ const storyData = {
 
                 fb.appendChild(likeBtn);
                 fb.appendChild(dislikeBtn);
-                bubble.appendChild(fb);
+                details.appendChild(fb);
             }
+            if (details.children.length) body.appendChild(details);
             b612ChatList.appendChild(msg);
             b612ChatList.scrollTop = b612ChatList.scrollHeight;
             updateChatEmptyState();
@@ -2335,7 +2341,7 @@ const storyData = {
         function ensureOpeningAssistantMessage() {
             if (!b612ChatList) return;
             if (b612ChatList.children.length > 0) return;
-            appendChatMessage('assistant', '你来了。今晚的星星，很适合说心里话。', new Date().toISOString());
+            appendChatMessage('assistant', '你来了。今晚的星星，很适合说心里话。', null, '', { skipFeedback: true });
         }
 
         function buildFoxContextPrompt(context) {
@@ -2357,7 +2363,7 @@ const storyData = {
         function maybeOpenWithFoxContext() {
             if (!pendingFoxContext) return;
             const opening = '我看见狐狸为你留下的那句话了。也许这段关系里，最重要的不是靠近，而是你愿意为 Ta 花时间。';
-            appendChatMessage('assistant', opening, new Date().toISOString());
+            appendChatMessage('assistant', opening, null, '', { skipFeedback: true });
             pendingFoxContext = null;
         }
 
