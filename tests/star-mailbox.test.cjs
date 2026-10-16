@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { MailboxStore, validateLetter, shortTitle } = require('../star-mailbox.js');
+const { MailboxStore, validateLetter, shortTitle, chatCandidatesFor, canTryNextChatService } = require('../star-mailbox.js');
 
 function storage(seed = {}) {
   const data = new Map(Object.entries(seed));
@@ -118,4 +118,34 @@ test('content validation rejects whitespace and excess length', () => {
 });
 test('non-BMP characters are not split in visible summaries', () => {
   assert.equal(shortTitle(record('2026-10-15', '🌹🌹🌹'), 2), '🌹🌹…');
+});
+
+const localPage = new URL('http://127.0.0.1:8766/star-mailbox.html');
+const hostedPage = new URL('https://little-prince.xyz/star-mailbox.html');
+test('static localhost previews include the existing production chat service', () => {
+  const candidates = chatCandidatesFor(localPage, null, null);
+  assert.ok(candidates.includes('https://little-prince.xyz/api'));
+  assert.ok(candidates.indexOf('/api') < candidates.indexOf('https://little-prince.xyz/api'));
+});
+test('local static-server 501 permits fallback but a hosted 501 does not', () => {
+  const error = Object.assign(new Error('HTTP 501'), { status: 501 });
+  assert.equal(canTryNextChatService(error, '/api', localPage), true);
+  assert.equal(canTryNextChatService(error, 'https://little-prince.xyz/api', localPage), false);
+  assert.equal(canTryNextChatService(error, '/api', hostedPage), false);
+});
+test('explicit API configuration stays first and hosted routing stays same-origin first', () => {
+  assert.equal(chatCandidatesFor(localPage, 'https://custom.example/api/', null)[0], 'https://custom.example/api');
+  assert.equal(chatCandidatesFor(hostedPage, null, null)[0], '/api');
+  assert.equal(chatCandidatesFor(hostedPage, null, null).filter(x => x === 'https://little-prince.xyz/api').length, 0);
+});
+test('timeouts, auth failures, rate limits and upstream errors cannot cause duplicate POSTs', () => {
+  assert.equal(canTryNextChatService(Object.assign(new Error('timeout'), { name: 'AbortError' }), '/api', localPage), false);
+  for (const status of [401, 403, 429, 500, 502, 503, 504]) {
+    assert.equal(canTryNextChatService(Object.assign(new Error('error'), { status }), '/api', localPage), false);
+  }
+});
+test('connection refusal and a missing route can try the next service, malformed replies cannot', () => {
+  assert.equal(canTryNextChatService(new TypeError('Failed to fetch'), '/api', localPage), true);
+  assert.equal(canTryNextChatService(Object.assign(new Error('missing'), { status: 404 }), '/api', localPage), true);
+  assert.equal(canTryNextChatService(new Error('Invalid reply'), '/api', localPage), false);
 });

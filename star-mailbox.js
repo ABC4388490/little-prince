@@ -131,8 +131,44 @@
     return '';
   }
 
+  function isLocalPreview(pageLocation) {
+    return pageLocation.protocol !== 'https:' && ['localhost', '127.0.0.1'].includes(pageLocation.hostname);
+  }
+
+  function chatCandidatesFor(pageLocation, queryApiBase, envApiBase) {
+    const candidates = [];
+    const add = value => {
+      const clean = String(value || '').trim().replace(/\/+$/, '').replace(/\/messages$/, '');
+      if (clean && !candidates.includes(clean)) candidates.push(clean);
+    };
+    add(queryApiBase);
+    add(envApiBase);
+    if (isLocalPreview(pageLocation)) {
+      add('http://127.0.0.1:5000/api');
+      add('http://localhost:5000/api');
+    }
+    add('/api');
+    // A static preview has no POST route. Use the existing deployed chat service
+    // after local routes explicitly reject the operation; no API key is exposed.
+    if (isLocalPreview(pageLocation)) add('https://little-prince.xyz/api');
+    add('https://little-prince-message-api-production-a183.up.railway.app/api');
+    return candidates;
+  }
+
+  function canTryNextChatService(error, base, pageLocation) {
+    if (error.name === 'AbortError') return false;
+    if ([404, 405].includes(error.status)) return true;
+    if (error.status === 501 && isLocalPreview(pageLocation)) {
+      const target = new URL(base, pageLocation.href);
+      if (['127.0.0.1', 'localhost'].includes(target.hostname)) return true;
+    }
+    // A network-level failure has no usable HTTP response. Auth, rate-limit,
+    // upstream errors and invalid replies never trigger another POST.
+    return !error.status && error instanceof TypeError;
+  }
+
   // Export pure data components for dependency-free regression tests.
-  if (typeof module !== 'undefined' && module.exports) module.exports = { MailboxStore, dayKey, validateLetter, shortTitle };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { MailboxStore, dayKey, validateLetter, shortTitle, chatCandidatesFor, canTryNextChatService };
   if (typeof document === 'undefined') return;
 
   const $ = selector => document.querySelector(selector);
@@ -404,21 +440,7 @@
   }
 
   function chatCandidates() {
-    // Same chat services and override configuration used by index-main.js.
-    const candidates = [];
-    const add = value => {
-      const clean = String(value || '').trim().replace(/\/+$/, '').replace(/\/messages$/, '');
-      if (clean && !candidates.includes(clean)) candidates.push(clean);
-    };
-    add(new URLSearchParams(location.search).get('api'));
-    add(window.LITTLE_PRINCE_API_BASE);
-    if (location.protocol !== 'https:' && ['localhost', '127.0.0.1'].includes(location.hostname)) {
-      add('http://127.0.0.1:5000/api');
-      add('http://localhost:5000/api');
-    }
-    add('/api');
-    add('https://little-prince-message-api-production-a183.up.railway.app/api');
-    return candidates;
+    return chatCandidatesFor(location, new URLSearchParams(location.search).get('api'), window.LITTLE_PRINCE_API_BASE);
   }
 
   async function requestReply(content) {
@@ -447,10 +469,9 @@
         return { reply: reply.trim(), createdAt: dayKey(timestamp) ? timestamp : new Date().toISOString() };
       } catch (error) {
         lastError = error;
-        // Only an explicit missing route or a failed connection selects the next configured service.
+        // Missing routes (including local static-server 501) can select another service.
         // Never retry an ambiguous timed-out POST or an authentication/upstream failure.
-        if (error.name === 'AbortError' || error.status && ![404, 405].includes(error.status)) throw error;
-        if (!(error instanceof TypeError) && ![404, 405].includes(error.status)) throw error;
+        if (!canTryNextChatService(error, base, location)) throw error;
       } finally {
         clearTimeout(timer);
       }
