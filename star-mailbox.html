@@ -1,95 +1,81 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>星空信箱 · The Little Prince</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
-:root{--paper:#f7f3e9;--ink:#514d43;--soft:#827e70;--sage:#788269;--gold:#a88b54;--line:#dcd3bf}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'LXGW WenKai','KaiTi',serif;background-image:radial-gradient(ellipse at 70% 20%,#e4d9b22b,transparent 50%),url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23n)' opacity='.055' d='M0 0h180v180H0z'/%3E%3C/svg%3E")}button,input,a{-webkit-tap-highlight-color:transparent}button,input{font:inherit}button,a{color:inherit}button{cursor:pointer}a{text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--sage);outline-offset:5px}header{max-width:1240px;margin:auto;height:94px;display:flex;align-items:center;justify-content:space-between;padding:0 38px;border-bottom:1px solid #ded6c280}.brand{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:33px}nav{display:flex;align-items:center;gap:34px;font-size:14px}nav a:last-child{color:var(--gold)}.preview{position:fixed;bottom:16px;left:20px;background:#fffdf6e8;border:1px solid var(--line);padding:8px 13px;font-size:12px;z-index:3;border-radius:5px}.preview button{border:0;background:none;margin-left:12px;text-decoration:underline;color:var(--sage)}main{max-width:1110px;margin:auto;padding:30px 38px 60px}.hero{position:relative;min-height:245px;display:flex;align-items:center;justify-content:space-between;padding:10px 60px 10px 18px}.hero-copy{position:relative;z-index:1}.eyebrow{font:12px Georgia,serif;color:var(--gold);letter-spacing:4px}h1{font-size:46px;font-weight:400;letter-spacing:8px;margin:19px 0 14px}.subtitle{font-size:16px;color:var(--soft);line-height:1.9;margin:0}.hero-art{width:240px;height:240px;object-fit:contain;mix-blend-mode:multiply;transform:rotate(4deg)}.spark{position:absolute;color:#b69b5a70;user-select:none}.spark.a{top:35px;left:52%;font-size:20px}.spark.b{top:155px;left:58%;font-size:12px}.spark.c{top:65px;right:15px;font-size:28px}.toolbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:12px 0 17px;margin:0 0 40px;gap:20px}.tabs{display:flex;gap:27px}.tab{border:0;background:none;font-size:16px;padding:9px 0;position:relative;color:var(--soft)}.tab[aria-selected=true]{color:var(--ink)}.tab[aria-selected=true]:after{content:'';height:2px;position:absolute;left:0;right:0;bottom:0;background:var(--sage);transform:rotate(-2deg)}.tab span{font:12px Georgia;color:var(--soft);margin-left:7px}.search{display:flex;align-items:center;border-bottom:1px solid #c9bfaa;padding:6px 0;gap:10px;color:var(--soft)}input{width:150px;background:none;border:none;outline:none;color:var(--ink);font-size:13px}.search svg{width:15px;stroke:currentColor;fill:none}.collection-head{display:flex;justify-content:space-between;margin-bottom:25px;color:var(--soft);font-size:13px}.collection-head .hint{font-size:12px;color:#918976}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 28px}.letter-wrap{position:relative;padding-top:8px}.envelope{position:relative;display:block;width:100%;height:220px;border:1px solid #ded1b5;background:linear-gradient(110deg,#eee3cc,#f7efdd 48%,#ece0c5);box-shadow:1px 9px 17px #63563812;transition:transform .25s,box-shadow .25s;text-align:left;padding:0;border-radius:3px;isolation:isolate}.letter-wrap:nth-child(3n+1) .envelope{transform:rotate(-1.2deg)}.letter-wrap:nth-child(3n+2) .envelope{transform:rotate(.8deg);background:linear-gradient(115deg,#ecebdd,#f4f2e7,#e6e5d3)}.letter-wrap:nth-child(3n) .envelope{transform:rotate(-.5deg);background:linear-gradient(115deg,#eddfd5,#f5ece4,#ecdfd5)}.envelope:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(33deg,transparent 49.6%,#cebea044 50%,transparent 50.4%) 0 0/50% 100%,linear-gradient(-33deg,transparent 49.6%,#cebea044 50%,transparent 50.4%) 100% 0/50% 100%;background-repeat:no-repeat;opacity:.7}.envelope:after{content:'';position:absolute;left:0;right:0;top:0;height:108px;background:linear-gradient(160deg,#fcf7ec,#e9dcc1);clip-path:polygon(0 0,100% 0,50% 98%);z-index:-1;filter:drop-shadow(0 2px 2px #88795333)}.letter-wrap:nth-child(3n+2) .envelope:after{background:linear-gradient(160deg,#fcfaf0,#dedfca)}.letter-wrap:nth-child(3n) .envelope:after{background:linear-gradient(160deg,#fbf2ed,#e7d7ca)}.envelope:hover{transform:translateY(-7px) rotate(0)!important;box-shadow:1px 17px 25px #6356381e}.stamp{position:absolute;top:20px;right:18px;border:1px dashed #9c9c8380;padding:5px 6px;text-align:center;line-height:1.2;color:var(--sage);font-size:20px;background:#f8f6ea80}.stamp small{display:block;font:7px Georgia;letter-spacing:1px;margin-top:3px}.address{position:absolute;bottom:36px;left:24px;right:24px}.recipient{font-size:12px;color:#8b806c;margin-bottom:10px}.subject{font-size:18px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:230px}.seal{position:absolute;top:83px;left:calc(50% - 14px);width:29px;height:29px;display:grid;place-items:center;border-radius:50%;background:#b59658;color:#f7edce;box-shadow:inset 0 0 0 3px #d2b47766;font-size:14px}.caption{padding:17px 6px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--soft)}.favorite{border:0;background:none;color:#8d8068;font-size:19px;padding:2px 7px}.favorite[aria-pressed=true]{color:#aa8740}.closing{display:flex;justify-content:space-between;align-items:end;margin-top:50px;padding-bottom:30px;border-bottom:1px solid var(--line)}.closing p{color:var(--soft);line-height:2;font-size:14px}.write{display:inline-flex;align-items:center;gap:16px;border:1px solid #c9cfbc;padding:12px 20px;color:var(--sage);font-size:14px;border-radius:40% 45% 44% 40%/8% 12% 10% 10%;background:#f8f7ee}footer{text-align:center;color:#9b917c;letter-spacing:2px;font-size:11px;padding:24px 0}.empty{min-height:330px;text-align:center;grid-column:1/-1;padding:20px}.empty img{width:150px;height:150px;object-fit:contain;mix-blend-mode:multiply}.empty h2{font-weight:400;font-size:25px}.empty p{color:var(--soft);line-height:1.9}.empty button{background:none;border:0;text-decoration:underline;color:var(--sage)}dialog{border:0;width:min(700px,calc(100% - 30px));max-height:88vh;padding:0;background:#fcf8ef;color:var(--ink);box-shadow:0 30px 120px #3a342b4d;transform:rotate(-.25deg)}dialog::backdrop{background:#3e392b55;backdrop-filter:blur(5px)}.reading{padding:42px 55px;background:repeating-linear-gradient(transparent,transparent 33px,#d6cbb32b 34px);background-position:0 20px}.reading-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--gold);letter-spacing:2px}.close{border:0;background:none;font-size:24px;color:var(--soft);padding:3px 8px}.reading h2{font-size:27px;font-weight:400;line-height:1.6}.message{margin:28px 0}.message small{color:var(--sage);font-size:12px}.message p{white-space:pre-wrap;line-height:2.2;font-size:16px;margin-top:10px}.reader-actions{border-top:1px solid var(--line);padding-top:17px;display:flex;justify-content:space-between}.reader-actions button{border:0;background:none;color:var(--soft);padding:8px}.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#4e5346;color:#fff9eb;padding:12px 20px;border-radius:5px;z-index:5;box-shadow:0 5px 20px #0002}.toast button{border:0;background:none;color:#efd49a;margin-left:18px}[hidden]{display:none!important}@media(prefers-reduced-motion:reduce){*{transition:none!important}}@media(min-width:1500px){main{padding-top:50px}.hero{min-height:270px}.grid{gap:40px}.envelope{height:235px}}@media(max-width:760px){header{height:75px;padding:0 22px}.brand{font-size:25px}nav{gap:20px}nav a:first-child,nav a:nth-child(2){display:none}main{padding:12px 22px 55px}.hero{padding:16px 0;min-height:230px}.hero-art{width:135px;height:170px;margin-right:-8px}.hero-copy{min-width:200px}h1{font-size:34px;letter-spacing:4px}.subtitle{font-size:13px}.eyebrow{font-size:9px;letter-spacing:2px}.spark{display:none}.grid{grid-template-columns:repeat(2,1fr);gap:16px}.envelope{height:185px}.address{left:16px;right:12px;bottom:23px}.subject{font-size:16px}.stamp{right:11px;top:12px;font-size:15px}.seal{top:77px}.toolbar{margin-bottom:25px;align-items:end}.tabs{gap:18px}.tab{font-size:14px}input{width:100px}.collection-head .hint{display:none}.closing{align-items:start;gap:15px}.closing p{font-size:12px}.write{white-space:nowrap;padding:11px 15px;font-size:13px}.reading{padding:25px}.reading h2{font-size:24px}.preview{font-size:10px;bottom:10px;left:10px}.caption{padding:14px 2px;font-size:11px}}@media(max-width:390px){.grid{grid-template-columns:1fr}.hero-art{width:105px}.search input{width:85px}}
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f1e5">
+  <title>星光信箱 · The Little Prince</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="star-mailbox.css">
+  <script src="star-mailbox.js" defer></script>
+</head>
+<body class="starry-mailbox">
+  <div class="sky" aria-hidden="true">
+    <svg class="sky__orbit" viewBox="0 0 1400 1050" preserveAspectRatio="xMidYMin slice"><path d="M-80 330C170 100 450 250 810 100S550-30 690 145M780 720C800 550 1100 360 1490 370"/><path class="sky__flow" d="M780 720C800 550 1100 360 1490 370"/></svg>
+    <span class="sky__star" style="--x:7%;--y:160px;--delay:0s">✦</span><span class="sky__star" style="--x:38%;--y:100px;--delay:2s">✧</span><span class="sky__star" style="--x:65%;--y:145px;--delay:4s">✦</span><span class="sky__star" style="--x:94%;--y:76px;--delay:1s">✧</span><span class="sky__star" style="--x:80%;--y:490px;--delay:3s">✦</span><span class="sky__star" style="--x:10%;--y:585px;--delay:5s">✧</span><span class="sky__star" style="--x:72%;--y:690px;--delay:2s">✦</span>
+  </div>
+  <nav class="page-nav" aria-label="页面导航"><a href="index.html">← 回到星球之旅</a><a href="#compose">写一封信 <span aria-hidden="true">↗</span></a></nav>
+  <main class="post-office">
+    <header class="page-heading">
+      <span class="heading-star" aria-hidden="true">✧</span>
+      <h1>星光信箱</h1>
+      <p>每一封来信，都是宇宙里的一颗星星。</p>
+    </header>
+    <div class="mail-nav">
+      <div class="mail-tabs" role="tablist" aria-label="信件分类">
+        <button class="mail-tab" id="all-tab" type="button" role="tab" aria-selected="true" aria-controls="letters-panel" tabindex="0" data-filter="all">全部来信 <span id="all-count">00</span></button>
+        <button class="mail-tab" id="favorite-tab" type="button" role="tab" aria-selected="false" aria-controls="letters-panel" tabindex="-1" data-filter="favorite">珍藏星光 <span id="favorite-count">00</span></button>
+        <span class="tab-underline" aria-hidden="true"></span>
+      </div>
+    </div>
+    <p class="notice" id="storage-notice" role="status" hidden></p>
+    <div class="mail-layout">
+      <section class="mail-content" aria-label="信件与写信区">
+        <div class="collection-tools"><span id="collection-label">来自那些值得记住的日子</span><label class="search"><span aria-hidden="true">⌕</span><input id="letter-search" type="search" placeholder="找一句曾说过的话" aria-label="搜索信件内容或日期"></label></div>
+        <div id="letters-panel" role="tabpanel" aria-labelledby="all-tab" tabindex="0"><div class="letter-list" id="letter-list"></div><p class="sr-only" id="results-status" role="status" aria-live="polite"></p></div>
+        <section class="composer" id="compose" aria-labelledby="compose-title">
+          <div class="composer__heading"><div><span class="eyebrow">TO B612 · 一封新的信</span><h2 id="compose-title">今天，想对小王子说些什么？</h2></div><span class="composer__star" aria-hidden="true">✧</span></div>
+          <form id="letter-form" novalidate>
+            <label class="sr-only" for="letter-body">写给小王子的信</label>
+            <textarea id="letter-body" name="letter" maxlength="4000" rows="5" placeholder="亲爱的小王子：&#10;&#10;有一些话，想慢慢说给你听……" aria-describedby="compose-privacy compose-status"></textarea>
+            <div class="composer__bottom"><span id="letter-length" aria-hidden="true">0 / 4000</span><button class="send-button" id="send-letter" type="submit"><span>寄往 B612</span><span aria-hidden="true">✧</span></button></div>
+            <p class="compose-status" id="compose-status" role="status" aria-live="polite"></p>
+            <button class="save-receipt" id="save-receipt" type="button" hidden>回信已到，重试保存到信箱</button>
+          </form>
+          <p class="privacy" id="compose-privacy">寄出后由 AI 小王子回信。来信和回信保存在当前浏览器，清除浏览器数据后可能无法找回。</p>
+          <div class="sending-letter" aria-hidden="true">✉ <span>✦</span></div>
+        </section>
+      </section>
+      <aside class="illustration" aria-label="B612 水彩插画">
+        <div class="illustration__sticky"><img class="illustration__scene" src="assets/mailbox/b612-post-office.webp" alt="小王子和狐狸坐在星球上，守着玻璃罩里的玫瑰" width="1024" height="1024" fetchpriority="high"><p>有些话，<br>只有星星知道。</p><span class="illustration__star" aria-hidden="true">✧</span></div>
+      </aside>
+    </div>
+    <footer class="original-footer"><p>真正重要的东西眼睛是看不见的——《小王子》</p><img src="letter1-cutout.png" alt="" width="240" height="240" loading="lazy"></footer>
+  </main>
+  <template id="letter-template">
+    <article class="letter">
+      <button class="envelope" type="button">
+        <span class="envelope__shadow" aria-hidden="true"></span><span class="envelope__back" aria-hidden="true"></span><span class="envelope__flap" aria-hidden="true"></span>
+        <span class="letter-paper">
+          <span class="postmark" aria-hidden="true">〰〰<br>〰〰<br>〰〰</span>
+          <span class="postage" aria-hidden="true"><span class="postage__star">✦</span><span class="postage__planet"></span><span class="postage__name">B612</span></span>
+          <span class="letter-paper__recipient">致 · 那天的自己</span><span class="letter-paper__summary"></span>
+          <span class="paper-speckle" aria-hidden="true">✦</span>
+        </span>
+        <span class="envelope__front" aria-hidden="true"></span><span class="envelope__fold" aria-hidden="true"></span>
+        <span class="botanical" aria-hidden="true"></span>
+        <span class="wax-seal" aria-hidden="true"><span>✦</span></span><span class="envelope__star" aria-hidden="true">✧</span>
+        <span class="open-hint">轻轻拆开这封信</span>
+      </button>
+      <div class="letter__meta"><time></time><button class="favorite-star" type="button"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="m14 2.8 3.2 7.2 7.9.8-5.9 5.3 1.7 7.8-6.9-4-6.9 4 1.7-7.8-5.9-5.3 7.9-.8Z"/></svg><span class="favorite-spark" aria-hidden="true">✧</span></button></div>
+    </article>
+  </template>
+  <dialog class="reader" id="letter-reader" aria-labelledby="reader-title">
+    <div class="reader-sheet"><header class="reader-header"><span class="reader-postmark">B612 · STAR MAIL<br><time id="reader-date"></time></span><button class="reader-close" type="button" aria-label="收起信件">×</button></header><p class="reader-recipient">致 · 那天的自己</p><h2 id="reader-title"></h2><div class="reader-messages" id="reader-messages"></div><div class="reader-actions"><button class="reader-favorite" id="reader-favorite" type="button" aria-pressed="false"><span aria-hidden="true">☆</span> 珍藏星光</button><button class="reader-remove" id="reader-remove" type="button">移出信箱</button></div></div>
+  </dialog>
+  <div class="undo-toast" id="undo-toast" role="status" hidden><span>这一天的信件已移出信箱</span><button id="undo-remove" type="button">撤销</button></div>
+</body>
+</html>
 
-/* Keep the original illustrated quotation footer. */
-.b612-mailbox-page-bottom{margin-top:24px;padding:2px 0 18px}
-.b612-mailbox-page-bottom-row{display:flex;align-items:center;justify-content:space-between;gap:28px}
-.b612-mailbox-footer{flex:1;min-width:0;margin:0;padding:0 8px 0 0;text-align:center;font-size:15px;color:#b89a6b;letter-spacing:.1em;line-height:1.9}
-.b612-mailbox-corner-art{flex-shrink:0;width:min(300px,50vw);height:min(308px,34vh);overflow:hidden;display:flex;justify-content:flex-end;align-items:flex-start;pointer-events:none}
-.b612-mailbox-corner-art__img{width:100%;height:auto;object-fit:contain;object-position:right top;display:block}
-.closing{margin-top:24px;padding-bottom:12px;border-bottom:0}.closing p{display:none}.closing{justify-content:flex-end}
-.recipient{display:block}.tab{white-space:nowrap}.storage-note{color:#886a42;font-size:13px;line-height:1.8;padding:12px 0}.letter-wrap{min-width:0}
-@media(max-width:760px){.b612-mailbox-page-bottom-row{gap:12px;flex-wrap:wrap}.b612-mailbox-footer{font-size:13px;min-width:150px}.b612-mailbox-corner-art{width:min(236px,45vw);height:min(252px,32vh)}.toolbar{flex-wrap:wrap}.search{margin-left:auto}.reading{padding:25px}.hero-copy{min-width:0}.hero-art{flex-shrink:0}}
-</style></head><body>
-<header><a class="brand" href="index.html">The Little Prince</a><nav aria-label="主导航"><a href="index.html">Home</a><a href="index.html#journey">星球地图</a><a href="index.html#b612-chat">B612 对话</a><a href="#" aria-current="page">星空信箱</a></nav></header>
-<main><section class="hero"><div class="hero-copy"><div class="eyebrow">LETTERS BETWEEN THE STARS</div><h1>星空信箱</h1><p class="subtitle">一些说给星星的话，<br>被悄悄收在了这里。</p></div><img class="hero-art" src="letter-mailbox-cutout.png" alt="水彩星空信箱"><span class="spark a">✧</span><span class="spark b">✦</span><span class="spark c">✧</span></section>
-<div class="toolbar"><div class="tabs" role="tablist" aria-label="信件分类"><button class="tab" role="tab" aria-selected="true" data-filter="all">所有信件 <span id="all-count"></span></button><button class="tab" role="tab" aria-selected="false" data-filter="favorite">珍藏的星光 <span id="fav-count"></span></button></div><label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></svg><input type="search" placeholder="找一句曾说过的话" aria-label="搜索信件"></label></div>
-<p id="storage-note" class="storage-note" role="status" hidden></p><div class="collection-head"><span id="collection-label">你的星际来信</span><span class="hint">轻轻拆开一封，重逢那天的自己</span></div><section class="grid" id="letters" aria-label="信件收藏"></section>
-<section class="closing"><p>不必每一次都找到答案。<br>愿意说出来的心事，也值得被好好收藏。</p><a class="write" href="index.html#b612-chat">再写一封信 <span>↗</span></a></section>        <div class="b612-mailbox-page-bottom">
-            <div class="b612-mailbox-page-bottom-row">
-                <p class="b612-mailbox-footer">真正重要的东西眼睛是看不见的——《小王子》</p>
-                <div class="b612-mailbox-corner-art" aria-hidden="true">
-                    <img class="b612-mailbox-corner-art__img" src="letter1-cutout.png" alt="" decoding="async" loading="lazy">
-                </div>
-            </div>
-        </div>
-
-</main>
-
-<dialog aria-labelledby="letter-title"><div class="reading"><div class="reading-top"><span id="letter-date"></span><button class="close" aria-label="收起信件">×</button></div><h2 id="letter-title"></h2><div id="messages"></div><div class="reader-actions"><button id="reader-fav"></button><button id="remove">移出信箱</button></div></div></dialog><div class="toast" role="status" hidden>这封信已移出信箱<button id="undo">撤销</button></div>
-<script>
-
-(() => {
- 'use strict';
- const DIARY_KEY='b612_diary', HISTORY_KEY='b612_history';
- const $=s=>document.querySelector(s), dialog=$('dialog');
- let letters=[],filter='all',selected=null,removed=null,returnFocus=null;
- function notice(message){$('#storage-note').textContent=message;$('#storage-note').hidden=false;}
- function dayKey(value){const d=new Date(value);if(Number.isNaN(d.getTime()))return '';return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
- function load(){
-  try {
-   const raw=localStorage.getItem(DIARY_KEY);
-   // An intentionally empty diary is authoritative; do not resurrect deleted history.
-   if(raw!==null){const data=JSON.parse(raw);if(!Array.isArray(data)||data.some(x=>!x||typeof x.date!=='string'||!Array.isArray(x.messages)))throw Error('invalid diary');return data.sort((a,b)=>b.date.localeCompare(a.date));}
-   const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');if(!Array.isArray(history))throw Error('invalid history');
-   const days=new Map();
-   [...history].sort((a,b)=>new Date(a&&a.createdAt)-new Date(b&&b.createdAt)).forEach(entry=>{
-    if(!entry)return;const date=dayKey(entry.createdAt);if(!date)return;
-    if(!days.has(date))days.set(date,{date,messages:[],favorite:false});const item=days.get(date);
-    if(typeof entry.user==='string'&&entry.user.trim())item.messages.push({role:'user',text:entry.user});
-    if(typeof entry.reply==='string'&&entry.reply.trim())item.messages.push({role:'prince',text:entry.reply});
-   });return [...days.values()].filter(x=>x.messages.length).sort((a,b)=>b.date.localeCompare(a.date));
-  }catch(error){notice('暂时无法读取这个浏览器里的信件。原始记录未被改动，请检查浏览器存储设置后刷新。');return [];}
- }
- function save(next){try{localStorage.setItem(DIARY_KEY,JSON.stringify(next));letters=next;return true;}catch(error){notice('这次修改未能保存，信件仍保留原状。请检查浏览器存储空间或访问权限。');return false;}}
- function summary(x){const first=x.messages.find(m=>m&&m.role==='user'&&String(m.text||'').trim());return first?String(first.text).trim():'那天，和小王子说过的话';}
- function title(x){const chars=Array.from(summary(x));return chars.slice(0,28).join('')+(chars.length>28?'…':'');}
- function flip(date){const next=letters.map(x=>x.date===date?{...x,favorite:!x.favorite}:x);if(save(next)){render();if(dialog.open)updateReader();}}
- function render(){
-  const q=$('input').value.trim().toLowerCase();$('#all-count').textContent=letters.length;$('#fav-count').textContent=letters.filter(x=>x.favorite).length;
-  const visible=letters.filter(x=>(filter==='all'||x.favorite)&&[x.date,...x.messages.map(m=>m&&m.text||'')].join(' ').toLowerCase().includes(q));
-  const grid=$('#letters');grid.replaceChildren();$('#collection-label').textContent=q?'寻找信件中的那句话':filter==='favorite'?'被你珍藏的星光':'你的星际来信';
-  if(!visible.length){const div=document.createElement('div');div.className='empty';const img=document.createElement('img');img.src='letter-mailbox-cutout.png';img.alt='';
-   const h=document.createElement('h2');h.textContent=q?'这句话，暂时没有找到':filter==='favorite'?'还没有被珍藏的星光':'第一封信，还在路上';
-   const p=document.createElement('p');p.textContent=q?'换一个词试试看。':filter==='favorite'?'点击信件旁的星星，把想重读的话收好。':'等你有想说的话，就来这里坐一会儿。信件保存在当前浏览器中。';div.append(img,h,p);
-   if(q){const b=document.createElement('button');b.textContent='清除搜索';b.onclick=()=>{$('input').value='';render();$('input').focus();};div.append(b);}
-   else if(filter==='all'){const a=document.createElement('a');a.className='write';a.href='index.html#b612-chat';a.textContent='写下第一封信 ↗';div.append(a);}
-   grid.append(div);return;
-  }
-  visible.forEach(x=>{const wrap=document.createElement('article');wrap.className='letter-wrap';const btn=document.createElement('button');btn.className='envelope';btn.setAttribute('aria-label','拆开信件：'+title(x));
-   btn.innerHTML='<span class="stamp" aria-hidden="true">✧<small>B612</small></span><span class="seal" aria-hidden="true">✦</span><span class="address"><span class="recipient">致 · 那天的自己</span><span class="subject"></span></span>';
-   btn.querySelector('.subject').textContent=title(x);btn.onclick=()=>openLetter(x.date,btn);
-   const caption=document.createElement('div');caption.className='caption';const date=document.createElement('span');date.textContent=x.date.replace(/-/g,'.');const fav=document.createElement('button');fav.className='favorite';fav.textContent=x.favorite?'★':'☆';fav.setAttribute('aria-label',(x.favorite?'取消珍藏：':'珍藏：')+title(x));fav.setAttribute('aria-pressed',!!x.favorite);
-   fav.onclick=()=>{flip(x.date);const row=[...grid.querySelectorAll('.letter-wrap')].find(e=>e.dataset.date===x.date);if(row)row.querySelector('.favorite').focus();};wrap.dataset.date=x.date;caption.append(date,fav);wrap.append(btn,caption);grid.append(wrap);
-  });
- }
- function openLetter(date,opener){selected=date;returnFocus=opener;const x=letters.find(x=>x.date===date);if(!x)return;$('#letter-date').textContent=date.replace(/-/g,'.')+' · B612 来信';$('#letter-title').textContent=title(x);$('#messages').replaceChildren();
-  x.messages.forEach(message=>{if(!message)return;const block=document.createElement('section');block.className='message';const label=document.createElement('small');label.textContent=message.role==='user'?'那天的你':'小王子的回信';const p=document.createElement('p');p.textContent=String(message.text||'');block.append(label,p);$('#messages').append(block);});updateReader();dialog.showModal();
- }
- function updateReader(){const x=letters.find(x=>x.date===selected);if(!x)return;$('#reader-fav').textContent=x.favorite?'★ 已珍藏':'☆ 珍藏这封信';$('#reader-fav').setAttribute('aria-pressed',!!x.favorite);}
- $('.close').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{if(returnFocus&&returnFocus.isConnected)returnFocus.focus();else $('.tab[aria-selected="true"]').focus();});
- dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
- $('#reader-fav').onclick=()=>flip(selected);
- $('#remove').onclick=()=>{const item=letters.find(x=>x.date===selected);if(!item||!window.confirm('要把这一天的信件移出信箱吗？移出后可在本页撤销。'))return;if(save(letters.filter(x=>x.date!==selected))){removed=item;dialog.close();render();$('.toast').hidden=false;}};
- $('#undo').onclick=()=>{if(removed&&save([...letters.filter(x=>x.date!==removed.date),removed].sort((a,b)=>b.date.localeCompare(a.date)))){removed=null;render();$('.toast').hidden=true;}};
- $('.tabs').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;filter=b.dataset.filter;document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t===b)));render();});
- $('.tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=[...document.querySelectorAll('.tab')];const index=e.key==='Home'?0:e.key==='End'?tabs.length-1:(tabs.indexOf(document.activeElement)+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[index].click();tabs[index].focus();});
- $('input').addEventListener('input',render);
- window.addEventListener('storage',e=>{if(e.key!==DIARY_KEY&&e.key!==HISTORY_KEY&&e.key!==null)return;letters=load();removed=null;$('.toast').hidden=true;if(dialog.open)dialog.close();render();});
- letters=load();render();
-})();
-
-</script></body></html>
