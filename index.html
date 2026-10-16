@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="index-main.css?v=4">
-    <link rel="stylesheet" href="storybook.css?v=1">
+    <link rel="stylesheet" href="storybook.css?v=2">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap"></noscript>
 </head>
@@ -53,6 +53,7 @@
     <div class="container">
         <!-- HOME PAGE -->
         <div id="home" class="page active">
+            <div class="home-footer-art" aria-hidden="true">
             <img
                 class="home-journey-cutout"
                 data-src="journey-cutout.webp"
@@ -70,6 +71,7 @@
                 height="1254"
                 decoding="async"
             >
+            </div>
             <p class="home-marginal home-marginal--tl" aria-hidden="true">记得抬头看星星。</p>
             <p class="home-marginal home-marginal--tr" aria-hidden="true">有些答案，要慢慢等。</p>
             <header class="home-page__intro">
@@ -188,7 +190,7 @@
                     <button type="button" data-carousel-next aria-label="下一张故事卡">→</button>
                     <button type="button" class="story-carousel__pause" data-carousel-pause aria-label="暂停自动轮转" aria-pressed="false">Ⅱ</button>
                 </div>
-                <p class="story-carousel__hint" id="story-carousel-hint">左右拖动，寻找你的故事 · 撕下票根，开启旅程</p>
+                <p class="story-carousel__hint" id="story-carousel-hint">左右拖动，寻找你的故事</p>
             </section>
             <div class="section-flow" aria-hidden="true">
                 <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">

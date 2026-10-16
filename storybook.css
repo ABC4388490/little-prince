@@ -91,3 +91,46 @@
   .story-ticket, .story-ticket__stub { transition: none !important; }
   .story-ticket.is-torn .story-ticket__stub { transform: none; }
 }
+
+/* Compact illustrated footer, matching the reference's three-button composition. */
+body.page-home .container { padding-bottom: 12px; }
+#home.page { padding-bottom: 52px; }
+#home .home-footer-art {
+  position: absolute; left: -120px; right: -120px; bottom: 0; height: 230px;
+  overflow: hidden; pointer-events: none; z-index: 0;
+}
+#home .home-journey-cutout { left: 0; bottom: 0; width: 480px; transform: none; }
+#home .home-right-illustration { right: 10px; bottom: -68px; width: 190px; transform: none; }
+#home .section-flow { height: 38px; margin-top: 4px; }
+#home .section-flow__path { stroke: #b6a486; stroke-opacity: .36; }
+#home .section-flow__arrow, #home .section-flow__dot,
+#home .section-flow__tail, #home .section-flow__note { display: none; }
+.story-carousel.is-ready .story-carousel__stage { height: 320px; }
+.story-carousel.is-ready .story-carousel__controls { min-height: 32px; gap: 24px; }
+.story-carousel__controls button { width: 30px; height: 30px; font-size: 15px; background: #fffcf540; border-color: #c7b48f60; }
+.story-carousel__controls [data-carousel-prev] { order: 0; }
+.story-carousel__controls [data-carousel-pause] { order: 1; }
+.story-carousel__controls [data-carousel-next] { order: 2; }
+.story-carousel__controls .story-carousel__pause { width: 30px; height: 30px; margin-left: 0; }
+.story-carousel__position {
+  position: absolute; width: 1px; min-width: 0; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.story-carousel.is-ready .story-carousel__hint { margin-top: 3px; font-size: 10px; line-height: 1.6; letter-spacing: .12em; }
+@media (max-width: 1100px) and (min-width: 769px) {
+  #home .home-footer-art { left: -32px; right: -32px; }
+  #home .home-journey-cutout { width: 380px; }
+  #home .home-right-illustration { width: 150px; bottom: -48px; }
+}
+@media (max-width: 768px) {
+  #home.page { padding-bottom: 48px; }
+  #home .home-footer-art { left: -32px; right: -32px; height: 145px; }
+  #home .home-journey-cutout { left: -12px; bottom: 0; width: 245px; }
+  #home .home-right-illustration { right: 0; bottom: -38px; width: 110px; }
+  #home .section-flow { margin-top: 4px; height: 28px; }
+}
+@media (max-width: 600px) {
+  .story-carousel.is-ready .story-carousel__stage { height: 286px; }
+  .story-carousel.is-ready .story-carousel__controls { gap: 18px; }
+  .story-carousel.is-ready .story-carousel__hint { margin: 3px auto 0; max-width: 250px; font-size: 9px; }
+}
