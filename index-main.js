@@ -777,40 +777,25 @@ const storyData = {
             });
         }
 
-        function enterJourneyFromHome(cardEl) {
-            if (!cardEl || cardEl.classList.contains('scene-card--leaving')) return;
-            cardEl.classList.add('scene-card--leaving');
-            window.setTimeout(() => {
-                const journeyLink = document.querySelector('.nav-link[data-page="journey"]');
-                if (journeyLink) {
-                    journeyLink.click();
-                    if (location.hash !== '#journey') history.replaceState(null, '', '#journey');
-                }
-                cardEl.classList.remove('scene-card--leaving');
-            }, 360);
+        // One entry dispatcher for regular buttons, ticket tears and the static fallback.
+        // Focusing/rotating a ticket never starts B612 synchronization or an API call.
+        function openHomeStory(action) {
+            if (action === 'mailbox') { location.href = 'star-mailbox.html'; return; }
+            if (action === 'flight') { openFlightLog(); return; }
+            if (action === 'rose' || action === 'fox') {
+                openModal(action);
+                return;
+            }
+            if (action === 'journey' || action === 'b612') {
+                const link = document.querySelector(`.nav-link[data-page="${action}"]`);
+                if (link) link.click();
+            }
         }
-
-        function enterB612FromHome(cardEl) {
-            if (!cardEl || cardEl.classList.contains('scene-card--leaving')) return;
-            cardEl.classList.add('scene-card--leaving');
-            window.setTimeout(() => {
-                const b612Link = document.querySelector('.nav-link[data-page="b612"]');
-                if (b612Link) {
-                    b612Link.click();
-                    if (location.hash !== '#b612') history.replaceState(null, '', '#b612');
-                }
-                cardEl.classList.remove('scene-card--leaving');
-            }, 360);
-        }
-
-        document.querySelectorAll('.scene-card[data-home-action]').forEach((card) => {
-            card.addEventListener('click', () => {
-                switch (card.dataset.homeAction) {
-                    case 'rose': openModal('rose'); break;
-                    case 'journey': enterJourneyFromHome(card); break;
-                    case 'fox': openModal('fox'); break;
-                    case 'b612': enterB612FromHome(card); break;
-                }
+        document.addEventListener('storybook:enter', (event) => openHomeStory(event.detail.action));
+        document.querySelectorAll('[data-story-carousel] [data-home-action]').forEach((button) => {
+            button.addEventListener('click', () => {
+                if (button.closest('[data-story-carousel]').classList.contains('is-ready')) return;
+                openHomeStory(button.dataset.homeAction);
             });
         });
 

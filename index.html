@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="index-main.css?v=4">
+    <link rel="stylesheet" href="storybook.css?v=1">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap"></noscript>
 </head>
@@ -87,72 +88,108 @@
                 </div>
                 <p class="home-page__subtitle">follow the stars, find the heart</p>
             </header>
-            <p class="home-scroll-hint">四段故事，慢慢往下读 <span aria-hidden="true">↓</span></p>
-            <div class="home-grid">
-                <button type="button" class="scene-card" data-home-action="rose">
-                    <span class="scene-image">
-                        <img src="little-rose-384.webp" srcset="little-rose-384.webp 384w, little-rose.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="768" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Rose</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"You are like my rose.</span>
-                            <span class="scene-quote-line">You are the only one in the world."</span>
-                        </span>
-                        <span class="scene-cta">听玫瑰讲故事 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-
-                <button type="button" class="scene-card" data-home-action="journey">
-                    <span class="scene-image">
-                        <img src="little-plants-384.webp" srcset="little-plants-384.webp 384w, little-plants.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="512" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Planets</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"Grown-ups are certainly</span>
-                            <span class="scene-quote-line">very strange."</span>
-                        </span>
-                        <span class="scene-cta">开启星球之旅 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-
-                <button type="button" class="scene-card" data-home-action="fox">
-                    <span class="scene-image">
-                        <img src="little-fox-384.webp" srcset="little-fox-384.webp 384w, little-fox.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="768" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Fox</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"If you tame me,</span>
-                            <span class="scene-quote-line">we shall need each other."</span>
-                        </span>
-                        <span class="scene-cta">认识狐狸 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-
-                <button type="button" class="scene-card" data-home-action="b612">
-                    <span class="scene-image">
-                        <img src="little-prince-384.webp" srcset="little-prince-384.webp 384w, little-prince.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="512" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Little Prince</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"I was too young to know</span>
-                            <span class="scene-quote-line">how to love her."</span>
-                        </span>
-                        <span class="scene-cta">和小王子对话 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-            </div>
+            <section class="story-carousel" aria-label="六段故事收藏卡" aria-roledescription="轮播" data-story-carousel>
+                <p class="story-carousel__eyebrow">B612 · STORIES TO KEEP <span aria-hidden="true">✧</span></p>
+                <div class="story-carousel__stage" id="story-card-stage">
+                    <article class="story-ticket story-ticket--blush" data-story="rose" aria-label="01 · 玫瑰" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <p class="story-ticket__edition"><span>STORY / 01</span><span aria-hidden="true">✧</span></p>
+                            <img class="story-ticket__art" src="assets/story-cards/rose.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <div class="story-ticket__words"><span class="story-ticket__english" lang="en">The Rose</span>
+                                <h2 class="story-ticket__title">玫瑰</h2><p class="story-ticket__quote">有一朵花，只属于你的星球。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="rose">听玫瑰讲故事 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="rose" aria-label="撕下玫瑰票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✧</span>
+                            <span class="story-ticket__stub-label">撕下票根<br>开启故事</span><span class="story-ticket__stub-number">Nº 01</span>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--blue" data-story="journey" aria-label="02 · 星球地图" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <p class="story-ticket__edition"><span>STORY / 02</span><span aria-hidden="true">✧</span></p>
+                            <img class="story-ticket__art" src="assets/story-cards/journey.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <div class="story-ticket__words"><span class="story-ticket__english" lang="en">The Planets</span>
+                                <h2 class="story-ticket__title">星球地图</h2><p class="story-ticket__quote">沿着星光，去遇见不同的世界。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="journey">开启星球之旅 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="journey" aria-label="撕下星球地图票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✧</span>
+                            <span class="story-ticket__stub-label">撕下票根<br>开启故事</span><span class="story-ticket__stub-number">Nº 02</span>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--wheat" data-story="fox" aria-label="03 · 狐狸" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <p class="story-ticket__edition"><span>STORY / 03</span><span aria-hidden="true">✧</span></p>
+                            <img class="story-ticket__art" src="assets/story-cards/fox.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <div class="story-ticket__words"><span class="story-ticket__english" lang="en">The Fox</span>
+                                <h2 class="story-ticket__title">狐狸</h2><p class="story-ticket__quote">慢慢靠近，让彼此变得独一无二。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="fox">认识狐狸 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="fox" aria-label="撕下狐狸票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✧</span>
+                            <span class="story-ticket__stub-label">撕下票根<br>开启故事</span><span class="story-ticket__stub-number">Nº 03</span>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--blue" data-story="mailbox" aria-label="05 · 星光信箱" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <p class="story-ticket__edition"><span>STORY / 05</span><span aria-hidden="true">✧</span></p>
+                            <img class="story-ticket__art" src="assets/story-cards/mailbox.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <div class="story-ticket__words"><span class="story-ticket__english" lang="en">The Starry Mailbox</span>
+                                <h2 class="story-ticket__title">星光信箱</h2><p class="story-ticket__quote">把想说的话，寄给星星吧。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="mailbox">打开星光信箱 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="mailbox" aria-label="撕下星光信箱票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✧</span>
+                            <span class="story-ticket__stub-label">撕下票根<br>开启故事</span><span class="story-ticket__stub-number">Nº 05</span>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--sage" data-story="b612" aria-label="04 · 小王子" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <p class="story-ticket__edition"><span>STORY / 04</span><span aria-hidden="true">✧</span></p>
+                            <img class="story-ticket__art" src="assets/story-cards/b612.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <div class="story-ticket__words"><span class="story-ticket__english" lang="en">The Little Prince</span>
+                                <h2 class="story-ticket__title">小王子</h2><p class="story-ticket__quote">把心事，讲给远方的朋友听。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="b612">和小王子对话 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="b612" aria-label="撕下小王子票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✧</span>
+                            <span class="story-ticket__stub-label">撕下票根<br>开启故事</span><span class="story-ticket__stub-number">Nº 04</span>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--sage" data-story="flight" aria-label="06 · 飞行日志" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <p class="story-ticket__edition"><span>STORY / 06</span><span aria-hidden="true">✧</span></p>
+                            <img class="story-ticket__art" src="assets/story-cards/flight.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <div class="story-ticket__words"><span class="story-ticket__english" lang="en">The Flight Log</span>
+                                <h2 class="story-ticket__title">飞行日志</h2><p class="story-ticket__quote">把看到的、感受到的，都记录下来。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="flight">翻开飞行日志 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="flight" aria-label="撕下飞行日志票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✧</span>
+                            <span class="story-ticket__stub-label">撕下票根<br>开启故事</span><span class="story-ticket__stub-number">Nº 06</span>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                </div>
+                <div class="story-carousel__controls" role="group" aria-label="故事卡片控制">
+                    <button type="button" data-carousel-prev aria-label="上一张故事卡">←</button>
+                    <span class="story-carousel__position" aria-live="polite" aria-atomic="true">03 / 06 · 狐狸</span>
+                    <button type="button" data-carousel-next aria-label="下一张故事卡">→</button>
+                    <button type="button" class="story-carousel__pause" data-carousel-pause aria-label="暂停自动轮转" aria-pressed="false">Ⅱ</button>
+                </div>
+                <p class="story-carousel__hint" id="story-carousel-hint">左右拖动，寻找你的故事 · 撕下票根，开启旅程</p>
+            </section>
             <div class="section-flow" aria-hidden="true">
                 <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                     <defs>
@@ -771,6 +808,7 @@
     </div>
 
     <script src="memory-api.js?v=1" defer></script>
-    <script src="index-main.js?v=4" defer></script>
+    <script src="index-main.js?v=5" defer></script>
+    <script src="story-cards.js?v=1" defer></script>
 </body>
 </html>
