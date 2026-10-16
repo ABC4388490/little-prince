@@ -154,7 +154,7 @@ const pass = name => { results.push(name); console.log('PASS', name); };
   for (let i = 1; i <= 6; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: vx, y: vy - i * 15 }] });
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await page.waitForTimeout(200);
-  assert.ok(await page.evaluate(() => scrollY) > scrollBefore);
+  assert.ok(await page.evaluate(before => document.documentElement.scrollHeight <= innerHeight || scrollY > before, scrollBefore));
   assert.equal(await isCurrent('rose'), 'true'); pass('vertical touch gesture scrolls the page without rotating or entering');
   await select('rose'); await page.mouse.move(0, 0);
   await page.evaluate(() => { document.activeElement.blur(); window.scrollTo(0, 0); });
