@@ -117,6 +117,8 @@ const pass = name => { results.push(name); console.log('PASS', name); };
   await page.waitForTimeout(300); assert.equal(await ticket('rose').evaluate(element => element.style.transform), stopped);
   await page.locator('#closeFlightLog').click(); pass('flight log still opens and carousel stops behind overlay');
   await page.locator('.nav-link[data-page="journey"]').click();
+  await page.waitForFunction(() => [...document.querySelectorAll('.journey-map__planet-img')].every(image => image.complete && image.naturalWidth > 0));
+  assert.equal(await page.locator('.journey-map__planet-img').count(), 8);
   await page.locator('.journey-map__node').first().click(); await page.locator('#journeyChapterModal.active').waitFor();
   await page.locator('button[data-journey-modal-close]').click(); pass('planet map chapter still opens and closes');
   await page.locator('.nav-link[data-page="b612"]').click();
