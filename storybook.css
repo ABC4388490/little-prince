@@ -188,3 +188,17 @@ body.page-home .container { padding-bottom: 12px; }
   .story-ticket--refined .story-ticket__stub-label { font-size: 9px; }
   .story-ticket--refined .story-ticket__postmark { width: 33px; height: 23px; }
 }
+
+/* Quiet footer: hide visual controls, retain focus-revealed keyboard access. */
+.story-carousel.is-ready .story-carousel__hint { display: none; }
+.story-carousel.is-ready .story-carousel__controls:not(:focus-within) {
+  position: absolute; width: 1px; height: 1px; min-height: 0; margin: -1px;
+  padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+#home .home-right-illustration { width: 330px; right: -12px; bottom: -88px; }
+@media (max-width: 1100px) and (min-width: 769px) {
+  #home .home-right-illustration { width: 270px; right: -20px; bottom: -75px; }
+}
+@media (max-width: 768px) {
+  #home .home-right-illustration { width: 185px; right: -12px; bottom: -48px; }
+}
