@@ -17,9 +17,10 @@
   let dispatching = false, visible = true, pointerCard = null;
   const wrap = n => ((n % cards.length) + cards.length) % cards.length;
   const current = () => wrap(Math.round(-angle / step));
-  const isBlocked = () => !home.classList.contains('active') || document.hidden || !visible ||
+  const isUnavailable = () => !home.classList.contains('active') || document.hidden ||
     !!document.querySelector('#storyModal.active, #foxTamingModal.active, #flightLogModal.active, #b612ChatModal.active') ||
     document.body.classList.contains('modal-open');
+  const isBlocked = () => isUnavailable() || !visible;
   function alignCardFocus() {
     // A completed touch swipe must not leave keyboard focus on the old rear card.
     if (document.activeElement?.matches('[data-story]') && document.activeElement !== cards[current()]) {
@@ -93,7 +94,9 @@
     });
   }
   function enter(card, torn) {
-    if (busy || blocked) return;
+    // Animation suspension is observer-driven. An explicit activation must use
+    // current page/modal state, even before a visibility observer catches up.
+    if (busy || isUnavailable()) return;
     busy = true; velocity = 0; settling = false;
     // Finish in the centered position before starting the tear.
     angle = Math.round(angle / step) * step; render();
