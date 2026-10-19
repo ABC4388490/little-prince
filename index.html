@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="index-main.css?v=4">
+    <link rel="stylesheet" href="storybook.css?v=5">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap"></noscript>
 </head>
@@ -52,6 +53,7 @@
     <div class="container">
         <!-- HOME PAGE -->
         <div id="home" class="page active">
+            <div class="home-footer-art" aria-hidden="true">
             <img
                 class="home-journey-cutout"
                 data-src="journey-cutout.webp"
@@ -69,6 +71,7 @@
                 height="1254"
                 decoding="async"
             >
+            </div>
             <p class="home-marginal home-marginal--tl" aria-hidden="true">记得抬头看星星。</p>
             <p class="home-marginal home-marginal--tr" aria-hidden="true">有些答案，要慢慢等。</p>
             <header class="home-page__intro">
@@ -87,72 +90,120 @@
                 </div>
                 <p class="home-page__subtitle">follow the stars, find the heart</p>
             </header>
-            <p class="home-scroll-hint">四段故事，慢慢往下读 <span aria-hidden="true">↓</span></p>
-            <div class="home-grid">
-                <button type="button" class="scene-card" data-home-action="rose">
-                    <span class="scene-image">
-                        <img src="little-rose-384.webp" srcset="little-rose-384.webp 384w, little-rose.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="768" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Rose</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"You are like my rose.</span>
-                            <span class="scene-quote-line">You are the only one in the world."</span>
-                        </span>
-                        <span class="scene-cta">听玫瑰讲故事 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-
-                <button type="button" class="scene-card" data-home-action="journey">
-                    <span class="scene-image">
-                        <img src="little-plants-384.webp" srcset="little-plants-384.webp 384w, little-plants.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="512" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Planets</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"Grown-ups are certainly</span>
-                            <span class="scene-quote-line">very strange."</span>
-                        </span>
-                        <span class="scene-cta">开启星球之旅 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-
-                <button type="button" class="scene-card" data-home-action="fox">
-                    <span class="scene-image">
-                        <img src="little-fox-384.webp" srcset="little-fox-384.webp 384w, little-fox.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="768" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Fox</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"If you tame me,</span>
-                            <span class="scene-quote-line">we shall need each other."</span>
-                        </span>
-                        <span class="scene-cta">认识狐狸 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-
-                <button type="button" class="scene-card" data-home-action="b612">
-                    <span class="scene-image">
-                        <img src="little-prince-384.webp" srcset="little-prince-384.webp 384w, little-prince.webp 768w" sizes="(max-width: 768px) calc(100vw - 4rem), 188px" width="768" height="512" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0 auto;" alt="">
-                    </span>
-                    <span class="scene-content">
-                        <span class="scene-title-tape" style="--scene-tape-tilt: -2.5deg;">
-                            <span class="scene-title">The Little Prince</span>
-                        </span>
-                        <span class="scene-quote">
-                            <span class="scene-quote-line">"I was too young to know</span>
-                            <span class="scene-quote-line">how to love her."</span>
-                        </span>
-                        <span class="scene-cta">和小王子对话 <span aria-hidden="true">↗</span></span>
-                    </span>
-                </button>
-            </div>
+            <section class="story-carousel" aria-label="六段故事收藏卡" aria-roledescription="轮播" data-story-carousel>
+                <p class="story-carousel__eyebrow">B612 · STORIES TO KEEP <span aria-hidden="true">✧</span></p>
+                <div class="story-carousel__stage" id="story-card-stage">
+                    <article class="story-ticket story-ticket--blush story-ticket--refined" data-story="rose" aria-label="01 · 玫瑰" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <img class="story-ticket__art" src="assets/story-cards/rose-v2.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <svg class="story-ticket__stardust" aria-hidden="true" viewBox="0 0 280 220"><g fill="none" stroke="currentColor" stroke-width=".7"><path d="m145 20 1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5Z"/><path d="m23 151 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/><path d="m111 115 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/></g><g fill="currentColor" opacity=".55"><circle cx="67" cy="186" r=".8"/><circle cx="132" cy="55" r=".7"/><circle cx="18" cy="115" r=".6"/><circle cx="248" cy="21" r="1"/></g></svg>
+                            <div class="story-ticket__words">
+                                <h2 class="story-ticket__title">玫瑰</h2><p class="story-ticket__quote">有一朵花，<br>只属于你的星球。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="rose">听玫瑰讲故事 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="rose" aria-label="撕下玫瑰票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✦</span>
+                            <span class="story-ticket__stub-number">Nº 01</span><span class="story-ticket__admit" lang="en">Admit one</span>
+                            <span class="story-ticket__stub-label">去珍惜<br>独一无二<br>的相遇</span>
+                            <svg class="story-ticket__postmark" aria-hidden="true" viewBox="0 0 46 32"><g fill="none" stroke="currentColor" stroke-width=".7"><circle cx="17" cy="16" r="11"/><circle cx="17" cy="16" r="8"/><path d="m15 13 2-3 2 3 3 1-3 2-2 3-1-3-3-2zM28 9q4-2 8 0t9 0M28 15q4-2 8 0t9 0M28 21q4-2 8 0t9 0"/></g></svg>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--blue story-ticket--refined" data-story="journey" aria-label="02 · 星球地图" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <img class="story-ticket__art" src="assets/story-cards/journey-v2.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <svg class="story-ticket__stardust" aria-hidden="true" viewBox="0 0 280 220"><g fill="none" stroke="currentColor" stroke-width=".7"><path d="m145 20 1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5Z"/><path d="m23 151 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/><path d="m111 115 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/></g><g fill="currentColor" opacity=".55"><circle cx="67" cy="186" r=".8"/><circle cx="132" cy="55" r=".7"/><circle cx="18" cy="115" r=".6"/><circle cx="248" cy="21" r="1"/></g></svg>
+                            <div class="story-ticket__words">
+                                <h2 class="story-ticket__title">星球地图</h2><p class="story-ticket__quote">沿着星光，<br>去遇见不同的世界。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="journey">开启星球之旅 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="journey" aria-label="撕下星球地图票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✦</span>
+                            <span class="story-ticket__stub-number">Nº 02</span><span class="story-ticket__admit" lang="en">Admit one</span>
+                            <span class="story-ticket__stub-label">去探索<br>更大的<br>世界</span>
+                            <svg class="story-ticket__postmark" aria-hidden="true" viewBox="0 0 46 32"><g fill="none" stroke="currentColor" stroke-width=".7"><circle cx="17" cy="16" r="11"/><circle cx="17" cy="16" r="8"/><path d="m15 13 2-3 2 3 3 1-3 2-2 3-1-3-3-2zM28 9q4-2 8 0t9 0M28 15q4-2 8 0t9 0M28 21q4-2 8 0t9 0"/></g></svg>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--wheat story-ticket--refined" data-story="fox" aria-label="03 · 狐狸" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <img class="story-ticket__art" src="assets/story-cards/fox-v2.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <svg class="story-ticket__stardust" aria-hidden="true" viewBox="0 0 280 220"><g fill="none" stroke="currentColor" stroke-width=".7"><path d="m145 20 1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5Z"/><path d="m23 151 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/><path d="m111 115 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/></g><g fill="currentColor" opacity=".55"><circle cx="67" cy="186" r=".8"/><circle cx="132" cy="55" r=".7"/><circle cx="18" cy="115" r=".6"/><circle cx="248" cy="21" r="1"/></g></svg>
+                            <div class="story-ticket__words">
+                                <h2 class="story-ticket__title">狐狸</h2><p class="story-ticket__quote">如果你驯养了我，<br>我们就会彼此需要。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="fox">认识狐狸 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="fox" aria-label="撕下狐狸票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✦</span>
+                            <span class="story-ticket__stub-number">Nº 03</span><span class="story-ticket__admit" lang="en">Admit one</span>
+                            <span class="story-ticket__stub-label">去遇见<br>真正重要<br>的东西</span>
+                            <svg class="story-ticket__postmark" aria-hidden="true" viewBox="0 0 46 32"><g fill="none" stroke="currentColor" stroke-width=".7"><circle cx="17" cy="16" r="11"/><circle cx="17" cy="16" r="8"/><path d="m15 13 2-3 2 3 3 1-3 2-2 3-1-3-3-2zM28 9q4-2 8 0t9 0M28 15q4-2 8 0t9 0M28 21q4-2 8 0t9 0"/></g></svg>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--blue story-ticket--refined" data-story="mailbox" aria-label="05 · 星光信箱" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <img class="story-ticket__art" src="assets/story-cards/mailbox-v2.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <svg class="story-ticket__stardust" aria-hidden="true" viewBox="0 0 280 220"><g fill="none" stroke="currentColor" stroke-width=".7"><path d="m145 20 1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5Z"/><path d="m23 151 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/><path d="m111 115 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/></g><g fill="currentColor" opacity=".55"><circle cx="67" cy="186" r=".8"/><circle cx="132" cy="55" r=".7"/><circle cx="18" cy="115" r=".6"/><circle cx="248" cy="21" r="1"/></g></svg>
+                            <div class="story-ticket__words">
+                                <h2 class="story-ticket__title">星光信箱</h2><p class="story-ticket__quote">把想说的话，<br>寄给星星吧。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="mailbox">打开星光信箱 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="mailbox" aria-label="撕下星光信箱票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✦</span>
+                            <span class="story-ticket__stub-number">Nº 05</span><span class="story-ticket__admit" lang="en">Admit one</span>
+                            <span class="story-ticket__stub-label">把心事<br>寄给远方<br>的星星</span>
+                            <svg class="story-ticket__postmark" aria-hidden="true" viewBox="0 0 46 32"><g fill="none" stroke="currentColor" stroke-width=".7"><circle cx="17" cy="16" r="11"/><circle cx="17" cy="16" r="8"/><path d="m15 13 2-3 2 3 3 1-3 2-2 3-1-3-3-2zM28 9q4-2 8 0t9 0M28 15q4-2 8 0t9 0M28 21q4-2 8 0t9 0"/></g></svg>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--sage story-ticket--refined" data-story="b612" aria-label="04 · 小王子" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <img class="story-ticket__art" src="assets/story-cards/b612-v2.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <svg class="story-ticket__stardust" aria-hidden="true" viewBox="0 0 280 220"><g fill="none" stroke="currentColor" stroke-width=".7"><path d="m145 20 1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5Z"/><path d="m23 151 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/><path d="m111 115 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/></g><g fill="currentColor" opacity=".55"><circle cx="67" cy="186" r=".8"/><circle cx="132" cy="55" r=".7"/><circle cx="18" cy="115" r=".6"/><circle cx="248" cy="21" r="1"/></g></svg>
+                            <div class="story-ticket__words">
+                                <h2 class="story-ticket__title">小王子</h2><p class="story-ticket__quote">把心事，<br>讲给远方的朋友听。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="b612">和小王子对话 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="b612" aria-label="撕下小王子票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✦</span>
+                            <span class="story-ticket__stub-number">Nº 04</span><span class="story-ticket__admit" lang="en">Admit one</span>
+                            <span class="story-ticket__stub-label">去听见<br>心里微小<br>的声音</span>
+                            <svg class="story-ticket__postmark" aria-hidden="true" viewBox="0 0 46 32"><g fill="none" stroke="currentColor" stroke-width=".7"><circle cx="17" cy="16" r="11"/><circle cx="17" cy="16" r="8"/><path d="m15 13 2-3 2 3 3 1-3 2-2 3-1-3-3-2zM28 9q4-2 8 0t9 0M28 15q4-2 8 0t9 0M28 21q4-2 8 0t9 0"/></g></svg>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                    <article class="story-ticket story-ticket--sage story-ticket--refined" data-story="flight" aria-label="06 · 飞行日志" aria-roledescription="故事卡片" tabindex="0">
+                        <div class="story-ticket__body">
+                            <img class="story-ticket__art" src="assets/story-cards/flight-v2.webp" width="480" height="600" alt="" draggable="false" decoding="async">
+                            <svg class="story-ticket__stardust" aria-hidden="true" viewBox="0 0 280 220"><g fill="none" stroke="currentColor" stroke-width=".7"><path d="m145 20 1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5Z"/><path d="m23 151 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/><path d="m111 115 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/></g><g fill="currentColor" opacity=".55"><circle cx="67" cy="186" r=".8"/><circle cx="132" cy="55" r=".7"/><circle cx="18" cy="115" r=".6"/><circle cx="248" cy="21" r="1"/></g></svg>
+                            <div class="story-ticket__words">
+                                <h2 class="story-ticket__title">飞行日志</h2><p class="story-ticket__quote">把看到的、感受到的，<br>都记录下来。</p>
+                                <button class="story-ticket__enter" type="button" data-home-action="flight">翻开飞行日志 <span aria-hidden="true">↗</span></button>
+                            </div>
+                        </div>
+                        <button class="story-ticket__stub" type="button" disabled data-tear="flight" aria-label="撕下飞行日志票根并进入">
+                            <span class="story-ticket__stub-top">B612</span><span class="story-ticket__stub-star" aria-hidden="true">✦</span>
+                            <span class="story-ticket__stub-number">Nº 06</span><span class="story-ticket__admit" lang="en">Admit one</span>
+                            <span class="story-ticket__stub-label">去收藏<br>旅途沿路<br>的微光</span>
+                            <svg class="story-ticket__postmark" aria-hidden="true" viewBox="0 0 46 32"><g fill="none" stroke="currentColor" stroke-width=".7"><circle cx="17" cy="16" r="11"/><circle cx="17" cy="16" r="8"/><path d="m15 13 2-3 2 3 3 1-3 2-2 3-1-3-3-2zM28 9q4-2 8 0t9 0M28 15q4-2 8 0t9 0M28 21q4-2 8 0t9 0"/></g></svg>
+                        </button>
+                        <span class="story-ticket__fibers" aria-hidden="true"></span>
+                    </article>
+                </div>
+                <div class="story-carousel__controls" role="group" aria-label="故事卡片控制">
+                    <button type="button" data-carousel-prev aria-label="上一张故事卡">←</button>
+                    <span class="story-carousel__position" aria-live="polite" aria-atomic="true">03 / 06 · 狐狸</span>
+                    <button type="button" data-carousel-next aria-label="下一张故事卡">→</button>
+                    <button type="button" class="story-carousel__pause" data-carousel-pause aria-label="暂停自动轮转" aria-pressed="false">Ⅱ</button>
+                </div>
+                <p class="story-carousel__hint" id="story-carousel-hint">左右拖动，寻找你的故事</p>
+            </section>
             <div class="section-flow" aria-hidden="true">
                 <svg viewBox="0 0 1000 70" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                     <defs>
@@ -223,14 +274,14 @@
                     </svg>
                     <span class="journey-map__ship" id="journeyMapShip" aria-hidden="true">✈</span>
                     <div class="journey-map__nodes" id="journeyMapNodes">
-                        <button type="button" class="journey-map__node" data-target="planet-0"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="B612-cutout.png" alt="01 B612" onerror="this.onerror=null;this.src='B612.png';"></span><span class="journey-map__name"><b>01</b>B612</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-1"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="plant+king-cutout.png" alt="02 国王" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>02</b>国王</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-2"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="vain-man-cutout.png" alt="03 爱慕虚荣者" onerror="this.onerror=null;this.src='plant+rose.png';"></span><span class="journey-map__name"><b>03</b>爱慕虚荣者</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-3"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="drunkard.png?v=2" alt="04 酒鬼" onerror="this.onerror=null;this.src='drunkard.png?v=2';"></span><span class="journey-map__name"><b>04</b>酒鬼</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-4"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="business.png?v=2" alt="05 商人" onerror="this.onerror=null;this.src='business.png?v=2';"></span><span class="journey-map__name"><b>05</b>商人</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-5"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="lightpeople-cutout.png?v=2" alt="06 点灯人" onerror="this.onerror=null;this.src='lightpeople.png?v=2';"></span><span class="journey-map__name"><b>06</b>点灯人</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-6"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="geography-cutout.png?v=2" alt="07 地理学家" onerror="this.onerror=null;this.src='geogrophy.png?v=2';"></span><span class="journey-map__name"><b>07</b>地理学家</span></button>
-                        <button type="button" class="journey-map__node" data-target="planet-7"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="back.png" alt="08 回到初心" onerror="this.onerror=null;this.src='planet-08.png';"></span><span class="journey-map__name"><b>08</b>回到初心</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-0"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="B612-cutout.png?v=3" alt="01 B612" onerror="this.onerror=null;this.src='B612.png?v=3';"></span><span class="journey-map__name"><b>01</b>B612</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-1"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="plant+king-cutout.png?v=3" alt="02 国王" onerror="this.onerror=null;this.src='plant+rose.png?v=3';"></span><span class="journey-map__name"><b>02</b>国王</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-2"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="vain-man-cutout.png?v=3" alt="03 爱慕虚荣者" onerror="this.onerror=null;this.src='plant+rose.png?v=3';"></span><span class="journey-map__name"><b>03</b>爱慕虚荣者</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-3"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="drunkard.png?v=3" alt="04 酒鬼" onerror="this.onerror=null;this.src='drunkard.png?v=3';"></span><span class="journey-map__name"><b>04</b>酒鬼</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-4"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="business.png?v=3" alt="05 商人" onerror="this.onerror=null;this.src='business.png?v=3';"></span><span class="journey-map__name"><b>05</b>商人</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-5"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="lightpeople-cutout.png?v=3" alt="06 点灯人" onerror="this.onerror=null;this.src='lightpeople.png?v=3';"></span><span class="journey-map__name"><b>06</b>点灯人</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-6"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="geography-cutout.png?v=3" alt="07 地理学家" onerror="this.onerror=null;this.src='geogrophy.png?v=3';"></span><span class="journey-map__name"><b>07</b>地理学家</span></button>
+                        <button type="button" class="journey-map__node" data-target="planet-7"><span class="journey-map__planet"><img class="journey-map__planet-img" data-src="back.png?v=3" alt="08 回到初心" onerror="this.onerror=null;this.src='planet-08.png?v=3';"></span><span class="journey-map__name"><b>08</b>回到初心</span></button>
                     </div>
                 </div>
                 <button type="button" class="journey-start-btn">★ 从第一颗星球开始</button>
@@ -771,6 +822,7 @@
     </div>
 
     <script src="memory-api.js?v=1" defer></script>
-    <script src="index-main.js?v=4" defer></script>
+    <script src="index-main.js?v=5" defer></script>
+    <script src="story-cards.js?v=2" defer></script>
 </body>
 </html>
