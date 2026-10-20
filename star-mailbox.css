@@ -1380,3 +1380,12 @@ h1 {
 }
 
 
+
+/* Stable natural scrolling: the illustration stays in document flow. */
+.illustration__sticky { position:relative; top:auto; }
+.scroll-fade-pending { opacity:0; }
+.scroll-fade-visible { opacity:1; transition:opacity .32s ease-out; }
+.scroll-fade-pending:focus-within { opacity:1; }
+@media(prefers-reduced-motion:reduce) {
+  .scroll-fade-pending,.scroll-fade-visible { opacity:1; transition:none; }
+}
