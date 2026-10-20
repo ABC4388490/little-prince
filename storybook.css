@@ -202,3 +202,28 @@ body.page-home .container { padding-bottom: 12px; }
 @media (max-width: 768px) {
   #home .home-right-illustration { width: 125px; right: 8px; bottom: 8px; }
 }
+
+/* A faint travel atlas behind the home collection. */
+#home { isolation: isolate; }
+#home .home-atlas {
+  position: absolute; inset: 0 -60px; z-index: -1; pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 18% 35%, #b7bd9b19 0%, transparent 38%),
+    radial-gradient(ellipse at 78% 63%, #dbb7741c 0%, transparent 43%),
+    radial-gradient(ellipse at 47% 12%, #e4cda41a 0%, transparent 35%);
+}
+.home-atlas__map { width: 100%; height: 100%; min-height: 620px; color: #bca06b; }
+.home-atlas__route { fill: none; stroke: #b4a181; stroke-width: 1; stroke-dasharray: 2 8; opacity: .36; }
+.home-atlas__orbit { fill: none; stroke: #c4ad82; stroke-width: .8; opacity: .22; }
+.home-atlas__planet { opacity: .2; stroke-width: .8; }
+.home-atlas__stars { opacity: .46; }
+@media (prefers-reduced-motion: no-preference) {
+  .home-atlas__stars { animation: homeAtlasGlow 9s ease-in-out infinite; }
+  @keyframes homeAtlasGlow { 0%, 100% { opacity: .34; } 50% { opacity: .57; } }
+}
+@media (max-width: 768px) {
+  #home .home-atlas { inset: 0 -24px; }
+  .home-atlas__planet { opacity: .12; }
+  .home-atlas__route { opacity: .25; }
+}
