@@ -195,10 +195,10 @@ body.page-home .container { padding-bottom: 12px; }
   position: absolute; width: 1px; height: 1px; min-height: 0; margin: -1px;
   padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
-#home .home-right-illustration { width: 330px; right: -12px; bottom: -88px; }
+#home .home-right-illustration { width: 210px; right: 20px; bottom: 8px; }
 @media (max-width: 1100px) and (min-width: 769px) {
-  #home .home-right-illustration { width: 270px; right: -20px; bottom: -75px; }
+  #home .home-right-illustration { width: 185px; right: 8px; bottom: 8px; }
 }
 @media (max-width: 768px) {
-  #home .home-right-illustration { width: 185px; right: -12px; bottom: -48px; }
+  #home .home-right-illustration { width: 125px; right: 8px; bottom: 8px; }
 }
