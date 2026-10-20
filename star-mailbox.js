@@ -273,12 +273,8 @@
   function animateList(beforeHeight) {
     if (reducedMotion.matches || !list.animate) return;
     if (listAnimation) listAnimation.cancel();
-    const afterHeight = list.getBoundingClientRect().height;
-    // Reserve the final layout immediately; animate its apparent expansion with FLIP.
-    const factor = Math.min(1.08, Math.max(.94, beforeHeight / Math.max(afterHeight, 1)));
-    listAnimation = list.animate([{ opacity: .45, transform: `translateY(5px) scaleY(${factor})` }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'cubic-bezier(.22,.61,.36,1)' });
-    list.style.transformOrigin = 'top';
-    panel.animate([{ height: `${beforeHeight}px` }, { height: `${afterHeight}px` }], { duration: 300, easing: 'cubic-bezier(.22,.61,.36,1)' });
+    // Opacity only: never stretch the list or animate the page height.
+    listAnimation = list.animate([{ opacity: .65 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' });
   }
 
   function render(animate = false) {
@@ -575,4 +571,32 @@
   });
   reloadLetters();
   render();
+
+  // Reveal each section once, without translation or changes to layout height.
+  if ('IntersectionObserver' in window && !reducedMotion.matches) {
+    const targets = [...document.querySelectorAll('#letters-panel, #compose, .illustration, .original-footer')];
+    const reveal = element => {
+      element.classList.remove('scroll-fade-pending');
+      element.classList.add('scroll-fade-visible');
+    };
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        reveal(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0, rootMargin: '0px 0px 24px 0px' });
+    targets.forEach(element => {
+      if (element.getBoundingClientRect().top < window.innerHeight) return;
+      element.classList.add('scroll-fade-pending');
+      observer.observe(element);
+    });
+    reducedMotion.addEventListener('change', event => {
+      if (event.matches) { targets.forEach(reveal); observer.disconnect(); }
+    });
+    document.addEventListener('focusin', event => {
+      const element = event.target.closest?.('.scroll-fade-pending');
+      if (element) { reveal(element); observer.unobserve(element); }
+    });
+  }
 })();
