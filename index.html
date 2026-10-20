@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="index-main.css?v=4">
-    <link rel="stylesheet" href="storybook.css?v=6">
+    <link rel="stylesheet" href="storybook.css?v=7">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap"></noscript>
 </head>
@@ -53,6 +53,20 @@
     <div class="container">
         <!-- HOME PAGE -->
         <div id="home" class="page active">
+            <div class="home-atlas" aria-hidden="true">
+                <svg class="home-atlas__map" viewBox="0 0 1200 800" preserveAspectRatio="none" focusable="false">
+                    <path class="home-atlas__route" d="M30 690 C160 760 285 670 240 565 S80 410 165 310 C235 228 310 270 355 175 M280 700 C510 780 715 570 905 645 S1115 705 1165 580"/>
+                    <path class="home-atlas__orbit" d="M85 190 C-5 260 195 265 235 185 S110 130 85 190Z M940 105 C1005 65 1100 102 1115 166"/>
+                    <g class="home-atlas__stars" fill="currentColor">
+                        <path d="m130 296 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z m855 548 3 9 9 3-9 3-3 9-3-9-9-3 9-3Z m1070 250 2 7 7 2-7 2-2 7-2-7-7-2 7-2Z"/>
+                        <circle cx="180" cy="360" r="1.5"/><circle cx="201" cy="374" r="1"/><circle cx="158" cy="337" r="1"/><circle cx="900" cy="588" r="1.6"/><circle cx="924" cy="601" r="1"/><circle cx="962" cy="619" r="1.4"/><circle cx="1024" cy="215" r="1"/><circle cx="1043" cy="230" r="1.6"/><circle cx="325" cy="695" r="1.5"/><circle cx="349" cy="708" r="1"/>
+                    </g>
+                    <g class="home-atlas__planet" transform="translate(145 193) rotate(-22)" fill="none" stroke="currentColor">
+                        <circle r="27"/><ellipse rx="56" ry="11"/><path d="M-13-17q15-9 27 0M-17 14q18 8 30-1"/>
+                    </g>
+                </svg>
+            </div>
+
             <div class="home-footer-art" aria-hidden="true">
             <img
                 class="home-journey-cutout"
