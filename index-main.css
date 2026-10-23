@@ -9390,3 +9390,17 @@
                 display: none;
             }
         }
+
+/* A failed chat turn offers an explicit retry instead of an offline AI reply. */
+.b612-chat__retry {
+    display: block;
+    margin-top: 10px;
+    padding: 5px 14px;
+    border: 1px solid currentColor;
+    border-radius: 16px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+.b612-chat__retry:disabled { cursor: default; opacity: .6; }

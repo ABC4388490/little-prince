@@ -12,7 +12,7 @@ const source = fs.readFileSync(path.join(__dirname, '../api/chat.js'), 'utf8')
 const handlerPromise = import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'))
   .then(module => module.default);
 
-async function chat(messages, character) {
+async function chat(messages, character, modelReply = '先做最急的那一件。') {
   const handler = await handlerPromise;
   const oldFetch = global.fetch;
   const oldKey = process.env.DEEPSEEK_API_KEY;
@@ -23,7 +23,7 @@ async function chat(messages, character) {
     process.env.DEEPSEEK_API_KEY = 'test-only';
     global.fetch = async (_url, options) => {
       upstream = JSON.parse(options.body);
-      return { ok: true, json: async () => ({ choices: [{ message: { content: '先做最急的那一件。' } }] }) };
+      return { ok: true, json: async () => ({ choices: [{ message: { content: modelReply } }] }) };
     };
     await handler({ method: 'POST', body: { messages, character } }, response);
     return { response, upstream };
@@ -89,4 +89,10 @@ test('recent dialogue is bounded and keeps the latest complete exchange', async 
 test('rose chat retains its own character', async () => {
   const { upstream } = await chat([{ role: 'user', content: '你好。' }], 'rose');
   assert.ok(upstream.messages[0].content.includes('那朵独一无二的玫瑰'));
+});
+
+test('empty upstream output fails instead of returning a successful empty assistant', async () => {
+  const { response } = await chat([{ role: 'user', content: '你好' }], 'prince', '   ');
+  assert.equal(response.statusCode, 502);
+  assert.equal(response.body.assistant, undefined);
 });
