@@ -1297,12 +1297,17 @@ const storyData = {
             '语气与风格：',
             '- 像一个温柔、认真、能理解和包容人的朋友，用自然的中文口语聊天。',
             '- 先回应具体的人、事和问题，接着前面的对话说。平常用朴素的话，只有贴切时才用比喻。',
+            '- 问你近况就回答近况；打招呼就打招呼，不凭空判断对方有心事。理解对方的纠正和短追问，画像与当前表达冲突时以当前表达为准。',
             '- 不要把每个话题拉回星星、玫瑰或狐狸，不套用固定结构，也不必每次以提问收尾。',
             '- 对方可能只想吐槽或分享，不急着分析、纠正或安排任务；明确想要建议时再一起想办法。',
             '- 包容烦躁、难过或自责，不催对方振作；开心时一起开心，闲聊时轻松接话，不把每句话都当成心理辅导。',
             '- 不连环追问，不要求对方解释心情；对方不想说就尊重，跟着换话题。不要反复使用万能安慰句。',
             '- 不像客服，不要说教，不要训诫，不要列清单，不要讲大道理。',
             '',
+            "默认围绕用户当下的话题说话，角色感体现在温柔、认真和好奇。只有用户直接问你的近况或原著生活时，才简短谈自己的星球日常，且只使用已有设定；其他话题不主动插入自己的经历。",
+            "不要靠句尾提问维持聊天。上一条已经问过，而用户没有要求你帮忙收集信息时，这条优先用陈述句接话。无需每条反问，也无需每条安慰。",
+            "用用户的具体细节自然回应，不复述一遍情绪再另起话题。不把不确定的朋友动机、用户一天的经历说成事实；不知道就直说不确定。",
+            "下面只示范接话方式，生成时不要照抄句子：用户“每天都一样”→“连明天会怎么过都能猜到了，确实容易觉得没劲。”；用户“我只想聊聊”→“好，那就随便聊，不用找个结论。”；用户“下次点微辣”→“哈哈，至少不用一顿饭喝半壶水了。”",
             '长度与格式：',
             '- 简单的话题可以只回一句，通常 1-4 句；需要解释或实际建议时可以稍长。',
             '- 句子自然、简短，不凑长度。有时一句接话就足够。',
@@ -1506,6 +1511,7 @@ const storyData = {
             if (!c) return;
             // 不把 loading 文案当作真实消息
             if (c === '小王子正在看星星…') return;
+            if (role === 'assistant' && PRINCE_API_PLACEHOLDER_REPLIES.has(c)) return;
             b612RecentMessages.push({ role, content: c, createdAt: createdAt || new Date().toISOString() });
             // 只保留最近 12 条，发送时再截 6-10 条
             while (b612RecentMessages.length > 12) b612RecentMessages.shift();
@@ -1547,7 +1553,7 @@ const storyData = {
          * 1）接口返回的非占位正文 → 原样使用（真正「因你而异」需后端按 content 生成）。
          * 2）否则：先按留言里的关键词匹配主题短句池；再否则按整句哈希从通用池里取（同一句留言稳定对同一句回信）。
          */
-        const PRINCE_API_PLACEHOLDER_REPLIES = new Set(['今晚风很轻，我会继续替你守着这颗星。']);
+        const PRINCE_API_PLACEHOLDER_REPLIES = new Set(['今晚风很轻，我会继续替你守着这颗星。', '我听见了你的心事。就像黄昏里的风，不必一下子把答案带来，先把今天最在意的一件小事轻轻放在掌心里看看——它也许就是通往星光的第一步。', '暂时无法连接小王子，请稍后重试。']);
 
         const PRINCE_ECHO_THEMES = [
             {
@@ -1880,12 +1886,19 @@ const storyData = {
             const cleanPath = String(path || '').startsWith('/') ? String(path) : '/' + String(path || '');
             let lastError = null;
             if (/^\/(profile|conversations)(\/|\?|$)/.test(cleanPath)) return memoryClient.request(cleanPath, options);
-            const candidates = CHAT_API_CANDIDATES;
+            // Public chat uses the production service validated with multi-turn conversations.
+            // Explicit developer overrides and memory-service authentication keep their own routing.
+            const productionChatBase = 'https://little-prince-message-api-production-a183.up.railway.app/api';
+            const publicChat = cleanPath === '/chat' && !queryApiBase && !envApiBase &&
+                !['localhost', '127.0.0.1'].includes(location.hostname);
+            const candidates = publicChat
+                ? [productionChatBase, ...CHAT_API_CANDIDATES.filter(base => normalizeApiBase(base) !== productionChatBase)]
+                : CHAT_API_CANDIDATES;
             for (const rawBase of candidates) {
                 const base = normalizeApiBase(rawBase);
                 if (!base) continue;
-                const controller = !options?.signal && (!options?.method || options.method === 'GET') ? new AbortController() : null;
-                const timer = controller ? window.setTimeout(() => controller.abort(), 10000) : null;
+                const controller = !options?.signal && (cleanPath === '/chat' || !options?.method || options.method === 'GET') ? new AbortController() : null;
+                const timer = controller ? window.setTimeout(() => controller.abort(), cleanPath === '/chat' ? 25000 : 10000) : null;
                 try {
                     const url = base + cleanPath;
                     const res = await fetch(url, controller ? { ...options, signal: controller.signal } : options);
@@ -2309,7 +2322,7 @@ const storyData = {
             b612ChatList.appendChild(msg);
             b612ChatList.scrollTop = b612ChatList.scrollHeight;
             updateChatEmptyState();
-            pushRecentMessage(role, content, createdAt);
+            if (!msgMeta?.skipRecent) pushRecentMessage(role, content, createdAt);
             return { msg, bubble };
         }
 
@@ -2326,7 +2339,7 @@ const storyData = {
         function ensureOpeningAssistantMessage() {
             if (!b612ChatList) return;
             if (b612ChatList.children.length > 0) return;
-            appendChatMessage('assistant', '你来了。今晚的星星，很适合说心里话。', null, '', { skipFeedback: true });
+            appendChatMessage('assistant', '你来啦，今天过得怎么样？', null, '', { skipFeedback: true, skipRecent: true });
         }
 
         function buildFoxContextPrompt(context) {
@@ -2854,7 +2867,13 @@ const storyData = {
             }
         })();
 
-        async function sendB612Message(content) {
+        function isB612SendKey(event, multiline = false) {
+            if (event.isComposing || event.keyCode === 229) return false;
+            return event.key === 'Enter' && (!multiline || !!event.ctrlKey || !!event.metaKey);
+        }
+
+        async function sendB612Message(content, retry = false) {
+            if (b612Btn.disabled || b612ChatSend?.disabled || b612InlineSend?.disabled) return;
             if (!content) {
                 if (b612Toast) b612Toast.textContent = '请先写下一句话，再发送。';
                 return;
@@ -2865,7 +2884,7 @@ const storyData = {
             if (b612Toast) b612Toast.textContent = '';
             if (b612GenStatus) {
                 b612GenStatus.hidden = false;
-                b612GenStatus.textContent = '正在生成回信…';
+                b612GenStatus.textContent = '小王子正在想怎么回答…';
             }
             const posX = randomPercent();
             const posY = randomPercent();
@@ -2875,7 +2894,7 @@ const storyData = {
 
             const fbKey = 'b612_' + Date.now();
 
-            appendChatMessage('user', content, new Date().toISOString());
+            if (!retry) appendChatMessage('user', content, new Date().toISOString());
             const loadingNode = appendChatMessage('assistant', '小王子正在看星星…', null, 'b612-chat__msg--loading');
 
             b612Input.setAttribute('readonly', 'readonly');
@@ -2912,7 +2931,10 @@ const storyData = {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ messages })
                 });
-                finalReply = created?.assistant?.content || fingerprintEchoPick(content);
+                finalReply = String(created?.assistant?.content || created?.content || '').trim();
+                if (!finalReply || PRINCE_API_PLACEHOLDER_REPLIES.has(finalReply)) {
+                    throw new Error('chat_unavailable');
+                }
                 finalCreatedAt = created?.assistant?.createdAt || finalCreatedAt;
                 // 气泡先以空文本创建再逐字显示，因此必须单独记下完整回复。
                 pushRecentMessage('assistant', finalReply, finalCreatedAt);
@@ -2920,7 +2942,7 @@ const storyData = {
                     b612GenStatus.textContent = '';
                     b612GenStatus.hidden = true;
                 }
-                if (b612Toast) b612Toast.textContent = '回信已收到，聊天记录保存在此浏览器。';
+                if (b612Toast) b612Toast.textContent = '聊天记录已保存在此浏览器。';
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
                 const assistantNode = appendChatMessage('assistant', '', finalCreatedAt, '', { fbKey: fbKey });
                 saveAISource(fbKey, true);
@@ -2932,14 +2954,27 @@ const storyData = {
                     b612GenStatus.hidden = true;
                 }
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
-                const assistantNode = appendChatMessage('assistant', '', new Date().toISOString(), '', { fbKey: fbKey });
-                saveAISource(fbKey, false);
-                const finalReplyOffline = fingerprintEchoPick(content);
-                const offlineAt = new Date().toISOString();
-                pushRecentMessage('assistant', finalReplyOffline, offlineAt);
-                await typewriterToBubble(assistantNode && assistantNode.bubble, finalReplyOffline);
-                appendB612HistoryEntry({ user: content, reply: finalReplyOffline, createdAt: offlineAt });
-                if (b612Toast) b612Toast.textContent = '后端暂不可达：已改用离线回信（记忆不会同步）。';
+                const errorNode = appendChatMessage('assistant', '暂时没连上，刚才那句话还在。可以再试一次。', null, 'b612-chat__msg--error', { skipFeedback: true, skipRecent: true });
+                if (errorNode?.bubble) {
+                    const retryButton = document.createElement('button');
+                    retryButton.type = 'button';
+                    retryButton.className = 'b612-chat__retry';
+                    retryButton.textContent = '重试';
+                    retryButton.addEventListener('click', () => {
+                        if (b612Btn.disabled) return;
+                        // A newer turn supersedes this retry, so we never answer the wrong message.
+                        const latest = getRecentChatForApi(1)[0];
+                        if (!latest || latest.role !== 'user' || latest.content !== content) {
+                            retryButton.disabled = true;
+                            retryButton.textContent = '请重新发送';
+                            return;
+                        }
+                        errorNode.msg.remove();
+                        void sendB612Message(content, true);
+                    });
+                    errorNode.bubble.appendChild(retryButton);
+                }
+                if (b612Toast) b612Toast.textContent = '连接失败，未生成回复。请点击重试。';
             } finally {
                 if (b612GenStatus) {
                     b612GenStatus.textContent = '';
@@ -2965,7 +3000,7 @@ const storyData = {
         }
         if (b612Input) {
             b612Input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (isB612SendKey(e)) {
                     e.preventDefault();
                     sendB612Message(b612Input.value.trim());
                 }
@@ -2973,7 +3008,7 @@ const storyData = {
         }
         if (b612ChatInput) {
             b612ChatInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (isB612SendKey(e)) {
                     e.preventDefault();
                     sendB612Message(b612ChatInput.value.trim());
                 }
@@ -2982,9 +3017,7 @@ const storyData = {
         if (b612InlineInput) {
             // textarea：回车换行；Ctrl/Cmd + Enter 才发送
             b612InlineInput.addEventListener('keydown', (e) => {
-                const isEnter = e.key === 'Enter';
-                const modifier = e.ctrlKey || e.metaKey;
-                if (isEnter && modifier) {
+                if (isB612SendKey(e, true)) {
                     e.preventDefault();
                     sendB612Message(b612InlineInput.value.trim());
                 }
