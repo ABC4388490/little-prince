@@ -12,6 +12,7 @@ _EXTRA_KEYS = (
     "topic",
     "role",
     "chunk_type",
+    "source_url",
 )
 
 

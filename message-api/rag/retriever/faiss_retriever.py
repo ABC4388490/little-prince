@@ -16,7 +16,7 @@ import numpy as np
 
 from rag.chunk_meta import DEFAULT_SOURCE_NAME, source_name_from_dict
 
-_EXTRA_META_KEYS = ("content", "chapter", "topic", "role", "chunk_type")
+_EXTRA_META_KEYS = ("content", "chapter", "topic", "role", "chunk_type", "source_url")
 from rag.config import CHUNK_META_PATH, CHUNK_ORDER_PATH, INDEX_PATH
 from rag.embedding.bi_encoder import SentenceBiEncoder
 from rag.trace import rag_debug

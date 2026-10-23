@@ -270,7 +270,7 @@
     return fragment;
   }
 
-  function animateList(beforeHeight) {
+  function animateList() {
     if (reducedMotion.matches || !list.animate) return;
     if (listAnimation) listAnimation.cancel();
     // Opacity only: never stretch the list or animate the page height.
@@ -278,7 +278,6 @@
   }
 
   function render(animate = false) {
-    const height = list.getBoundingClientRect().height;
     const query = $('#letter-search').value.trim().toLocaleLowerCase();
     const visible = state.letters.filter(record => (state.filter === 'all' || record.favorite) && [record.date, ...record.messages.map(message => message && message.text || '')].join(' ').toLocaleLowerCase().includes(query));
     $('#all-count').textContent = String(state.letters.length).padStart(2, '0');
@@ -288,7 +287,7 @@
     list.replaceChildren();
     if (!visible.length) list.append(emptyState(query));
     else visible.forEach((record, index) => list.append(createEnvelope(record, index)));
-    if (animate) animateList(height);
+    if (animate) animateList();
     updateUnderline();
   }
 
@@ -347,19 +346,15 @@
     if (state.opening || reader.open || !state.letters.some(item => item.date === date)) return;
     state.opening = true;
     state.opener = { date, element: envelope };
-    const paperRect = envelope.querySelector('.letter-paper').getBoundingClientRect();
     envelope.classList.add('is-opening');
     try {
       if (!reducedMotion.matches) await new Promise(resolve => setTimeout(resolve, 430));
       if (!fillReader(date)) return;
       reader.showModal();
       document.body.style.overflow = 'hidden';
-      const rect = readerSheet.getBoundingClientRect();
       if (!reducedMotion.matches && readerSheet.animate) {
-        const x = paperRect.left + paperRect.width / 2 - rect.left - rect.width / 2;
-        const y = paperRect.top + paperRect.height / 2 - 70 - rect.top - rect.height / 2;
-        const scale = Math.min(.9, paperRect.width / rect.width);
-        const motion = readerSheet.animate([{ opacity: .8, transform: `translate(${x}px,${y}px) scale(${scale})` }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'cubic-bezier(.22,.61,.36,1)' });
+        // Reading sheets fade in at their final size and position.
+        const motion = readerSheet.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: 'cubic-bezier(.22,.61,.36,1)' });
         await motion.finished.catch(() => {});
       }
       if (reader.open) $('.reader-close').focus({ preventScroll: true });

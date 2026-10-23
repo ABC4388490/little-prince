@@ -223,114 +223,133 @@ const storyData = {
             }
         };
 
-        // Journey 章节数据（8 章）：沿用现有文案与插画素材
+        // 每个地图入口绑定稳定的 planetId；正文为故事梗概，末行为阅读思考。
         const journeyChapters = [
             {
-                chapter: 'Chapter 01',
-                title: 'B612与玫瑰',
-                subtitle: 'B612',
-                image: 'chapter01+little-prince-cutout.png',
-                text: [
-                    '小王子住在B612，一颗很小很小的星球，上面有三座火山和一朵玫瑰。',
-                    '他每天清理火山、拔掉猴面包树的芽，日子安静又单纯。',
-                    '直到玫瑰出现，他第一次感到爱与不安同时来到自己身边。',
-                    '他开始学着照顾另一个生命，却也在笨拙里一次次误解了对方的心意。'
+                "planetId": "planet-0",
+                "caption": "一朵玫瑰，牵着一颗远行的心。",
+                "chatPrompt": "我读到小王子与玫瑰的故事，想聊聊：怎样更好地理解自己在乎的人？",
+                "chapter": "Chapter 01",
+                "title": "B612与玫瑰",
+                "subtitle": "出发的地方",
+                "image": "chapter01+little-prince-cutout.png",
+                "text": [
+                    "小王子住在B612，一颗很小很小的星球，上面有三座火山和一朵玫瑰。",
+                    "他每天清理火山、拔掉猴面包树的芽，也为玫瑰浇水、挡风。",
+                    "他在乎她，却还不懂得如何理解她的话。带着困惑，他离开了自己的星球。"
                 ],
-                quote: '“那时的我太年轻，还不懂怎么去爱她。”'
+                "quote": "有些牵挂，要走远以后才慢慢看清。"
             },
             {
-                chapter: 'Chapter02',
-                title: '国王星球',
-                subtitle: 'B612',
-                image: 'chapter+king-cutout.png',
-                kingCard: true,
-                text: [
-                    '国王坐在一颗小小的星球上，',
-                    '他拥有权力，却从不离开自己的王座。',
-                    '他命令日落，命令星星，',
-                    '却从未真正理解过自由。'
+                "planetId": "planet-1",
+                "caption": "一位国王，和他的整个宇宙。",
+                "chatPrompt": "我读到国王星球的故事，想聊聊：在关系里，怎样表达期待而不变成命令？",
+                "chapter": "Chapter 02",
+                "title": "国王星球",
+                "subtitle": "命令与分寸",
+                "image": "chapter+king-cutout.png",
+                "text": [
+                    "国王披着华丽的长袍，把小王子当作自己的臣民，也把星星看作自己的领地。",
+                    "小王子想看日落，国王却说，要等到条件合适的时候才能下令。",
+                    "他相信命令应当合乎情理，却仍想为每一次相遇安排一个职位。小王子决定继续旅行。"
                 ],
-                quote: '“在我的王国里，我就是唯一的主人。”'
+                "quote": "如果没有命令，我们是否也能好好相处？"
             },
             {
-                chapter: 'Chapter 03',
-                title: '路过大人星球',
-                subtitle: '短暂停留',
-                image: 'chapter03+vain-cutout.png',
-                text: [
-                    '在到达地球之前，他路过几颗由大人居住的星球。',
-                    '国王、虚荣者、酒鬼、商人都各自忙碌，却很少真正快乐。',
-                    '小王子没有停留太久，只把这些荒诞与困惑装进行囊继续前行。',
-                    '他越来越确定，自己寻找的不是一个“更大的世界”，而是一个能被理解的心。'
+                "planetId": "planet-2",
+                "caption": "掌声响起时，他也在等待被看见。",
+                "chatPrompt": "我读到爱慕虚荣者的故事，想聊聊：在意别人的认可时，怎样听见自己的声音？",
+                "chapter": "Chapter 03",
+                "title": "爱慕虚荣者",
+                "subtitle": "掌声与看见",
+                "image": "chapter03+vain-cutout.png",
+                "text": [
+                    "这颗星球上只住着一位爱慕虚荣的人。他把每个来访者都当作崇拜者。",
+                    "小王子一拍手，他就摘下帽子致意。重复的掌声很快让小王子感到厌倦。",
+                    "他只听得进赞美，听不见别的问题。小王子带着新的困惑离开了。"
                 ],
-                quote: '“他们都很认真，却不知道自己在忙什么。”'
+                "quote": "比起被赞美，我们也许更希望被真正看见。"
             },
             {
-                chapter: 'Chapter 04',
-                title: '来到地球',
-                subtitle: '撒哈拉',
-                image: 'chapter04+pilot-cutout.png',
-                text: [
-                    '后来，小王子终于来到地球，降落在撒哈拉沙漠。',
-                    '他在那里遇见了飞行员，也开始讲述自己一路以来的经历。',
-                    '在沙漠的寂静里，他学会了把心里的孤独说出来。',
-                    '而飞行员的倾听，也让他第一次感到：原来被听懂，本身就是一种温柔。'
+                "planetId": "planet-3",
+                "caption": "一颗安静的星球，一个绕不出的圈。",
+                "chatPrompt": "我读到酒鬼星球的故事，想聊聊：当我总想逃开一件事，可以从哪里慢慢开始？",
+                "chapter": "Chapter 04",
+                "title": "酒鬼",
+                "subtitle": "羞愧与逃避",
+                "image": "chapter+drunkard-cutout.png",
+                "text": [
+                    "酒鬼坐在一堆空瓶子和满瓶子之间，沉默地喝着酒。",
+                    "他想忘记自己的羞愧，而让他羞愧的，正是自己喝酒这件事。",
+                    "小王子想帮他，却发现这段对话绕回了原处。他忧伤地离开，心里仍惦记着这个人。"
                 ],
-                quote: '“在人群里，有时也会感到孤独。”'
+                "quote": "有时，走出循环的第一步，是愿意说出自己的难过。"
             },
             {
-                chapter: 'Chapter 05',
-                title: '地球上的寻找',
-                subtitle: '观察与困惑',
-                image: 'chapter05+snake-cutout.png',
-                text: [
-                    '在地球上，小王子见到蛇、玫瑰园和来来往往的人。',
-                    '他一度以为自己的玫瑰并不特别，心里充满失落。',
-                    '可这些见闻也让他慢慢明白，真正重要的东西不能只用眼睛看见。',
-                    '当他站在一整片玫瑰前时，才懂得“独一无二”来自自己曾经付出的时间。'
+                "planetId": "planet-4",
+                "caption": "他数着星星，却很少抬头。",
+                "chatPrompt": "我读到商人星球的故事，想聊聊：拥有和珍惜，对我来说有什么不同？",
+                "chapter": "Chapter 05",
+                "title": "商人",
+                "subtitle": "计算与拥有",
+                "image": "business.png",
+                "text": [
+                    "商人忙着计算星星，忙得几乎没有时间抬头。他认为自己发现了星星，就可以拥有它们。",
+                    "他把数目写在纸上，再锁进抽屉，觉得这样就保管好了自己的财富。",
+                    "小王子想起自己给玫瑰浇水、清扫火山的日子：照料一件事，与把它算作自己的东西，似乎很不一样。"
                 ],
-                quote: '“真正重要的东西，用眼睛是看不见的。”'
+                "quote": "我们珍惜的东西，是否也因我们的照料而变得更好？"
             },
             {
-                chapter: 'Chapter 06',
-                title: '狐狸与驯服',
-                subtitle: '建立联系',
-                image: 'chapter06+fox-cutout.png',
-                text: [
-                    '在麦田边，狐狸请求小王子“驯服”自己。',
-                    '狐狸告诉他：驯服就是花时间靠近彼此，让彼此变得独一无二。',
-                    '小王子终于懂得，自己为玫瑰付出的时间，正是玫瑰珍贵的原因。',
-                    '离开前，狐狸把秘密留给了他，也把一片会想念他的麦田留在风里。'
+                "planetId": "planet-5",
+                "caption": "灯亮了，又熄了。他还在认真守候。",
+                "chatPrompt": "我读到点灯人的故事，想聊聊：一直忙碌的时候，怎样给自己留一点休息的时间？",
+                "chapter": "Chapter 06",
+                "title": "点灯人",
+                "subtitle": "职责与时间",
+                "image": "chapter+light-cutout.png",
+                "text": [
+                    "点灯人住在一颗很小的星球上，按照规定点灯、熄灯。",
+                    "星球转得越来越快，白昼和黑夜不断交替，可规定没有改变。他再也没有休息的时间。",
+                    "小王子欣赏他认真照亮别处的心意，也为他的忙碌感到惋惜。星球太小，留不下第二个人。"
                 ],
-                quote: '“你要永远对你驯服的东西负责。”'
+                "quote": "认真守护一盏灯的人，也值得拥有休息的时刻。"
             },
             {
-                chapter: 'Chapter 07',
-                title: '回望与理解',
-                subtitle: '看见自己',
-                image: 'chapter07+geography-cutout.png',
-                text: [
-                    '当他把一路经历串起来，终于看见自己离开的真正原因。',
-                    '他不是不爱玫瑰，而是当时还不会爱。',
-                    '这份理解让他不再逃避，也让“回去”第一次变得清晰。',
-                    '他开始接受过去的笨拙，并决定把迟到的温柔带回最初的地方。'
+                "planetId": "planet-6",
+                "caption": "书页记录远方，脚步仍在等待。",
+                "chatPrompt": "我读到地理学家的故事，想聊聊：有没有什么事，我想亲自去看一看、试一试？",
+                "chapter": "Chapter 07",
+                "title": "地理学家",
+                "subtitle": "记录与亲自看见",
+                "image": "chapter07+geography-cutout.png",
+                "text": [
+                    "地理学家坐在厚厚的书前，记录山川、海洋与城市，却不亲自出门探索。",
+                    "他依靠探险家的报告，还要核实他们的发现。听说玫瑰是短暂的，他没有把她记进地理书。",
+                    "小王子第一次认真想到玫瑰的脆弱。他带着对她的牵挂，按照地理学家的建议前往地球。"
                 ],
-                quote: '“我终于明白，我一直想回去的是哪里。”'
+                "quote": "短暂的事物，也可以在心里占据很长的位置。"
             },
             {
-                chapter: 'Chapter 08',
-                title: '回到初心',
-                subtitle: '归途',
-                image: 'chapter08-cutout.png',
-                text: [
-                    '故事最后，小王子与飞行员在沙漠中告别，选择回到自己的星球。',
-                    '这场远行让他懂得：爱不是占有，而是珍惜、陪伴与责任。',
-                    '《小王子》讲的，是一个孩子在失去与相遇里，学会如何去爱的故事。',
-                    '当我们再抬头看星星时，也会想起他留给世界的那份轻声而坚定的温柔。'
+                "planetId": "planet-7",
+                "caption": "走过许多星球，仍记得最初的牵挂。",
+                "chatPrompt": "走过这些星球，我想聊聊：现在的我，最想珍惜的是什么？",
+                "chapter": "Chapter 08",
+                "title": "回到初心",
+                "subtitle": "带着理解回望",
+                "image": "chapter08-cutout.png",
+                "text": [
+                    "从B612出发，小王子见过许多不同的大人，也在地球遇见了狐狸和飞行员。",
+                    "狐狸让他明白，陪伴所花费的时间，使自己的玫瑰与别的玫瑰不同。",
+                    "当他再次想起那颗小星球，牵挂里多了一份理解：珍惜，不只是把爱放在心里，也是在日常里照料它。"
                 ],
-                quote: '“真正的归途，是带着爱与责任回到最初的地方。”'
+                "quote": "回望这段旅程，你最想珍惜的是什么？"
             }
         ];
+
+        function journeyChapterIndexForId(id) {
+            return journeyChapters.findIndex((chapter) => chapter.planetId === id);
+        }
 
         const foxModal = document.getElementById('foxTamingModal');
         const foxStepContainer = document.getElementById('foxStepContainer');
@@ -378,12 +397,29 @@ const storyData = {
                 .replace(/'/g, '&#39;');
         }
 
+        let storyOpener = null;
+        let storyCloseTimer = null;
+        let foxOpener = null;
+        function captureStoryOpener() {
+            // Tearing temporarily disables its button, which can move focus to body.
+            return document.activeElement && document.activeElement !== document.body
+                ? document.activeElement
+                : document.querySelector('#home.active [data-story].is-current');
+        }
+        function restoreStoryFocus(opener) {
+            if (opener && opener.isConnected && opener.getClientRects().length) {
+                opener.focus({ preventScroll: true });
+            }
+        }
+
         function openModal(key) {
             if (key === 'fox') {
                 openFoxModal();
                 return;
             }
             const story = storyData[key];
+            if (storyCloseTimer) window.clearTimeout(storyCloseTimer);
+            storyOpener = captureStoryOpener();
             if (story) {
                 const modalContent = document.querySelector('#storyModal .modal-content');
                 const storyModal = document.getElementById('storyModal');
@@ -428,6 +464,7 @@ const storyData = {
                     storyModal.classList.add('active');
                 }
                 document.body.classList.add('modal-open');
+                modalContent.focus({ preventScroll: true });
             }
         }
 
@@ -437,14 +474,17 @@ const storyData = {
             if (!storyModal.classList.contains('active')) return;
             if (storyModal.classList.contains('closing')) return;
             storyModal.classList.add('closing');
-            window.setTimeout(() => {
+            storyCloseTimer = window.setTimeout(() => {
                 storyModal.classList.remove('active', 'closing');
                 document.body.classList.remove('modal-open');
+                storyCloseTimer = null;
+                restoreStoryFocus(storyOpener);
             }, 420);
         }
 
         function openFoxModal() {
-            if (!foxModal) return;
+            if (!foxModal || foxState.isOpen) return;
+            foxOpener = captureStoryOpener();
             foxState.isOpen = true;
             foxState.currentStep = 0;
             foxState.answers = { answer1: '', answer2: '', answer3: '' };
@@ -457,10 +497,11 @@ const storyData = {
             foxModal.classList.add('active');
             foxModal.setAttribute('aria-hidden', 'false');
             lockFoxModalBackground();
+            foxModal.querySelector('.fox-taming-modal__panel')?.focus({ preventScroll: true });
         }
 
         function closeFoxModal() {
-            if (!foxModal) return;
+            if (!foxModal || !foxState.isOpen) return;
             foxState.isOpen = false;
             foxState.tip = '';
             foxState.quoteTaskId += 1;
@@ -475,6 +516,7 @@ const storyData = {
             foxModal.classList.remove('active');
             foxModal.setAttribute('aria-hidden', 'true');
             unlockFoxModalBackground();
+            restoreStoryFocus(foxOpener);
         }
 
         function showFoxToast(text) {
@@ -724,11 +766,11 @@ const storyData = {
             };
             pendingFoxContext = context;
             b612SessionContext = context;
+            journeyChatHandoff = null;
             closeFoxModal();
-            const b612Link = document.querySelector('.nav-link[data-page="b612"]');
-            if (b612Link) b612Link.click();
-            if (location.hash !== '#b612') history.replaceState(null, '', '#b612');
-            openB612ChatModal();
+            rememberPageScroll();
+            history.pushState({ pageScrollY: pageScrollPositions.get('b612') ?? 0 }, '', '#b612-chat');
+            routeFromHash();
         }
 
         if (foxModal) {
@@ -780,7 +822,6 @@ const storyData = {
         // One entry dispatcher for regular buttons, ticket tears and the static fallback.
         // Focusing/rotating a ticket never starts B612 synchronization or an API call.
         function openHomeStory(action) {
-            if (action === 'mailbox') { location.href = 'star-mailbox.html'; return; }
             if (action === 'flight') { openFlightLog(); return; }
             if (action === 'rose' || action === 'fox') {
                 openModal(action);
@@ -819,6 +860,8 @@ const storyData = {
         let journeyModalScrollY = 0;
         let journeySwitchTimer = null;
         let journeySwipe = null;
+        let journeyOpener = null;
+        let journeyPendingIndex = null;
 
         function layoutJourneyChapterSideNav() {
             if (!journeyChapterModal || !journeyChapterPanel) return;
@@ -866,12 +909,15 @@ const storyData = {
             journeyModalIndex = safe;
             const data = journeyChapters[safe];
             if (!data) return;
-            setActivePlanet(safe);
+            setActivePlanet(journeyPlanetTargets.indexOf(data.planetId));
 
             const plainIllustration = data.plainIllustration === true;
             if (journeyChapterModal) {
                 journeyChapterModal.classList.toggle('journey-chapter-modal--plain-illustration', plainIllustration);
                 journeyChapterModal.classList.add('journey-chapter-modal--chapter-card');
+                journeyChapterModal.dataset.readerPlanet = data.planetId;
+                const caption = document.getElementById('journeyIllustrationCaption');
+                if (caption) caption.textContent = data.caption || '';
             }
 
             if (journeyChapterImage) journeyChapterImage.src = data.image || '';
@@ -883,9 +929,15 @@ const storyData = {
 
             if (journeyChapterText) {
                 const lines = Array.isArray(data.text) ? data.text : [];
-                journeyChapterText.innerHTML = lines.slice(0, 5).map((t) => `<p>${String(t)}</p>`).join('');
+                journeyChapterText.replaceChildren(...lines.map((text) => {
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = text;
+                    return paragraph;
+                }));
             }
             if (journeyChapterQuote) journeyChapterQuote.textContent = data.quote || '';
+            if (journeyChapterPanel) journeyChapterPanel.scrollTop = 0;
+            if (journeyChapterContent) journeyChapterContent.scrollTop = 0;
             setJourneyNavState();
             renderJourneyDots();
             window.requestAnimationFrame(layoutJourneyChapterSideNav);
@@ -894,12 +946,20 @@ const storyData = {
         function renderJourneyDots() {
             if (!journeyChapterDots) return;
             const total = journeyChapters.length;
+            if (journeyChapterDots.children.length === total) {
+                [...journeyChapterDots.children].forEach((dot, i) => {
+                    dot.classList.toggle('is-active', i === journeyModalIndex);
+                    dot.setAttribute('aria-current', String(i === journeyModalIndex));
+                });
+                return;
+            }
             journeyChapterDots.innerHTML = '';
             for (let i = 0; i < total; i++) {
                 const dot = document.createElement('button');
                 dot.type = 'button';
                 dot.className = 'journey-chapter-modal__dot' + (i === journeyModalIndex ? ' is-active' : '');
-                dot.setAttribute('aria-label', `跳转到第 ${pad2(i + 1)} 章`);
+                dot.setAttribute('aria-label', `${pad2(i + 1)} ${journeyChapters[i].title}`);
+                dot.setAttribute('aria-current', String(i === journeyModalIndex));
                 dot.addEventListener('click', () => {
                     switchJourneyTo(i);
                 });
@@ -907,57 +967,90 @@ const storyData = {
             }
         }
 
-        function openJourneyChapter(index = 0) {
-            if (!journeyChapterModal) return;
+        function cancelJourneySwitch() {
+            window.clearTimeout(journeySwitchTimer);
+            journeySwitchTimer = null;
+            journeyPendingIndex = null;
+            if (journeyChapterContent) journeyChapterContent.classList.remove(
+                'is-switching-next', 'is-switching-prev', 'is-entering-next', 'is-entering-prev');
+        }
+
+        function openJourneyChapter(index = 0, updateUrl = true) {
+            if (!journeyChapterModal || !journeyChapters[index]) return;
+            const alreadyOpen = journeyChapterModal.classList.contains('active');
+            cancelJourneySwitch();
+            if (!alreadyOpen) {
+                journeyOpener = document.activeElement;
+                if (!journeyOpener || journeyOpener === document.body || !journeyOpener.getClientRects().length) {
+                    journeyOpener = journeyMapNodes.find((node) => node.dataset.target === journeyChapters[index].planetId);
+                }
+                if (updateUrl) {
+                    rememberPageScroll();
+                    history.pushState({ ...history.state, pageScrollY: window.scrollY }, '', `#${journeyChapters[index].planetId}`);
+                }
+                lockJourneyBackground();
+            }
             renderJourneyChapter(index);
+            journeyChapterModal.inert = false;
             journeyChapterModal.classList.add('active');
             journeyChapterModal.setAttribute('aria-hidden', 'false');
-            lockJourneyBackground();
-            if (journeyChapterPanel) journeyChapterPanel.focus({ preventScroll: true });
+            if (!alreadyOpen && journeyChapterPanel) journeyChapterPanel.focus({ preventScroll: true });
             window.requestAnimationFrame(layoutJourneyChapterSideNav);
         }
 
-        function closeJourneyChapter(updateUrl = true) {
-            if (!journeyChapterModal) return;
+        function closeJourneyChapter(updateUrl = true, restoreFocus = true) {
+            cancelJourneySwitch();
+            if (!journeyChapterModal || !journeyChapterModal.classList.contains('active')) return;
+            if (journeySwipe) {
+                if (journeySwipe.pointerId !== null && journeyChapterPanel.hasPointerCapture(journeySwipe.pointerId)) {
+                    journeyChapterPanel.releasePointerCapture(journeySwipe.pointerId);
+                }
+                journeySwipe.active = false;
+                journeySwipe.pointerId = null;
+            }
+            journeyChapterModal.inert = true;
             journeyChapterModal.classList.remove('active');
             journeyChapterModal.setAttribute('aria-hidden', 'true');
             unlockJourneyBackground();
-            if (updateUrl && /^#planet-[0-7]$/.test(location.hash)) {
-                history.replaceState(null, '', '#journey');
+            if (updateUrl && journeyChapterIndexForId(location.hash.slice(1)) !== -1) {
+                history.replaceState({ ...history.state, pageScrollY: journeyModalScrollY }, '', '#journey');
             }
+            if (restoreFocus) restoreStoryFocus(journeyOpener);
         }
 
         function switchJourneyTo(nextIndex) {
+            if (!journeyChapterModal || !journeyChapterModal.classList.contains('active')) return;
             const safe = Math.max(0, Math.min(nextIndex, journeyChapters.length - 1));
-            if (safe === journeyModalIndex) return;
-
-            if (!journeyChapterContent) {
-                renderJourneyChapter(safe);
+            cancelJourneySwitch();
+            if (safe === journeyModalIndex) {
+                history.replaceState({ ...history.state, pageScrollY: journeyModalScrollY }, '', `#${journeyChapters[safe].planetId}`);
                 return;
             }
-
-            const OUT_MS = 220;
-            const IN_MS = 230;
-            const dir = safe > journeyModalIndex ? 'next' : 'prev';
-            const outClass = dir === 'next' ? 'is-switching-next' : 'is-switching-prev';
-            const inClass = dir === 'next' ? 'is-entering-next' : 'is-entering-prev';
-
-            if (journeySwitchTimer) window.clearTimeout(journeySwitchTimer);
-            journeyChapterContent.classList.remove('is-switching-next', 'is-switching-prev', 'is-entering-next', 'is-entering-prev');
-            journeyChapterContent.classList.add(outClass);
-
-            journeySwitchTimer = window.setTimeout(() => {
+            journeyPendingIndex = safe;
+            // Replacing the chapter URL lets Back return to the map, rather than each page turn.
+            history.replaceState({ ...history.state, pageScrollY: journeyModalScrollY }, '', `#${journeyChapters[safe].planetId}`);
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!journeyChapterContent || reduced) {
                 renderJourneyChapter(safe);
+                journeyPendingIndex = null;
+                return;
+            }
+            const dir = safe > journeyModalIndex ? 'next' : 'prev';
+            const outClass = `is-switching-${dir}`;
+            const inClass = `is-entering-${dir}`;
+            journeyChapterContent.classList.add(outClass);
+            journeySwitchTimer = window.setTimeout(() => {
+                if (!journeyChapterModal.classList.contains('active')) return;
+                renderJourneyChapter(safe);
+                journeyPendingIndex = null;
                 journeyChapterContent.classList.remove(outClass);
                 journeyChapterContent.classList.add(inClass);
-                journeySwitchTimer = window.setTimeout(() => {
-                    journeyChapterContent.classList.remove(inClass);
-                }, IN_MS);
-            }, OUT_MS);
+                journeySwitchTimer = window.setTimeout(cancelJourneySwitch, 180);
+            }, 160);
         }
 
         function switchJourneyChapter(delta) {
-            switchJourneyTo(journeyModalIndex + delta);
+            switchJourneyTo((journeyPendingIndex ?? journeyModalIndex) + delta);
         }
 
         // 关闭：遮罩/关闭按钮
@@ -983,6 +1076,16 @@ const storyData = {
             }
 
             if (!isJourneyOpen) return;
+            if (e.key === 'Tab') {
+                const controls = [...journeyChapterModal.querySelectorAll('button:not([disabled]), a[href], [tabindex="0"]')]
+                    .filter((element) => element.getClientRects().length);
+                const first = controls[0], last = controls[controls.length - 1];
+                if (controls.length && (e.shiftKey ? document.activeElement === first || !controls.includes(document.activeElement) : document.activeElement === last || !controls.includes(document.activeElement))) {
+                    e.preventDefault();
+                    (e.shiftKey ? last : first).focus({ preventScroll: true });
+                }
+                return;
+            }
             if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
             const target = e.target;
             if (target instanceof HTMLElement) {
@@ -1030,6 +1133,10 @@ const storyData = {
                 if (swipe.pointerId !== e.pointerId) return;
                 const dx = e.clientX - swipe.startX;
                 const dy = e.clientY - swipe.startY;
+                if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) {
+                    swipe.locked = true; // A vertical reading gesture must never turn a page later.
+                    return;
+                }
                 if (Math.abs(dx) < 50) return;
                 if (Math.abs(dx) <= Math.abs(dy) * 1.1) return;
 
@@ -1156,21 +1263,27 @@ const storyData = {
             els.forEach((el) => flightLogObserver.observe(el));
         }
 
+        let flightLogOpener = null;
         function openFlightLog() {
+            if (flightLogModal.classList.contains('active')) return;
+            flightLogOpener = captureStoryOpener();
             flightLogModal.classList.add('active');
             loadDeferredImages(flightLogModal);
             flightLogModal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
             flightLogScroll.scrollTop = 0;
+            flightLogScroll.focus({ preventScroll: true });
             layoutCollectibles();
             layoutFlightMarginals();
             requestAnimationFrame(() => setupFlightLogReveal());
         }
 
         function closeFlightLog() {
+            if (!flightLogModal.classList.contains('active')) return;
             flightLogModal.classList.remove('active');
             flightLogModal.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
+            restoreStoryFocus(flightLogOpener);
             if (flightLogObserver) {
                 flightLogObserver.disconnect();
                 flightLogObserver = null;
@@ -1948,7 +2061,7 @@ const storyData = {
                 localStorage.setItem('b612_history', JSON.stringify(arr || []));
             } catch (e) {
                 if (typeof b612Toast !== 'undefined' && b612Toast) {
-                    b612Toast.textContent = '星空信箱写满了：请试着清空几条回忆。';
+                    b612Toast.textContent = '聊天记录暂时无法保存：请检查浏览器存储空间。';
                 }
             }
         }
@@ -2137,7 +2250,7 @@ const storyData = {
                     '<path d="M8 10h48c2 0 4 2 4 4v28c0 2-2 4-4 4H8c-2 0-4-2-4-4V14c0-2 2-4 4-4z"/>' +
                     '<path d="M6 12L32 30l26-18"/>' +
                     '</svg>' +
-                    '<p class="b612-history-drawer__empty-line1">这里还没有收藏的信</p>' +
+                    '<p class="b612-history-drawer__empty-line1">还没有聊天记录</p>' +
                     '<p class="b612-history-drawer__empty-line2">去和小王子说句话吧</p>';
                 listEl.appendChild(wrap);
                 return;
@@ -2166,7 +2279,7 @@ const storyData = {
                     time.textContent = formatB612HistoryClock(e && e.createdAt);
                     const link = document.createElement('span');
                     link.className = 'b612-history-item__link';
-                    link.textContent = '小王子回信';
+                    link.textContent = '展开对话';
                     meta.appendChild(time);
                     meta.appendChild(link);
                     row.appendChild(pv);
@@ -2198,15 +2311,19 @@ const storyData = {
             });
         }
 
+        let chatHistoryOpener = null;
         function openB612HistoryDrawer() {
             const root = document.getElementById('b612HistoryDrawer');
             const panel = root && root.querySelector('.b612-history-drawer__panel');
             if (!root || !panel) return;
             hideB612HistoryConfirm();
+            chatHistoryOpener = document.activeElement;
             renderB612HistoryList();
             root.classList.add('active');
             root.setAttribute('aria-hidden', 'false');
+            document.getElementById('openChatHistory')?.setAttribute('aria-expanded', 'true');
             panel.setAttribute('aria-hidden', 'false');
+            document.getElementById('b612HistoryDrawerClose')?.focus({ preventScroll: true });
         }
 
         function closeB612HistoryDrawer() {
@@ -2217,6 +2334,8 @@ const storyData = {
             root.classList.remove('active');
             root.setAttribute('aria-hidden', 'true');
             if (panel) panel.setAttribute('aria-hidden', 'true');
+            document.getElementById('openChatHistory')?.setAttribute('aria-expanded', 'false');
+            chatHistoryOpener?.focus({ preventScroll: true });
         }
 
         function showB612HistoryConfirm() {
@@ -2380,21 +2499,115 @@ const storyData = {
             b612StoryModal.setAttribute('aria-hidden', 'true');
         }
 
+        let b612ChatOpener = null;
         function openB612ChatModal() {
             if (!b612ChatModal) return;
+            if (!b612ChatModal.classList.contains('active')) {
+                const focused = document.activeElement;
+                b612ChatOpener = focused && focused !== document.body && focused.getClientRects().length && !focused.closest('[aria-hidden="true"], [inert]')
+                    ? focused : document.querySelector('.nav-link[data-page="b612"]');
+            }
+            b612ChatModal.inert = false;
             b612ChatModal.classList.add('active');
             startB612Sync();
             b612ChatModal.setAttribute('aria-hidden', 'false');
             ensureOpeningAssistantMessage();
             maybeOpenWithFoxContext();
-            if (b612ChatInput) b612ChatInput.focus();
+            renderJourneyChatTopic();
+            if (journeyChatHandoff && !journeyChatHandoff.dismissed && !journeyChatHandoff.applied) {
+                document.getElementById('journeyChatTopic')?.focus({ preventScroll: true });
+            } else if (b612ChatInput) b612ChatInput.focus();
         }
 
-        function closeB612ChatModal() {
-            if (!b612ChatModal) return;
+        let journeyChatHandoff = null;
+        function journeyTopicBlocked() {
+            return [b612ChatInput, b612InlineInput, b612Input].some((input) =>
+                input && (input.value.length > 0 || input.readOnly || input.disabled)) || !!b612ChatSend?.disabled;
+        }
+        function renderJourneyChatTopic() {
+            const box = document.getElementById('journeyChatTopic');
+            if (!box) return;
+            box.hidden = !journeyChatHandoff;
+            if (!journeyChatHandoff) return;
+            document.getElementById('journeyChatPrompt').hidden = journeyChatHandoff.dismissed;
+            document.getElementById('journeyChatTopicTitle').textContent = `刚读过「${journeyChatHandoff.title}」`;
+            document.getElementById('journeyChatTopicText').textContent = journeyChatHandoff.prompt;
+            document.getElementById('journeyChatUse').disabled = journeyTopicBlocked();
+            document.getElementById('journeyChatTopicNotice').textContent = journeyChatHandoff.applied
+                ? '话题已放入输入框，可以修改后再发送。'
+                : journeyTopicBlocked() ? '先保留你正在写的话，这个话题可以留作参考。' : '可以用它开始，也可以写下你自己的话。';
+        }
+        function beginJourneyChat() {
+            const chapter = journeyChapters[journeyModalIndex];
+            journeyChatHandoff = { planetId: chapter.planetId, title: chapter.title,
+                prompt: chapter.chatPrompt, returnScrollY: journeyModalScrollY, dismissed: false, applied: false };
+            closeJourneyChapter(true, false);
+            rememberPageScroll();
+            history.pushState({ pageScrollY: pageScrollPositions.get('b612') ?? 0 }, '', '#b612-chat');
+            routeFromHash();
+        }
+        function useJourneyChatTopic() {
+            if (!journeyChatHandoff || journeyTopicBlocked()) { renderJourneyChatTopic(); return; }
+            b612ChatInput.value = journeyChatHandoff.prompt;
+            journeyChatHandoff.applied = true;
+            b612ChatInput.dispatchEvent(new Event('input', { bubbles: true }));
+            b612ChatInput.focus({ preventScroll: true });
+            renderJourneyChatTopic();
+        }
+        function returnToJourneyStory() {
+            if (!journeyChatHandoff) return;
+            closeB612ChatModal(false, false);
+            rememberPageScroll();
+            history.pushState({ pageScrollY: journeyChatHandoff.returnScrollY }, '', `#${journeyChatHandoff.planetId}`);
+            routeFromHash();
+        }
+        document.getElementById('journeyChatEntry')?.addEventListener('click', beginJourneyChat);
+        document.getElementById('journeyChatUse')?.addEventListener('click', useJourneyChatTopic);
+        document.getElementById('journeyChatDismiss')?.addEventListener('click', () => {
+            if (journeyChatHandoff) journeyChatHandoff.dismissed = true;
+            renderJourneyChatTopic();
+            document.getElementById('journeyChatReturn')?.focus({ preventScroll: true });
+        });
+        document.getElementById('journeyChatReturn')?.addEventListener('click', returnToJourneyStory);
+        [b612ChatInput, b612InlineInput, b612Input].filter(Boolean).forEach((input) => {
+            input.addEventListener('input', renderJourneyChatTopic);
+            new MutationObserver(renderJourneyChatTopic).observe(input, { attributes: true, attributeFilter: ['readonly', 'disabled'] });
+        });
+        if (b612ChatSend) new MutationObserver(renderJourneyChatTopic).observe(b612ChatSend,
+            { attributes: true, attributeFilter: ['disabled'] });
+
+        function closeB612ChatModal(updateUrl = true, restoreFocus = true) {
+            if (!b612ChatModal || !b612ChatModal.classList.contains('active')) return;
+            b612ChatModal.inert = true;
             b612ChatModal.classList.remove('active');
             b612ChatModal.setAttribute('aria-hidden', 'true');
+            if (updateUrl && location.hash === '#b612-chat') {
+                history.replaceState({ ...history.state, pageScrollY: window.scrollY }, '', '#b612');
+            }
+            if (restoreFocus) restoreStoryFocus(b612ChatOpener);
         }
+
+        function cycleB612ChatFocus(event, scope = b612ChatModal) {
+            if (event.key !== 'Tab' || !scope.classList.contains('active')) return;
+            const controls = [...scope.querySelectorAll('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), a[href], [tabindex="0"]')]
+                .filter((element) => element.getClientRects().length);
+            if (!controls.length) return;
+            const current = document.activeElement;
+            const first = controls[0], last = controls[controls.length - 1];
+            if (event.shiftKey ? current === first || !controls.includes(current) : current === last || !controls.includes(current)) {
+                event.preventDefault();
+                (event.shiftKey ? last : first).focus({ preventScroll: true });
+            }
+        }
+        b612ChatModal?.addEventListener('keydown', (event) => cycleB612ChatFocus(event));
+        ['flightLogModal', 'storyModal', 'foxTamingModal'].forEach((id) => {
+            const scope = document.getElementById(id);
+            scope?.addEventListener('keydown', (event) => cycleB612ChatFocus(event, scope));
+        });
+        ['#flightLogScroll', '#storyModal .modal-content', '#foxTamingModal .fox-taming-modal__panel'].forEach((selector) => {
+            const readingArea = document.querySelector(selector);
+            if (readingArea) readingArea.tabIndex = 0;
+        });
 
         function typewriterToBubble(targetBubble, fullText) {
             return new Promise((resolve) => {
@@ -2628,6 +2841,7 @@ const storyData = {
         if (b612ChatClose) b612ChatClose.addEventListener('click', closeB612ChatModal);
 
         (function setupB612HistoryDrawerUi() {
+            document.getElementById('openChatHistory')?.addEventListener('click', openB612HistoryDrawer);
             const backdrop = document.getElementById('b612HistoryBackdrop');
             const panel = document.querySelector('#b612HistoryDrawer .b612-history-drawer__panel');
             const listEl = document.getElementById('b612HistoryList');
@@ -2636,6 +2850,17 @@ const storyData = {
             const forgetBtn = document.getElementById('b612HistoryConfirmForget');
             const keepBtn = document.getElementById('b612HistoryConfirmKeep');
             const confirmEl = document.getElementById('b612HistoryConfirm');
+            document.getElementById('b612HistoryDrawer')?.addEventListener('keydown', (event) => {
+                if (event.key !== 'Tab') return;
+                const scope = confirmEl?.classList.contains('active') ? confirmEl : panel;
+                if (!scope) return;
+                const buttons = [...scope.querySelectorAll('button, a[href], [tabindex="0"]')]
+                    .filter(node => !node.disabled && node.getClientRects().length);
+                const first = buttons[0], last = buttons[buttons.length - 1];
+                if (!first) return;
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            });
             if (closeBtn) closeBtn.addEventListener('click', (ev) => { ev.stopPropagation(); closeB612HistoryDrawer(); });
             if (backdrop) backdrop.addEventListener('click', () => closeB612HistoryDrawer());
             if (panel) {
@@ -3038,7 +3263,7 @@ const storyData = {
         const journeyMapNodesWrap = document.getElementById('journeyMapNodes');
         const journeyMapNodes = journeyMapNodesWrap ? [...journeyMapNodesWrap.querySelectorAll('.journey-map__node')] : [];
         const journeyMapShip = document.getElementById('journeyMapShip');
-        const journeyPlanetTargets = ['planet-0', 'planet-1', 'planet-2', 'planet-3', 'planet-4', 'planet-5', 'planet-6', 'planet-7'];
+        const journeyPlanetTargets = journeyChapters.map((chapter) => chapter.planetId);
         const journeyChapterItems = [...document.querySelectorAll('#journey .timeline-item')];
         let journeyPlanetObserver = null;
         let journeyRevealObserver = null;
@@ -3232,19 +3457,13 @@ const storyData = {
             }).filter(Boolean);
         }
 
-        /** 星球中心点序列 → 单条连续虚线路径（手绘波动：段内起伏 + 连续曲率） */
+        /** 星球及弧线锚点 → 共用切线的连续贝塞尔路线。 */
         function buildJourneyRibbonPath(points, seed = 0) {
             if (points.length < 2) return '';
-            const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-            const fract = (x) => x - Math.floor(x);
-            const noise1 = (x) => fract(Math.sin(x * 12.9898 + 78.233) * 43758.5453);
-            const signedNoise = (x) => (noise1(x) - 0.5) * 2;
-
             const first = points[0];
             let d = `M ${first.x.toFixed(2)} ${first.y.toFixed(2)}`;
 
-            // Catmull-Rom -> cubic Bezier：先保证整体“顺滑”，再对控制点做很小的偏移
-            // 这样能保持圆润弧度，但不会出现局部“急拐”
+            // Catmull-Rom -> cubic Bezier，节点两侧共用切线，保持自然衔接。
             const tension = 0.88;
 
             for (let i = 0; i < points.length - 1; i += 1) {
@@ -3265,15 +3484,6 @@ const storyData = {
                 let c1y = p1.y + (p2.y - p0.y) * k;
                 let c2x = p2.x - (p3.x - p1.x) * k;
                 let c2y = p2.y - (p3.y - p1.y) * k;
-
-                // 轻微“椭圆弧”偏移：只作用在控制点，避免线条出现拐点
-                const phase = seed * 0.17 + i * 0.91;
-                const amp = clamp(segLen * 0.055, 3.5, 12);
-                const off = signedNoise(phase + 6.7) * amp;
-                c1x += nx * off;
-                c1y += ny * off;
-                c2x += nx * off;
-                c2y += ny * off;
 
                 d += ` C ${c1x.toFixed(2)} ${c1y.toFixed(2)}, ${c2x.toFixed(2)} ${c2y.toFixed(2)}, ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
             }
@@ -3330,7 +3540,23 @@ const storyData = {
                 if (journeyMapRoute18BasePath) journeyMapRoute18BasePath.setAttribute('d', '');
                 return;
             }
-            const pathD = buildJourneyRibbonPath(points, 101);
+            // Place a gentle bow between stations, then interpolate all anchors.
+            // Shared tangents keep the route smooth through both stars and bends.
+            const routeAnchors = [];
+            points.forEach((point, index) => {
+                routeAnchors.push(point);
+                const next = points[index + 1];
+                if (!next) return;
+                const dx = next.x - point.x;
+                const dy = next.y - point.y;
+                const length = Math.hypot(dx, dy) || 1;
+                const bow = Math.min(48, length * 0.14) * (index % 2 ? -1 : 1);
+                routeAnchors.push({
+                    x: (point.x + next.x) / 2 - dy / length * bow,
+                    y: (point.y + next.y) / 2 + dx / length * bow
+                });
+            });
+            const pathD = buildJourneyRibbonPath(routeAnchors, 101);
             journeyMapRoutePath.setAttribute('d', pathD);
             if (journeyMapRouteBasePath) journeyMapRouteBasePath.setAttribute('d', pathD);
 
@@ -3425,13 +3651,10 @@ const storyData = {
             const safe = Math.max(0, Math.min(index, journeyPlanetTargets.length - 1));
             journeyMapActiveIndex = safe;
             journeyMapNodes.forEach((node) => node.classList.remove('is-active'));
-            const activeNode = journeyMapNodes[safe];
+            const activeNode = journeyMapNodes.find((node) => node.dataset.target === journeyPlanetTargets[safe]);
             if (activeNode) activeNode.classList.add('is-active');
             moveJourneyShipTo(safe, false);
-            const id = journeyPlanetTargets[safe];
-            if (document.getElementById('journey').classList.contains('active') && location.hash !== `#${id}`) {
-                history.replaceState(null, '', `#${id}`);
-            }
+
         }
 
         function prepareJourneyQuotes() {
@@ -3465,7 +3688,7 @@ const storyData = {
                     e.preventDefault();
                     const href = link.getAttribute('href') || '';
                     const id = href.startsWith('#') ? href.slice(1) : '';
-                    const idx = journeyPlanetTargets.indexOf(id);
+                    const idx = journeyChapterIndexForId(id);
                     if (idx !== -1) openJourneyChapter(idx);
                 });
             });
@@ -3474,7 +3697,7 @@ const storyData = {
             journeyMapNodes.forEach((node) => {
                 node.addEventListener('click', () => {
                     const id = node.getAttribute('data-target');
-                    const idx = id ? journeyPlanetTargets.indexOf(id) : -1;
+                    const idx = journeyChapterIndexForId(id);
                     if (idx !== -1) openJourneyChapter(idx);
                 });
             });
@@ -3588,7 +3811,7 @@ const storyData = {
             if (pageId === 'b612') startB612Sync();
             if (pageId !== 'b612') {
                 closeB612StoryModal();
-                closeB612ChatModal();
+                closeB612ChatModal(false, false);
             }
             if (pageId === 'journey') {
                 setupTimelineCurves();
@@ -3600,37 +3823,58 @@ const storyData = {
             updateChapterWatermarkParallax();
         }
 
-        function routeFromHash() {
-            const hash = location.hash.slice(1);
-            const planetIndex = journeyPlanetTargets.indexOf(hash);
-            const pageId = planetIndex !== -1 ? 'journey' :
-                hash === 'b612-chat' ? 'b612' :
-                ['home', 'journey', 'b612'].includes(hash) ? hash : 'home';
-            if (planetIndex === -1 && journeyChapterModal.classList.contains('active')) {
-                closeJourneyChapter(false);
-            }
-            showPage(pageId);
+        let pendingRouteFrame = null;
+        let visiblePageId = null;
+        const pageScrollPositions = new Map();
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-            if (planetIndex !== -1) {
-                if (journeyChapterModal.classList.contains('active')) {
-                    renderJourneyChapter(planetIndex);
-                } else {
-                    window.requestAnimationFrame(() => openJourneyChapter(planetIndex));
+        function rememberPageScroll() {
+            if (!visiblePageId) return;
+            const top = journeyChapterModal.classList.contains('active') ? journeyModalScrollY : window.scrollY;
+            pageScrollPositions.set(visiblePageId, top);
+            history.replaceState({ ...history.state, pageScrollY: top }, '', location.href);
+        }
+
+        function routeFromHash() {
+            window.cancelAnimationFrame(pendingRouteFrame);
+            const hash = location.hash.slice(1);
+            // Resolve the whole route in one frame: popstate and hashchange may
+            // arrive together, but must not lock twice or lose scroll restoration.
+            pendingRouteFrame = window.requestAnimationFrame(() => {
+                pendingRouteFrame = null;
+                if (location.hash.slice(1) !== hash) return;
+                const planetIndex = journeyChapterIndexForId(hash);
+                const pageId = planetIndex !== -1 ? 'journey' :
+                    hash === 'b612-chat' ? 'b612' :
+                    ['home', 'journey', 'b612'].includes(hash) ? hash : 'home';
+                const pageChanged = pageId !== visiblePageId;
+                const wasJourneyOpen = journeyChapterModal.classList.contains('active');
+                if (pageChanged && visiblePageId) {
+                    pageScrollPositions.set(visiblePageId, wasJourneyOpen ? journeyModalScrollY : window.scrollY);
+                    if (foxState.isOpen) closeFoxModal();
+                    if (document.getElementById('storyModal').classList.contains('active')) closeModal();
                 }
-            } else if (hash === 'b612-chat') {
-                window.requestAnimationFrame(() => {
-                    if (!b612ChatModal.classList.contains('active')) openB612ChatModal();
-                });
-            } else if (hash) {
-                window.scrollTo({ top: 0, behavior: 'auto' });
-            }
+                if (planetIndex === -1) closeJourneyChapter(false, !pageChanged);
+                if (hash !== 'b612-chat') closeB612ChatModal(false, !pageChanged);
+                if (pageChanged) showPage(pageId);
+                visiblePageId = pageId;
+                if (pageChanged) window.scrollTo(0, history.state?.pageScrollY ?? pageScrollPositions.get(pageId) ?? 0);
+                if (planetIndex !== -1) {
+                    openJourneyChapter(planetIndex, false);
+                } else if (hash === 'b612-chat' && !b612ChatModal.classList.contains('active')) {
+                    openB612ChatModal();
+                }
+            });
         }
 
         document.querySelectorAll('.nav-link').forEach((link) => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const hash = `#${link.dataset.page}`;
-                if (location.hash !== hash) history.pushState(null, '', hash);
+                if (location.hash !== hash) {
+                    rememberPageScroll();
+                    history.pushState({ pageScrollY: pageScrollPositions.get(link.dataset.page) ?? 0 }, '', hash);
+                }
                 routeFromHash();
             });
         });

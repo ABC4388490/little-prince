@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f1e5">
+  <meta name="theme-color" content="#f8f2e6">
   <title>星光信箱 · The Little Prince</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="star-mailbox.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Noto+Serif+SC:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="star-mailbox.css?v=full-20261023">
   <link rel="stylesheet" href="storybook.css?v=1">
-  <script src="star-mailbox.js?v=2" defer></script>
+  <script src="star-mailbox.js?v=full-20261023" defer></script>
 </head>
 <body class="starry-mailbox">
   <div class="sky" aria-hidden="true">
@@ -37,7 +37,7 @@
         <div class="collection-tools"><span id="collection-label">来自那些值得记住的日子</span><label class="search"><span aria-hidden="true">⌕</span><input id="letter-search" type="search" placeholder="找一句曾说过的话" aria-label="搜索信件内容或日期"></label></div>
         <div id="letters-panel" role="tabpanel" aria-labelledby="all-tab" tabindex="0"><div class="letter-list" id="letter-list"></div><p class="sr-only" id="results-status" role="status" aria-live="polite"></p></div>
         <section class="composer" id="compose" aria-labelledby="compose-title">
-          <div class="composer__heading"><div><span class="eyebrow">TO B612 · 一封新的信</span><h2 id="compose-title">今天，想对小王子说些什么？</h2></div><span class="composer__star" aria-hidden="true">✧</span></div>
+          <div class="composer__heading"><div><span class="eyebrow">TO B612 · 一封新的信</span><h2 id="compose-title">写给小王子的一封信</h2></div><span class="composer__star" aria-hidden="true">✧</span></div>
           <form id="letter-form" novalidate>
             <label class="sr-only" for="letter-body">写给小王子的信</label>
             <textarea id="letter-body" name="letter" maxlength="4000" rows="5" placeholder="亲爱的小王子：&#10;&#10;有一些话，想慢慢说给你听……" aria-describedby="compose-privacy compose-status"></textarea>
