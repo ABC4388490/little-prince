@@ -26,6 +26,8 @@ def _quotes_block(quotes: list[str]) -> str:
 
 
 def build_content(quotes: list[str], gist: str) -> str:
+    if not quotes:
+        return f"【情节梗概，非逐字引文】{gist.strip()}"
     return f"【原文】{_quotes_block(quotes)}\n【释义】{gist.strip()}"
 
 
@@ -99,7 +101,7 @@ def build_analysis_chunks(analysis_payload: dict) -> list[dict[str, Any]]:
         topic = list(item.get("topic") or [])
         role = list(item.get("role") or [])
         chapter = str(item.get("related_chapters") or "跨章")
-        content = f"【角色分析·{title}】\n{body}"
+        content = f"【阅读解读·角色·{title}】\n{body}"
         chunk_id = f"char_{slug}_01"
         text = build_text(
             chapter=chapter,
@@ -129,7 +131,7 @@ def build_analysis_chunks(analysis_payload: dict) -> list[dict[str, Any]]:
         topic = list(item.get("topic") or [])
         role = list(item.get("role") or [])
         chapter = str(item.get("related_chapters") or "跨章")
-        content = f"【主题分析·{title}】\n{body}"
+        content = f"【阅读解读·主题·{title}】\n{body}"
         chunk_id = f"theme_{slug}_01"
         text = build_text(
             chapter=chapter,
@@ -159,6 +161,8 @@ def main() -> int:
     chapters_payload = load_json("chapters.json")
     analysis_payload = load_json("analysis.json")
     records = build_passage_chunks(chapters_payload) + build_analysis_chunks(analysis_payload)
+    for record in records:
+        record["source_url"] = "https://gutenberg.net.au/ebooks03/0300771h.html"
 
     if len(records) < 100:
         print(f"ERROR: only {len(records)} chunks (need >= 100)", file=sys.stderr)
@@ -169,7 +173,7 @@ def main() -> int:
         json.dump(records, f, ensure_ascii=False, indent=2)
 
     data_payload = {
-        "default_source_name": "little_prince_kb",
+        "default_source_name": "little_prince_reading_notes",
         "chunks": records,
     }
     with open(DATA_PATH, "w", encoding="utf-8") as f:

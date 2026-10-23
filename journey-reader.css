@@ -1,0 +1,340 @@
+/* Shared watercolor reader and optional story-to-chat topic. */
+#journeyChapterModal {
+    --reader-ink: #5b5144;
+    --reader-muted: #7c705d;
+    --reader-gold: #8c6e3e;
+    --reader-sage: #829275;
+    --reader-paper: #f8f3e8;
+    --reader-rule: rgba(198, 165, 106, .3);
+    transition: opacity 220ms ease;
+}
+#journeyChapterModal .journey-chapter-modal__backdrop {
+    background: rgba(244, 238, 226, .84);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    transition: opacity 220ms ease;
+}
+#journeyChapterModal .journey-chapter-modal__panel {
+    transform: none;
+    transition: opacity 220ms ease;
+}
+#journeyChapterModal .journey-chapter-modal__card { height: 100%; }
+#journeyChapterModal .journey-chapter-modal__content.is-switching-next,
+#journeyChapterModal .journey-chapter-modal__content.is-switching-prev {
+    animation: readerTextOut 160ms ease both;
+}
+#journeyChapterModal .journey-chapter-modal__content.is-entering-next,
+#journeyChapterModal .journey-chapter-modal__content.is-entering-prev {
+    animation: readerTextIn 180ms ease both;
+}
+@keyframes readerTextOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes readerTextIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* One fixed frame for all eight stories. */
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__panel {
+    background-color: var(--reader-paper);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23806d50' opacity='.045' filter='url(%23paper)' d='M0 0h240v240H0z'/%3E%3C/svg%3E"),
+        linear-gradient(105deg, rgba(198, 165, 106, .025), transparent 45%);
+    background-size: 240px 240px, auto;
+    border: 1px solid var(--reader-rule);
+    border-radius: 10px;
+    box-shadow: 0 16px 48px rgba(91, 81, 68, .11), 0 2px 8px rgba(91, 81, 68, .04);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    color: var(--reader-ink);
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__panel::before,
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__panel::after { content: none; }
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__layout {
+    grid-template-columns: .94fr 1.06fr;
+    gap: 0;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__left {
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding: 36px 8px 32px 28px;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 338px;
+    object-fit: contain;
+    mask-image: none;
+    -webkit-mask-image: none;
+}
+#journeyChapterModal .journey-reader__caption[hidden] { display: none; }
+#journeyChapterModal .journey-reader__caption {
+    margin: 0;
+    color: var(--reader-muted);
+    font: 12px / 1.8 'Songti SC', 'STSong', 'SimSun', serif;
+    letter-spacing: .08em;
+    text-align: center;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__right {
+    min-width: 0;
+    padding: 36px 36px 22px 24px;
+    gap: 0;
+    justify-content: flex-start;
+    text-align: left;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__chapter {
+    margin: 0 0 10px;
+    color: var(--reader-gold);
+    font: 500 12px / 1.4 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: .2em;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__title {
+    margin: 0;
+    color: var(--reader-ink);
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: .08em;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__subtitle {
+    margin: 8px 0 0;
+    color: var(--reader-muted);
+    font: 14px / 1.6 var(--font-cn);
+    letter-spacing: .08em;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__divider {
+    width: 44px;
+    height: 1px;
+    flex: 0 0 1px;
+    margin: 18px 0;
+    background: var(--reader-rule);
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__divider > * { display: none; }
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__content {
+    margin: 0;
+    padding: 0 4px 0 0;
+    scrollbar-width: thin;
+    scrollbar-color: #c5b99f transparent;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__text p {
+    margin: 0 0 12px;
+    max-width: none;
+    text-align: left;
+    font-family: 'Songti SC', 'STSong', 'SimSun', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    letter-spacing: .025em;
+    color: var(--reader-ink);
+    overflow-wrap: anywhere;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__quote {
+    margin: 18px 0 0;
+    padding-left: 12px;
+    border-left: 1px solid var(--reader-rule);
+    color: #776d58;
+    font: 15px / 1.8 var(--font-cn);
+    letter-spacing: .025em;
+    text-align: left;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__pager {
+    position: static;
+    width: 100%;
+    transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex: 0 0 auto;
+    margin: 18px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--reader-rule);
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__dots { gap: 0; }
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__dot,
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__dot.is-active {
+    width: 22px;
+    height: 28px;
+    border-radius: 0;
+    background: none;
+    transform: none;
+    display: grid;
+    place-items: center;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__dot::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #c5b99f;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__dot.is-active::before {
+    width: 6px;
+    height: 6px;
+    background: var(--reader-sage);
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__count {
+    font: 13px / 1.5 Georgia, serif;
+    color: var(--reader-muted);
+    letter-spacing: .06em;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__count-star { display: none; }
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__side-btn {
+    color: var(--reader-ink);
+    background: rgba(248, 243, 232, .8);
+    border-color: var(--reader-rule);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    text-shadow: none;
+    font-size: 24px;
+    font-weight: 400;
+    transition: color 200ms ease, border-color 200ms ease;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__side-btn:hover:not(:disabled) {
+    transform: none;
+    color: #3f4e36;
+    border-color: var(--reader-sage);
+    box-shadow: none;
+}
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__side-label {
+    color: var(--reader-muted);
+    font-size: 12px;
+    letter-spacing: .06em;
+}
+
+@media (max-width: 640px), (max-height: 560px) {
+    #journeyChapterModal.journey-chapter-modal--chapter-card .journey-chapter-modal__panel {
+        height: min(740px, calc(100vh - 104px));
+        height: min(740px, calc(100dvh - 104px));
+    }
+    #journeyChapterModal .journey-chapter-modal__card { height: auto; }
+}
+@media (max-width: 640px) {
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__layout { grid-template-columns: minmax(0, 1fr); }
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__left {
+        height: auto;
+        padding: 20px 44px 12px;
+        gap: 4px;
+    }
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__image { width: auto; height: 152px; }
+    #journeyChapterModal[data-reader-planet] .journey-reader__caption { font-size: 11px; }
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__right { padding: 16px 24px 24px; }
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__title { font-size: 27px; }
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__text p { line-height: 1.85; }
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__pager { gap: 8px; }
+    #journeyChapterModal[data-reader-planet] .journey-chapter-modal__dot { width: 21px; }
+}
+
+/* Only lift the artwork; the hit area and labels stay in place. */
+@media (hover: hover) and (pointer: fine) {
+    #journey.page .journey-map__node:hover {
+        transform: translate(-50%, -50%) !important;
+        filter: none;
+    }
+    #journey.page .journey-map__planet { transition: translate 200ms ease; }
+    #journey.page .journey-map__node:hover .journey-map__planet { translate: 0 -2px; }
+    #journey.page .journey-map__node:hover .journey-map__name { color: #5b5144; }
+}
+@media (hover: hover) and (pointer: fine) and (max-width: 768px) {
+    #journey.page .journey-map__node:hover { transform: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #journeyChapterModal,
+    #journeyChapterModal .journey-chapter-modal__panel,
+    #journeyChapterModal .journey-chapter-modal__backdrop { transition: none; }
+    #journeyChapterModal .journey-chapter-modal__content[class*="is-switching"],
+    #journeyChapterModal .journey-chapter-modal__content[class*="is-entering"] { animation: none; }
+    #journey.page .journey-map__planet { transition: none; translate: none !important; }
+}
+
+/* External arrows need room beside a 780px sheet; move below it on tablets. */
+@media (max-width: 1056px) {
+    #journeyChapterModal .journey-chapter-modal__side {
+        top: auto;
+        bottom: max(8px, calc((100dvh - 560px) / 2 - 72px));
+        transform: none;
+    }
+    #journeyChapterModal .journey-chapter-modal__side--prev { left: calc(50% - 70px); }
+    #journeyChapterModal .journey-chapter-modal__side--next { left: calc(50% + 22px); }
+    #journeyChapterModal .journey-chapter-modal__side-btn { width: 44px; height: 44px; }
+    #journeyChapterModal .journey-chapter-modal__side-label { display: none; }
+}
+@media (max-width: 640px), (max-height: 560px) {
+    #journeyChapterModal .journey-chapter-modal__side { bottom: 8px; }
+}
+
+#journeyChapterModal.journey-chapter-modal--chapter-card .journey-chapter-modal__panel { height: 560px; }
+#journeyChapterModal .journey-reader__chat {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    margin-top: 14px;
+    border: 0;
+    border-bottom: 1px solid rgba(130, 146, 117, .5);
+    border-radius: 0;
+    padding: 4px 0;
+    background: none;
+    color: #59694d;
+    font: 14px / 1.8 var(--font-cn);
+    letter-spacing: .025em;
+    cursor: pointer;
+    text-align: left;
+}
+#journeyChapterModal .journey-reader__chat:hover { color: #384d2d; border-color: #59694d; }
+#journeyChapterModal .journey-reader__chat:focus-visible,
+#journeyChatTopic button:focus-visible { outline: 2px solid #829275; outline-offset: 4px; }
+#journeyChapterModal[data-reader-planet] .journey-chapter-modal__pager { margin-top: 12px; padding-top: 8px; }
+@media (max-width: 1056px), (max-height: 560px) {
+    #journeyChapterModal.journey-chapter-modal--chapter-card .journey-chapter-modal__panel {
+        height: min(560px, calc(100vh - 104px));
+        height: min(560px, calc(100dvh - 104px));
+        margin-bottom: 32px;
+    }
+}
+@media (max-width: 640px) {
+    #journeyChapterModal.journey-chapter-modal--chapter-card .journey-chapter-modal__panel {
+        height: min(740px, calc(100vh - 104px));
+        height: min(740px, calc(100dvh - 104px));
+    }
+}
+#journeyChatTopic[hidden], #journeyChatTopic [hidden] { display: none; }
+#journeyChatTopic {
+    flex: 0 0 auto;
+    padding: 10px 20px;
+    margin: 0 0 10px;
+    border-top: 1px solid #e6dac4;
+    border-bottom: 1px solid #e6dac4;
+    color: #5b5144;
+    background: rgba(248, 243, 232, .65);
+    font: 14px / 1.7 var(--font-cn);
+    letter-spacing: .02em;
+}
+#journeyChatTopic p { margin: 0 0 6px; font: inherit; }
+#journeyChatTopic .journey-topic__title { color: #8c6e3e; font-size: 12px; }
+#journeyChatTopic .journey-topic__actions { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+#journeyChatTopic button {
+    border: 0; border-bottom: 1px solid #c9c2ac; border-radius: 0;
+    padding: 4px 0; background: none; color: #59694d;
+    font: 13px / 1.7 var(--font-cn); cursor: pointer;
+}
+#journeyChatTopic button:disabled { opacity: .55; cursor: default; }
+#journeyChatTopic .journey-topic__notice { color: #7c705d; font-size: 12px; margin-top: 6px; }
+@media (max-width: 640px) { #journeyChatTopic { padding: 8px 12px; font-size: 13px; } }
+
+#journeyChatTopic:focus { outline: none; }
+#b612ChatModal:has(#journeyChatTopic:not([hidden])) .b612-chat-modal__panel {
+    max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
+}
+
+/* Closed legacy overlays must not expose their controls to the Tab order. */
+#b612HistoryDrawer[aria-hidden="true"],
+#b612StoryModal[aria-hidden="true"],
+#foxTamingModal[aria-hidden="true"],
+#flightLogModal[aria-hidden="true"],
+#storyModal:not(.active) { visibility: hidden; }
+
+#flightLogScroll:focus-visible,
+#storyModal .modal-content:focus-visible,
+#foxTamingModal .fox-taming-modal__panel:focus-visible {
+    outline: 1px solid #829275;
+    outline-offset: 3px;
+}

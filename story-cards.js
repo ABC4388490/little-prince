@@ -5,15 +5,14 @@
   if (!root || !window.PointerEvent || !CSS.supports('perspective', '1000px')) return;
   const cards = [...root.querySelectorAll('[data-story]')];
   const stage = root.querySelector('.story-carousel__stage');
-  const pauseButton = root.querySelector('[data-carousel-pause]');
   const position = root.querySelector('.story-carousel__position');
   const home = document.getElementById('home');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const step = 360 / cards.length;
-  const initial = Math.max(0, cards.findIndex(card => card.dataset.story === 'fox'));
+  const initial = Math.max(0, cards.findIndex(card => card.dataset.story === 'journey'));
   let angle = -initial * step, target = angle, velocity = 0, active = -1, frame = 0, last = 0;
-  let settling = false, paused = false, hovering = false, focused = false, blocked = false;
-  let resumeAt = performance.now() + 2400, gesture = null, busy = false, tearTimer = 0;
+  let settling = false, blocked = false;
+  let gesture = null, busy = false, tearTimer = 0;
   let dispatching = false, visible = true, pointerCard = null;
   const wrap = n => ((n % cards.length) + cards.length) % cards.length;
   const current = () => wrap(Math.round(-angle / step));
@@ -52,7 +51,7 @@
     }
   }
   function shouldAnimate() {
-    return !blocked && (settling || Math.abs(velocity) > .2 || (!paused && !reduced.matches && !hovering && !focused && !gesture && !busy));
+    return !blocked && (settling || Math.abs(velocity) > .2);
   }
   function schedule() {
     if (!frame && shouldAnimate()) { last = performance.now(); frame = requestAnimationFrame(tick); }
@@ -69,8 +68,6 @@
       } else if (settling) {
         angle += (target - angle) * (1 - Math.exp(-13 * dt));
         if (Math.abs(target - angle) < .04) { angle = target; settling = false; alignCardFocus(); }
-      } else if (!paused && !reduced.matches && !hovering && !focused && now > resumeAt) {
-        angle -= 8 * dt;
       }
     }
     render(); schedule();
@@ -81,7 +78,6 @@
     let delta = -index * step - angle;
     delta = ((delta + 540) % 360 + 360) % 360 - 180;
     target = angle + delta; velocity = 0; settling = !immediate;
-    resumeAt = performance.now() + 2400;
     if (immediate) angle = target;
     render(); schedule();
   }
@@ -156,7 +152,6 @@
     if (g.capture.hasPointerCapture(g.id)) g.capture.releasePointerCapture(g.id);
     root.classList.remove('is-dragging');
     if (g.card) g.card.classList.remove('is-tearing');
-    resumeAt = performance.now() + 2400;
     if (g.moved) {
       // Consume only the click synthesized by this completed pointer gesture.
       const consume = event => { event.preventDefault(); event.stopImmediatePropagation(); };
@@ -187,7 +182,7 @@
     if (selectionOnly) { go(cards.indexOf(card)); return; }
     if (card !== cards[current()]) { go(cards.indexOf(card)); return; }
     if (event.target.closest('[data-tear]')) enter(card, true);
-    else if (event.target.closest('[data-home-action]')) enter(card, false);
+    else enter(card, false);
   });
   root.addEventListener('keydown', event => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
@@ -205,24 +200,10 @@
   });
   root.querySelector('[data-carousel-prev]').addEventListener('click', () => go(current() - 1));
   root.querySelector('[data-carousel-next]').addEventListener('click', () => go(current() + 1));
-  pauseButton.addEventListener('click', () => {
-    paused = !paused;
-    pauseButton.setAttribute('aria-pressed', String(paused));
-    pauseButton.setAttribute('aria-label', paused ? '继续自动轮转' : '暂停自动轮转');
-    pauseButton.textContent = paused ? '▷' : 'Ⅱ';
-    if (paused) go(current()); else resumeAt = performance.now() + 2000;
-    schedule();
-  });
-  root.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') hovering = true; });
-  root.addEventListener('pointerleave', () => { hovering = false; resumeAt = performance.now() + 2000; schedule(); });
   root.addEventListener('focusin', event => {
-    focused = true;
     const card = event.target.closest('[data-story]');
     if (card && !gesture) go(cards.indexOf(card), true);
   });
-  root.addEventListener('focusout', () => queueMicrotask(() => {
-    focused = root.contains(document.activeElement); resumeAt = performance.now() + 2000; schedule();
-  }));
   function sync() {
     const next = isBlocked();
     if (next && !blocked) {
@@ -232,7 +213,7 @@
     }
     blocked = next;
     if (blocked && frame) { cancelAnimationFrame(frame); frame = 0; }
-    if (!blocked) { resumeAt = performance.now() + 2400; render(); schedule(); }
+    if (!blocked) { render(); schedule(); }
   }
   new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   new MutationObserver(sync).observe(home, { attributes: true, attributeFilter: ['class'] });

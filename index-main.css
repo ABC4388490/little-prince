@@ -3142,6 +3142,14 @@
             letter-spacing: 0.03em;
         }
 
+        .b612-history-drawer__mailbox {
+            align-self: center;
+            margin-top: 12px;
+            color: #806b48;
+            font-size: 14px;
+            text-underline-offset: 4px;
+        }
+
         .b612-history-drawer__empty {
             display: flex;
             flex-direction: column;
@@ -8866,7 +8874,7 @@
         #journey.page .journey-map {
             display: block !important;
             position: relative;
-            height: clamp(540px, 64vh, 710px);
+            height: clamp(650px, 72vh, 820px);
             margin: 0.45rem auto 0;
             background: transparent;
             border: none;
@@ -8999,11 +9007,11 @@
         }
 
         /* 8 节点：S 型分布（absolute，便于后续手调） */
-        #journey.page .journey-map__node:nth-child(1) { left: 18% !important; top: 27% !important; --node-size: 86px; }
-        #journey.page .journey-map__node:nth-child(2) { left: 41% !important; top: 30% !important; --node-size: 108px; }
-        #journey.page .journey-map__node:nth-child(3) { left: 69% !important; top: 38% !important; --node-size: 84px; }
-        #journey.page .journey-map__node:nth-child(4) { left: 94% !important; top: 55% !important; --node-size: 82px; }
-        #journey.page .journey-map__node:nth-child(5) { left: 76% !important; top: 79% !important; --node-size: 102px; }
+        #journey.page .journey-map__node:nth-child(1) { left: 13% !important; top: 25% !important; --node-size: 86px; }
+        #journey.page .journey-map__node:nth-child(2) { left: 38% !important; top: 27% !important; --node-size: 108px; }
+        #journey.page .journey-map__node:nth-child(3) { left: 65% !important; top: 35% !important; --node-size: 84px; }
+        #journey.page .journey-map__node:nth-child(4) { left: 91% !important; top: 48% !important; --node-size: 82px; }
+        #journey.page .journey-map__node:nth-child(5) { left: 82% !important; top: 79% !important; --node-size: 102px; }
         #journey.page .journey-map__node:nth-child(5) .journey-map__name {
             margin-top: 24px;
             text-align: center;
@@ -9021,9 +9029,9 @@
         }
         /* 06 放到 05(商人) 与 07(地理学家) 中间 */
         /* 06 点灯人、07 地理学家：缩小 1/6（保留原布局与位置） */
-        #journey.page .journey-map__node:nth-child(6) { left: 62% !important; top: 81% !important; --node-size: 57px; }
-        #journey.page .journey-map__node:nth-child(7) { left: 46% !important; top: 83% !important; --node-size: 77px; }
-        #journey.page .journey-map__node:nth-child(8) { left: 25% !important; top: 77.5% !important; --node-size: 88px; }
+        #journey.page .journey-map__node:nth-child(6) { left: 59% !important; top: 76% !important; --node-size: 57px; }
+        #journey.page .journey-map__node:nth-child(7) { left: 36% !important; top: 83% !important; --node-size: 77px; }
+        #journey.page .journey-map__node:nth-child(8) { left: 16% !important; top: 63% !important; --node-size: 88px; }
 
         #journey.page .journey-start-btn {
             position: relative;
@@ -9390,6 +9398,120 @@
                 display: none;
             }
         }
+
+/* One complete illustration, centered beneath the send action. */
+body.page-b612 #b612 .hero-illustration {
+    position: relative !important;
+    inset: auto !important;
+    width: min(620px, 100%) !important;
+    height: auto !important;
+    aspect-ratio: 950 / 1024;
+    margin: 24px auto 0 !important;
+    transform: none !important;
+    overflow: hidden !important;
+}
+body.page-b612 #b612 .hero-illustration img {
+    display: block;
+    position: absolute;
+    width: 161.684211% !important;
+    max-width: none;
+    height: auto !important;
+    max-height: none;
+    left: -29.473684%;
+    top: 0;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    clip-path: none;
+}
+body.page-b612 #b612 .hero { padding-bottom: 32px !important; }
+@media (max-width: 600px) {
+    body.page-b612 #b612 .hero { padding-left: 12px; padding-right: 12px; }
+    body.page-b612 #b612 .hero-illustration { margin-top: 20px !important; }
+    body.page-b612 #b612 .b612-inline-entry__wrap { width: 100%; max-width: 100%; box-sizing: border-box; }
+    body.page-b612 #b612 .b612-inline-entry { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; }
+}
+
+/* Clear product destinations while retaining the paper-and-watercolor navigation. */
+.nav-flight-btn { width:auto; gap:6px; border-radius:0; padding:0 4px; font:inherit; font-size:14px; white-space:nowrap; }
+.nav-flight-btn svg { width:17px; height:17px; flex-shrink:0; }
+body.page-b612 #b612 .b612-inline-history-link { display:inline-block; margin:0; border:0; padding:6px 12px; background:none; box-shadow:none; color:#887b64; font-family:inherit; font-size:13px; line-height:1.8; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+.b612-inline-history-link:focus-visible { outline:2px solid #829275; outline-offset:3px; }
+@media(max-width:600px) { .nav-flight-btn { font-size:12px; gap:4px; } }
+
+.story-ticket[data-story="b612"] .story-ticket__title,
+.story-ticket[data-story="flight"] .story-ticket__title { font-size:20px; letter-spacing:.02em; }
+@media(max-width:600px) {
+    .story-ticket[data-story="b612"] .story-ticket__title,
+    .story-ticket[data-story="flight"] .story-ticket__title { font-size:17px; }
+}
+
+/* Journey keyboard navigation: visible focus, without changing the resting map. */
+#journey.page .journey-map__node:focus-visible {
+    outline: 1px solid #829275 !important;
+    outline-offset: 6px;
+}
+.journey-chapter-modal__panel:focus { outline: none; }
+
+/* Keep the existing reader usable on narrow or short viewports. */
+@media (max-width: 640px), (max-height: 560px) {
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__panel {
+        height: auto;
+        max-height: calc(100vh - 104px);
+        max-height: calc(100dvh - 104px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        margin-bottom: 32px;
+        scrollbar-width: thin;
+    }
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__layout {
+        height: auto;
+    }
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__content {
+        flex: none;
+        overflow: visible;
+    }
+    .journey-chapter-modal__pager {
+        position: static;
+        transform: none;
+        width: auto;
+        margin: 24px 0 12px;
+    }
+    .journey-chapter-modal__side {
+        top: auto;
+        bottom: 8px;
+        transform: none;
+    }
+    .journey-chapter-modal__side--prev { left: calc(50% - 70px); }
+    .journey-chapter-modal__side--next { left: calc(50% + 22px); }
+    .journey-chapter-modal__side-label { display: none; }
+    .journey-chapter-modal__side-btn { width: 44px; height: 44px; }
+}
+@media (max-width: 640px) {
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__left {
+        height: 148px;
+        padding: 20px 40px 0;
+    }
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__image {
+        height: 128px;
+        width: auto;
+        max-width: 100%;
+    }
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__right {
+        padding: 20px 24px;
+        min-width: 0;
+    }
+    .journey-chapter-modal.journey-chapter-modal--chapter-card .journey-chapter-modal__title {
+        font-size: 1.6rem;
+        letter-spacing: 0.06em;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .journey-chapter-modal,
+    .journey-chapter-modal__panel { transition: none; }
+}
 
 /* A failed chat turn offers an explicit retry instead of an offline AI reply. */
 .b612-chat__retry {
