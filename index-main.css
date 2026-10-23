@@ -3142,14 +3142,6 @@
             letter-spacing: 0.03em;
         }
 
-        .b612-history-drawer__mailbox {
-            align-self: center;
-            margin-top: 12px;
-            color: #806b48;
-            font-size: 14px;
-            text-underline-offset: 4px;
-        }
-
         .b612-history-drawer__empty {
             display: flex;
             flex-direction: column;
