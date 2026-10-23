@@ -2118,47 +2118,6 @@ const storyData = {
             } catch (_) { return { ai: 0, fallback: 0 }; }
         }
 
-        // ===== 新增：b612_diary 同步（星空信箱） =====
-        function loadB612Diary() {
-            try {
-                const raw = localStorage.getItem('b612_diary');
-                const data = JSON.parse(raw || '[]');
-                return Array.isArray(data) ? data : [];
-            } catch (e) {
-                return [];
-            }
-        }
-
-        function saveB612Diary(arr) {
-            try {
-                localStorage.setItem('b612_diary', JSON.stringify(arr || []));
-            } catch (e) {
-                /* 与 saveB612History 一致：静默失败 */
-            }
-        }
-
-        function writeToDiary(user, reply, createdAt) {
-            const u = String(user || '').trim();
-            const r = String(reply || '').trim();
-            if (!u || !r) return;
-            const iso = createdAt || new Date().toISOString();
-            const date = b612HistoryDayKey(iso);
-            if (!date) return;
-
-            const diary = loadB612Diary();
-            let record = diary.find(function (item) {
-                return item && item.date === date;
-            });
-            if (!record) {
-                record = { date: date, messages: [], favorite: false };
-                diary.push(record);
-            }
-            record.messages.push({ role: 'user', text: u });
-            record.messages.push({ role: 'prince', text: r });
-            saveB612Diary(diary);
-        }
-        // ===== 新增结束 =====
-
         function appendB612HistoryEntry({ user, reply, createdAt }) {
             const u = String(user || '').trim();
             const r = String(reply || '').trim();
@@ -2169,8 +2128,6 @@ const storyData = {
             const max = 200;
             while (arr.length > max) arr.pop();
             saveB612History(arr);
-            // 新增：同步写入星空信箱 diary
-            writeToDiary(u, r, createdAt || new Date().toISOString());
         }
 
         function formatB612HistoryClock(iso) {
