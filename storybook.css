@@ -92,11 +92,11 @@
   .story-ticket.is-torn .story-ticket__stub { transform: none; }
 }
 
-/* Compact illustrated footer, matching the reference's three-button composition. */
+/* Keep the full illustrations below the cards, with their own reserved space. */
 body.page-home .container { padding-bottom: 12px; }
-#home.page { padding-bottom: 52px; }
+#home.page { --home-footer-height: 330px; padding-bottom: calc(var(--home-footer-height) + 24px); }
 #home .home-footer-art {
-  position: absolute; left: -120px; right: -120px; bottom: 0; height: 230px;
+  position: absolute; left: -120px; right: -120px; bottom: 0; height: var(--home-footer-height);
   overflow: hidden; pointer-events: none; z-index: 0;
 }
 #home .home-journey-cutout { left: 0; bottom: 0; width: 480px; transform: none; }
@@ -118,13 +118,14 @@ body.page-home .container { padding-bottom: 12px; }
 }
 .story-carousel.is-ready .story-carousel__hint { margin-top: 3px; font-size: 10px; line-height: 1.6; letter-spacing: .12em; }
 @media (max-width: 1100px) and (min-width: 769px) {
+  #home.page { --home-footer-height: 260px; }
   #home .home-footer-art { left: -32px; right: -32px; }
   #home .home-journey-cutout { width: 380px; }
   #home .home-right-illustration { width: 150px; bottom: -48px; }
 }
 @media (max-width: 768px) {
-  #home.page { padding-bottom: 48px; }
-  #home .home-footer-art { left: -32px; right: -32px; height: 145px; }
+  #home.page { --home-footer-height: 170px; }
+  #home .home-footer-art { left: -32px; right: -32px; }
   #home .home-journey-cutout { left: -12px; bottom: 0; width: 245px; }
   #home .home-right-illustration { right: 0; bottom: -38px; width: 110px; }
   #home .section-flow { margin-top: 4px; height: 28px; }
