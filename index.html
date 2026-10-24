@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="./pure-rose.png?v=4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="index-main.css?v=chat-20261024">
+    <link rel="stylesheet" href="index-main.css?v=chat-20261024-no-history">
     <link rel="stylesheet" href="storybook.css?v=10">
     <link rel="stylesheet" href="journey-reader.css?v=chat-20261024">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -449,7 +449,6 @@
                             <textarea id="b612InlineInput" aria-label="和小王子聊聊" class="b612-inline-entry__input" maxlength="4000" rows="4" autocomplete="off" placeholder="今天，想和小王子聊些什么？"></textarea>
                         </div>
                         <button type="button" class="b612-inline-entry__send" id="b612InlineSend" aria-label="告诉小王子">告诉小王子 ↗</button>
-                        <button type="button" class="b612-inline-history-link" id="openChatHistory" aria-controls="b612HistoryDrawer" aria-expanded="false" aria-haspopup="dialog">聊天记录</button>
                     </div>
 
                     <div class="hero-illustration hero-illustration--complete">
@@ -535,29 +534,6 @@
             </div>
         </div>
 
-        <div id="b612HistoryDrawer" class="b612-history-drawer" aria-hidden="true">
-            <div class="b612-history-drawer__backdrop" id="b612HistoryBackdrop" aria-hidden="true"></div>
-            <aside class="b612-history-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="b612HistoryDrawerTitle" aria-hidden="true">
-                <div class="b612-history-drawer__toolbar">
-                    <span id="b612HistoryDrawerTitle" class="b612-history-drawer__brand">聊天记录</span>
-                    <div class="b612-history-drawer__tools">
-                        <button type="button" class="b612-history-drawer__clear" id="b612HistoryClearBtn">清空记录</button>
-                        <button type="button" class="b612-history-drawer__x" id="b612HistoryDrawerClose" aria-label="关闭">×</button>
-                    </div>
-                </div>
-                <div id="b612HistoryList" class="b612-history-drawer__scroll"></div>
-                <p class="b612-history-drawer__hint">✦ 点击任意一条 → 展开完整对话</p>
-            </aside>
-            <div id="b612HistoryConfirm" class="b612-history-confirm" aria-hidden="true" role="dialog" aria-modal="true" aria-label="确认清空">
-                <div class="b612-history-confirm__card">
-                    <p>确认要清空这些历史对话吗？</p>
-                    <div class="b612-history-confirm__actions">
-                        <button type="button" class="b612-history-confirm__forget" id="b612HistoryConfirmForget">忘记</button>
-                        <button type="button" id="b612HistoryConfirmKeep">留着</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 
@@ -833,7 +809,7 @@
     </div>
 
     <script src="memory-api.js?v=1" defer></script>
-    <script src="index-main.js?v=chat-20261024" defer></script>
+    <script src="index-main.js?v=chat-20261024-no-history" defer></script>
     <script src="story-cards.js?v=chat-20261024" defer></script>
 </body>
 </html>
