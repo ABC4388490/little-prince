@@ -16,7 +16,7 @@ test('retired mailbox has no public page, script, or navigation entry', () => {
 
 test('chat history still saves old and new messages without writing the retired diary', () => {
   const source = fs.readFileSync(path.join(root, 'index-main.js'), 'utf8');
-  const fn = source.slice(source.indexOf('        function appendB612HistoryEntry('), source.indexOf('        function formatB612HistoryClock('));
+  const fn = source.slice(source.indexOf('        function appendB612HistoryEntry('), source.indexOf('        function updateChatEmptyState('));
   let saved;
   const previous = { id: 'existing', user: '之前的话', reply: '之前的回复' };
   const context = vm.createContext({

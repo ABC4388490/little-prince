@@ -1302,16 +1302,6 @@ const storyData = {
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                const histConfirm = document.getElementById('b612HistoryConfirm');
-                const histDrawer = document.getElementById('b612HistoryDrawer');
-                if (histConfirm && histConfirm.classList.contains('active')) {
-                    hideB612HistoryConfirm();
-                    return;
-                }
-                if (histDrawer && histDrawer.classList.contains('active')) {
-                    closeB612HistoryDrawer();
-                    return;
-                }
                 const pcModal = document.getElementById('b612PostcardModal');
                 if (pcModal && pcModal.classList.contains('active')) {
                     closeB612PostcardModal();
@@ -2130,178 +2120,6 @@ const storyData = {
             saveB612History(arr);
         }
 
-        function formatB612HistoryClock(iso) {
-            try {
-                const d = new Date(iso);
-                if (isNaN(d.getTime())) return '';
-                return d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false });
-            } catch (e) {
-                return '';
-            }
-        }
-
-        function previewB612HistoryUser(user) {
-            const arr = Array.from(String(user || ''));
-            if (arr.length <= 20) return arr.join('');
-            return arr.slice(0, 20).join('') + '…';
-        }
-
-        function b612HistoryDayKey(iso) {
-            const d = new Date(iso);
-            if (isNaN(d.getTime())) return '';
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return `${y}-${m}-${day}`;
-        }
-
-        function b612HistoryGroupLabelForDayKey(dayKey) {
-            if (!dayKey) return '';
-            const parts = dayKey.split('-').map((n) => Number(n));
-            if (parts.length < 3 || parts.some((x) => Number.isNaN(x))) return dayKey;
-            const d = new Date(parts[0], parts[1] - 1, parts[2]);
-            if (isNaN(d.getTime())) return dayKey;
-            const t0 = new Date();
-            t0.setHours(0, 0, 0, 0);
-            const d0 = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-            const diffDays = Math.round((t0 - d0) / 86400000);
-            if (diffDays === 0) return '今天';
-            if (diffDays === 1) return '昨天';
-            return `${d.getMonth() + 1}月${d.getDate()}日`;
-        }
-
-        function groupB612HistoryByDay(entries) {
-            const sorted = [...(entries || [])].sort((a, b) => {
-                const ta = new Date(a && a.createdAt).getTime();
-                const tb = new Date(b && b.createdAt).getTime();
-                return (Number.isNaN(tb) ? 0 : tb) - (Number.isNaN(ta) ? 0 : ta);
-            });
-            const map = new Map();
-            sorted.forEach((e) => {
-                const key = b612HistoryDayKey(e && e.createdAt);
-                if (!key) return;
-                if (!map.has(key)) map.set(key, []);
-                map.get(key).push(e);
-            });
-            return Array.from(map.entries()).sort((a, b) => b[0].localeCompare(a[0]));
-        }
-
-        function hideB612HistoryConfirm() {
-            const el = document.getElementById('b612HistoryConfirm');
-            if (!el) return;
-            el.classList.remove('active');
-            el.setAttribute('aria-hidden', 'true');
-        }
-
-        function renderB612HistoryList() {
-            const listEl = document.getElementById('b612HistoryList');
-            if (!listEl) return;
-            const entries = loadB612History();
-            listEl.innerHTML = '';
-            listEl.classList.toggle('b612-history-drawer__scroll--empty', !entries.length);
-            if (!entries.length) {
-                const wrap = document.createElement('div');
-                wrap.className = 'b612-history-drawer__empty';
-                wrap.innerHTML =
-                    '<svg class="b612-history-drawer__empty-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 52" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-                    '<path d="M8 10h48c2 0 4 2 4 4v28c0 2-2 4-4 4H8c-2 0-4-2-4-4V14c0-2 2-4 4-4z"/>' +
-                    '<path d="M6 12L32 30l26-18"/>' +
-                    '</svg>' +
-                    '<p class="b612-history-drawer__empty-line1">还没有聊天记录</p>' +
-                    '<p class="b612-history-drawer__empty-line2">去和小王子说句话吧</p>';
-                listEl.appendChild(wrap);
-                return;
-            }
-            const groups = groupB612HistoryByDay(entries);
-            groups.forEach(([dayKey, items]) => {
-                const wrap = document.createElement('div');
-                wrap.className = 'b612-history-group';
-                const h = document.createElement('h3');
-                h.className = 'b612-history-group__title';
-                h.textContent = '✦ ' + b612HistoryGroupLabelForDayKey(dayKey);
-                wrap.appendChild(h);
-                items.forEach((e) => {
-                    const item = document.createElement('div');
-                    item.className = 'b612-history-item';
-                    item.dataset.id = (e && e.id) || (e && e.createdAt) || '';
-                    const row = document.createElement('button');
-                    row.type = 'button';
-                    row.className = 'b612-history-item__row';
-                    const pv = document.createElement('span');
-                    pv.className = 'b612-history-item__preview';
-                    pv.textContent = '「' + previewB612HistoryUser(e && e.user) + '」';
-                    const meta = document.createElement('span');
-                    meta.className = 'b612-history-item__meta';
-                    const time = document.createElement('span');
-                    time.textContent = formatB612HistoryClock(e && e.createdAt);
-                    const link = document.createElement('span');
-                    link.className = 'b612-history-item__link';
-                    link.textContent = '展开对话';
-                    meta.appendChild(time);
-                    meta.appendChild(link);
-                    row.appendChild(pv);
-                    row.appendChild(meta);
-                    const detail = document.createElement('div');
-                    detail.className = 'b612-history-item__detail';
-                    detail.hidden = true;
-                    const pu = document.createElement('p');
-                    const lu = document.createElement('span');
-                    lu.className = 'b612-history-item__label';
-                    lu.textContent = '你说';
-                    pu.appendChild(lu);
-                    pu.appendChild(document.createElement('br'));
-                    pu.appendChild(document.createTextNode(String((e && e.user) || '')));
-                    const pr = document.createElement('p');
-                    const lr = document.createElement('span');
-                    lr.className = 'b612-history-item__label';
-                    lr.textContent = '小王子';
-                    pr.appendChild(lr);
-                    pr.appendChild(document.createElement('br'));
-                    pr.appendChild(document.createTextNode(String((e && e.reply) || '')));
-                    detail.appendChild(pu);
-                    detail.appendChild(pr);
-                    item.appendChild(row);
-                    item.appendChild(detail);
-                    wrap.appendChild(item);
-                });
-                listEl.appendChild(wrap);
-            });
-        }
-
-        let chatHistoryOpener = null;
-        function openB612HistoryDrawer() {
-            const root = document.getElementById('b612HistoryDrawer');
-            const panel = root && root.querySelector('.b612-history-drawer__panel');
-            if (!root || !panel) return;
-            hideB612HistoryConfirm();
-            chatHistoryOpener = document.activeElement;
-            renderB612HistoryList();
-            root.classList.add('active');
-            root.setAttribute('aria-hidden', 'false');
-            document.getElementById('openChatHistory')?.setAttribute('aria-expanded', 'true');
-            panel.setAttribute('aria-hidden', 'false');
-            document.getElementById('b612HistoryDrawerClose')?.focus({ preventScroll: true });
-        }
-
-        function closeB612HistoryDrawer() {
-            const root = document.getElementById('b612HistoryDrawer');
-            const panel = root && root.querySelector('.b612-history-drawer__panel');
-            if (!root) return;
-            hideB612HistoryConfirm();
-            root.classList.remove('active');
-            root.setAttribute('aria-hidden', 'true');
-            if (panel) panel.setAttribute('aria-hidden', 'true');
-            document.getElementById('openChatHistory')?.setAttribute('aria-expanded', 'false');
-            chatHistoryOpener?.focus({ preventScroll: true });
-        }
-
-        function showB612HistoryConfirm() {
-            const el = document.getElementById('b612HistoryConfirm');
-            if (!el) return;
-            el.classList.add('active');
-            el.setAttribute('aria-hidden', 'false');
-        }
-
         function updateChatEmptyState() {
             if (!b612ChatEmpty || !b612ChatList) return;
             const has = b612ChatList.children && b612ChatList.children.length > 0;
@@ -2797,77 +2615,6 @@ const storyData = {
 
         if (b612ChatClose) b612ChatClose.addEventListener('click', closeB612ChatModal);
 
-        (function setupB612HistoryDrawerUi() {
-            document.getElementById('openChatHistory')?.addEventListener('click', openB612HistoryDrawer);
-            const backdrop = document.getElementById('b612HistoryBackdrop');
-            const panel = document.querySelector('#b612HistoryDrawer .b612-history-drawer__panel');
-            const listEl = document.getElementById('b612HistoryList');
-            const closeBtn = document.getElementById('b612HistoryDrawerClose');
-            const clearBtn = document.getElementById('b612HistoryClearBtn');
-            const forgetBtn = document.getElementById('b612HistoryConfirmForget');
-            const keepBtn = document.getElementById('b612HistoryConfirmKeep');
-            const confirmEl = document.getElementById('b612HistoryConfirm');
-            document.getElementById('b612HistoryDrawer')?.addEventListener('keydown', (event) => {
-                if (event.key !== 'Tab') return;
-                const scope = confirmEl?.classList.contains('active') ? confirmEl : panel;
-                if (!scope) return;
-                const buttons = [...scope.querySelectorAll('button, a[href], [tabindex="0"]')]
-                    .filter(node => !node.disabled && node.getClientRects().length);
-                const first = buttons[0], last = buttons[buttons.length - 1];
-                if (!first) return;
-                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-            });
-            if (closeBtn) closeBtn.addEventListener('click', (ev) => { ev.stopPropagation(); closeB612HistoryDrawer(); });
-            if (backdrop) backdrop.addEventListener('click', () => closeB612HistoryDrawer());
-            if (panel) {
-                panel.addEventListener('click', (ev) => ev.stopPropagation());
-            }
-            if (listEl) {
-                listEl.addEventListener('click', (ev) => {
-                    const row = ev.target.closest('.b612-history-item__row');
-                    if (!row) return;
-                    const item = row.closest('.b612-history-item');
-                    if (!item) return;
-                    const detail = item.querySelector('.b612-history-item__detail');
-                    if (!detail) return;
-                    const open = item.classList.toggle('b612-history-item--open');
-                    detail.hidden = !open;
-                });
-            }
-            if (clearBtn) {
-                clearBtn.addEventListener('click', (ev) => {
-                    ev.stopPropagation();
-                    const items = loadB612History();
-                    if (!items.length) return;
-                    showB612HistoryConfirm();
-                });
-            }
-            if (forgetBtn) {
-                forgetBtn.addEventListener('click', (ev) => {
-                    ev.stopPropagation();
-                    try {
-                        localStorage.removeItem('b612_history');
-                    } catch (err) {
-                        /* ignore */
-                    }
-                    hideB612HistoryConfirm();
-                    renderB612HistoryList();
-                });
-            }
-            if (keepBtn) {
-                keepBtn.addEventListener('click', (ev) => {
-                    ev.stopPropagation();
-                    hideB612HistoryConfirm();
-                });
-            }
-            if (confirmEl) {
-                confirmEl.addEventListener('click', (ev) => {
-                    if (ev.target === confirmEl) hideB612HistoryConfirm();
-                });
-            }
-        })();
-
         let b612PostcardLastCanvas = null;
         let b612PostcardLastFilename = '';
 
@@ -3124,7 +2871,7 @@ const storyData = {
                     b612GenStatus.textContent = '';
                     b612GenStatus.hidden = true;
                 }
-                if (b612Toast) b612Toast.textContent = '聊天记录已保存在此浏览器。';
+                if (b612Toast) b612Toast.textContent = '';
                 if (loadingNode && loadingNode.msg) loadingNode.msg.remove();
                 const assistantNode = appendChatMessage('assistant', '', finalCreatedAt, '', { fbKey: fbKey });
                 saveAISource(fbKey, true);
