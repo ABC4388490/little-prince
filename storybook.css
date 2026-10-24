@@ -94,12 +94,13 @@
 
 /* Let the artwork follow the cards with a small, consistent gap. */
 body.page-home .container { padding-bottom: 12px; }
-#home.page { --home-footer-height: 330px; padding-bottom: 0; }
+#home.page { --home-footer-height: 220px; padding-bottom: 0; }
 #home .home-footer-art {
   position: relative; margin: 8px -120px 0; height: var(--home-footer-height);
   overflow: hidden; pointer-events: none; z-index: 0;
 }
-#home .home-journey-cutout { left: 0; top: 0; bottom: auto; width: 480px; transform: none; }
+/* Offset the source image's empty upper area, keeping the whole painted figure. */
+#home .home-journey-cutout { left: 0; top: -112px; bottom: auto; width: 480px; transform: none; }
 #home .home-right-illustration { right: 10px; bottom: -68px; width: 190px; transform: none; }
 #home .section-flow { height: 38px; margin-top: 4px; }
 #home .section-flow__path { stroke: #b6a486; stroke-opacity: .36; }
@@ -118,15 +119,15 @@ body.page-home .container { padding-bottom: 12px; }
 }
 .story-carousel.is-ready .story-carousel__hint { margin-top: 3px; font-size: 10px; line-height: 1.6; letter-spacing: .12em; }
 @media (max-width: 1100px) and (min-width: 769px) {
-  #home.page { --home-footer-height: 260px; }
+  #home.page { --home-footer-height: 195px; }
   #home .home-footer-art { margin-left: -32px; margin-right: -32px; }
-  #home .home-journey-cutout { width: 380px; }
+  #home .home-journey-cutout { top: -88px; width: 380px; }
   #home .home-right-illustration { width: 150px; bottom: -48px; }
 }
 @media (max-width: 768px) {
-  #home.page { --home-footer-height: 170px; }
+  #home.page { --home-footer-height: 135px; }
   #home .home-footer-art { margin-left: -32px; margin-right: -32px; }
-  #home .home-journey-cutout { left: -12px; top: 0; bottom: auto; width: 245px; }
+  #home .home-journey-cutout { left: -12px; top: -56px; bottom: auto; width: 245px; }
   #home .home-right-illustration { right: 0; bottom: -38px; width: 110px; }
   #home .section-flow { margin-top: 4px; height: 28px; }
 }
