@@ -1,0 +1,114 @@
+{
+  "primary": {
+    "url": "https://github.com/Chenyu-otf/chenyuluoyan_thin",
+    "sha256": "1289e42a6d1ec995d0cb23aee89efc69fc95749fbd54a610057a3e992dc453db"
+  },
+  "supplement": {
+    "url": "https://github.com/Steve-Yuu/YShi-Written",
+    "sha256": "d8b9c0eb43fb82f6841756f379d9ae5fba1ea66b69d35d6a5d35460c9c224195"
+  },
+  "fonts": [
+    {
+      "file": "b612-pen-ui-v1.woff2",
+      "glyphs": 1058,
+      "bytes": 368076
+    },
+    {
+      "file": "b612-pen-cjk-00-v1.woff2",
+      "glyphs": 512,
+      "bytes": 80504
+    },
+    {
+      "file": "b612-pen-cjk-01-v1.woff2",
+      "glyphs": 512,
+      "bytes": 218736
+    },
+    {
+      "file": "b612-pen-cjk-02-v1.woff2",
+      "glyphs": 512,
+      "bytes": 220364
+    },
+    {
+      "file": "b612-pen-cjk-03-v1.woff2",
+      "glyphs": 512,
+      "bytes": 253412
+    },
+    {
+      "file": "b612-pen-cjk-04-v1.woff2",
+      "glyphs": 512,
+      "bytes": 229592
+    },
+    {
+      "file": "b612-pen-cjk-05-v1.woff2",
+      "glyphs": 512,
+      "bytes": 256688
+    },
+    {
+      "file": "b612-pen-cjk-06-v1.woff2",
+      "glyphs": 512,
+      "bytes": 251196
+    },
+    {
+      "file": "b612-pen-cjk-07-v1.woff2",
+      "glyphs": 512,
+      "bytes": 245232
+    },
+    {
+      "file": "b612-pen-cjk-08-v1.woff2",
+      "glyphs": 512,
+      "bytes": 269144
+    },
+    {
+      "file": "b612-pen-cjk-09-v1.woff2",
+      "glyphs": 512,
+      "bytes": 255300
+    },
+    {
+      "file": "b612-pen-cjk-10-v1.woff2",
+      "glyphs": 512,
+      "bytes": 259032
+    },
+    {
+      "file": "b612-pen-cjk-11-v1.woff2",
+      "glyphs": 512,
+      "bytes": 270636
+    },
+    {
+      "file": "b612-pen-cjk-12-v1.woff2",
+      "glyphs": 512,
+      "bytes": 254476
+    },
+    {
+      "file": "b612-pen-cjk-13-v1.woff2",
+      "glyphs": 512,
+      "bytes": 279012
+    },
+    {
+      "file": "b612-pen-cjk-14-v1.woff2",
+      "glyphs": 512,
+      "bytes": 274472
+    },
+    {
+      "file": "b612-pen-cjk-15-v1.woff2",
+      "glyphs": 512,
+      "bytes": 280900
+    },
+    {
+      "file": "b612-pen-cjk-16-v1.woff2",
+      "glyphs": 512,
+      "bytes": 316820
+    },
+    {
+      "file": "b612-pen-cjk-17-v1.woff2",
+      "glyphs": 375,
+      "bytes": 173864
+    },
+    {
+      "file": "b612-pen-sc-v1.woff2",
+      "glyphs": 1797,
+      "bytes": 257904
+    }
+  ],
+  "static_cjk_characters": 1209,
+  "xiaolai_fallback_characters": "浏谧轳辘"
+}

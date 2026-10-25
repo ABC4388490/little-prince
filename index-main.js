@@ -2718,6 +2718,8 @@ const storyData = {
                 try {
                     await loadPostcardLibrary();
                     if (renderId !== postcardRenderId) return;
+                    await document.fonts.ready;
+                    if (renderId !== postcardRenderId) return;
                     loadDeferredImages(root, true);
                     if (imgEl && !imgEl.complete) {
                         await new Promise((resolve) => {
