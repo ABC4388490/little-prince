@@ -23,8 +23,8 @@
             --bubble-prince: rgba(255, 255, 255, 0.3);
             --bubble-prince-border: rgba(150, 160, 180, 0.2);
             --bubble-prince-text: #555;
-            /* Thin pen handwriting, including simplified Chinese supplements. */
-            --font-hand: "B612 Pen", "Xiaolai", "STKaiti", "KaiTi", cursive;
+            /* Screenshot glyphs first, with handwriting supplements for absent characters. */
+            --font-hand: "Screenshot Hand", "B612 Pen", "Xiaolai", "STKaiti", "KaiTi", cursive;
             --font-cn: var(--font-hand);
             --font-en-title: var(--font-hand);
             --font-serif: var(--font-cn);
