@@ -823,7 +823,12 @@ const storyData = {
         // Focusing/rotating a ticket never starts B612 synchronization or an API call.
         function openHomeStory(action) {
             if (action === 'flight') { openFlightLog(); return; }
-            if (action === 'rose' || action === 'fox') {
+            if (action === 'rose') {
+                if (new URLSearchParams(location.search).get('rose') === 'legacy') openModal('rose');
+                else { rememberPageScroll(); location.assign('preview/index.html'); }
+                return;
+            }
+            if (action === 'fox') {
                 openModal(action);
                 return;
             }
@@ -3608,3 +3613,4 @@ const storyData = {
         drawJourneyWalkPath();
         updateChapterWatermarkParallax();
         setupCompanionParallax();
+
