@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5efdf">
+  <title>01 · 初见 — 关于她 · 互动绘本</title>
+  <link rel="icon" href="../favicon-rose.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../handwriting.css">
+  <link rel="stylesheet" href="first-meeting.css?v=polish-20261029">
+  <link rel="stylesheet" href="getting-closer.css?v=polish-20261029b">
+  <link rel="stylesheet" href="farewell.css?v=departure-20261029">
+  <script defer src="first-meeting.assets.js?v=watercolor-v1"></script>
+  <script defer src="getting-closer.assets.js?v=watercolor-actions-v2"></script>
+  <script defer src="getting-closer.js?v=polish-20261029"></script>
+  <script defer src="farewell.assets.js?v=departure-20261029"></script>
+  <script defer src="farewell.js?v=departure-20261029"></script>
+  <script defer src="waiting.js?v=polish-20261029"></script><script defer src="letter.js?v=polish-20261029"></script><script defer src="farewell-bridge.js?v=polish-20261029"></script>
+  <script defer src="chapter-bridge.js?v=polish-20261029"></script>
+  <script defer src="first-meeting.js?v=polish-20261029"></script>
+<link rel="stylesheet" href="waiting.css?v=depth-v1">
+<link rel="stylesheet" href="letter.css?v=polish-20261029b">
+</head>
+<body>
+  <header class="page-masthead">
+    <a class="wordmark" href="index.html" aria-label="关于她，返回故事封面">小王子 <span>THE LITTLE PRINCE</span></a>
+    <span class="edition">关于她 <i>／</i> 互动绘本</span>
+    <a class="back-link" href="index.html">↖ <span>返回故事封面</span></a>
+  </header>
+
+  <main class="book">
+    <section class="scene" id="scene" data-phase="loading" data-rose="bud" aria-labelledby="chapter-title" tabindex="0">
+      <img class="sky-background" data-asset="sky" alt="" aria-hidden="true" draggable="false">
+      <div class="morning-light" aria-hidden="true"></div>
+      <div class="cloud cloud--one" aria-hidden="true"></div>
+      <div class="cloud cloud--two" aria-hidden="true"></div>
+      <div class="sun" aria-hidden="true"></div>
+      <div class="sky-star sky-star--one" aria-hidden="true">✧</div>
+      <div class="sky-star sky-star--two" aria-hidden="true">✦</div>
+
+      <header class="chapter-heading">
+        <p class="eyebrow">A STORY ABOUT HER</p>
+        <h1 id="chapter-title"><span>01</span><i>·</i>初见</h1>
+        <p class="english-title">THE FIRST ENCOUNTER</p>
+      </header>
+      <p class="scene-margin" aria-hidden="true">在很小的星球上，<br>有一件很特别的事，正在发生。</p>
+
+      <img class="planet" data-asset="planet" alt="B612 星球的暖灰色岩石、陨石坑与清晨小花" draggable="false">
+      <div class="character" id="prince">
+        <img data-asset="prince" alt="金色蓬松短发、灰绿色衣服、暖黄色围巾的小王子蹲下观察花苞" draggable="false">
+      </div>
+      <div class="rose-aura" aria-hidden="true"></div>
+      <button class="rose-target" id="rose" type="button" aria-label="轻触花苞，让玫瑰绽放" aria-describedby="scene-status" disabled>
+        <span class="rose-stack" aria-hidden="true">
+          <img class="rose-stem" data-asset="open" alt="" draggable="false">
+          <img class="rose-state rose-state--bud" data-asset="bud" alt="" draggable="false">
+          <img class="rose-state rose-state--half" data-asset="half" alt="" draggable="false">
+          <img class="rose-state rose-state--open" data-asset="open" alt="" draggable="false">
+        </span>
+        <span class="touch-ring" aria-hidden="true"></span>
+      </button>
+      <div class="petals" id="petals" aria-hidden="true">
+        <img class="petal" data-asset="petal" alt="" style="--dx: 65px; --dy: 100px; --turn: 145deg; --delay: 0s">
+        <img class="petal" data-asset="petal" alt="" style="--dx: -55px; --dy: 140px; --turn: -120deg; --delay: .35s">
+        <img class="petal" data-asset="petal" alt="" style="--dx: 105px; --dy: 165px; --turn: 240deg; --delay: .75s">
+      </div>
+      <div class="bloom-hint" id="bloom-hint" aria-hidden="true"><span>轻触花苞</span><small>等一朵花，慢慢醒来</small><svg viewBox="0 0 80 60"><path d="M8 5 Q75 0 62 48 M53 41 L62 49 70 38"/></svg></div>
+
+      <div class="dialogue" id="dialogue" data-speaker="rose" hidden>
+        <p class="speaker" id="speaker"></p>
+        <p class="spoken-line" id="spoken-line" aria-hidden="true"></p>
+        <p class="sr-only" id="accessible-line" aria-live="polite" aria-atomic="true"></p>
+        <button class="continue" id="continue" type="button" aria-describedby="accessible-line"><span id="continue-label">补全这句话</span><span aria-hidden="true">↗</span></button>
+      </div>
+      <div class="heart-whisper" id="heart-whisper" hidden>
+        <span>玫瑰没有说出口的话</span>
+        <p>「幸好，他没有转身走开。」</p>
+        <button type="button" id="close-whisper">轻轻收起 <span aria-hidden="true">↙</span></button>
+      </div>
+      <div class="scene-caption">
+        <span class="caption-rule" aria-hidden="true"></span>
+        <p id="scene-status" role="status" aria-live="polite">正在准备这一页……</p>
+        <span class="caption-rule" aria-hidden="true"></span>
+      </div>
+      <span class="coordinate" aria-hidden="true">B612 · 清晨 06:12</span>
+      <span class="page-number" aria-hidden="true">— 01 —</span>
+    </section>
+
+    <nav class="chapter-nav" aria-label="绘本章节导航">
+      <a class="previous" href="index.html"><span aria-hidden="true">←</span><span><small>上一幕</small>00 · 故事封面</span></a>
+      <button class="replay" id="replay" type="button" disabled><span aria-hidden="true">↻</span> 重新体验本幕</button>
+      <button class="next" id="next" type="button"><span><small>下一幕</small>02 · 靠近</span><span aria-hidden="true">→</span></button>
+    </nav>
+    <div class="under-page"><span>一朵花的时间，也值得被认真等待。</span><span class="page-dots" aria-label="共六幕，当前第一幕"><i></i><i class="current"></i><i></i><i></i><i></i><i></i></span><span>鼠标 / 触摸 · Tab 选择 · Enter 确认</span></div>
+    <p class="error-message" id="asset-error" role="alert" hidden>插画未能载入，请刷新页面；也可按说明通过本地服务器打开。</p>
+    <details class="production-note" hidden><summary>预览素材说明 · 水彩视觉版</summary><p>人物、星球、清晨天空与三态玫瑰为参照项目原画制作的水彩图片，均为独立图层；纸纹与 B612 Pen 字体复用原项目。玫瑰固定花茎与叶片，花头依次呈现花苞、半开和盛开。所有文字与操作均为 HTML。本页独立运行，不连接聊天或 AI 服务。</p></details>
+    <noscript><p class="error-message">请启用 JavaScript，以体验花苞绽放与逐句对白。<a href="index.html">返回故事封面</a></p></noscript>
+  </main>
+
+
+</body>
+</html>

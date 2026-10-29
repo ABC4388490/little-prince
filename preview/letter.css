@@ -1,0 +1,216 @@
+@charset "UTF-8";
+/* Only the outgoing 04→05 transition touches the previous scene. */
+.waiting-scene .c04-camera::after { content:""; position:absolute; inset:0; z-index:1; pointer-events:none; opacity:0; background:linear-gradient(180deg,#77708a99,#d9bbc1a6 55%,#f5dfbb88); transition:opacity 2.8s ease; }
+.waiting-scene[data-leaving="true"] .c04-camera::after { opacity:1; }
+.waiting-scene[data-leaving="true"] .c04-camera > .planet,.waiting-scene[data-leaving="true"] .c04-rose,.waiting-scene[data-leaving="true"] .c04-dome { transition:transform 3s ease,opacity 3s ease; transform:translate(32%,-4%) scale(.7); opacity:.7; }
+.story-stage > .letter-scene { position:absolute; inset:0; width:100%; height:100%; }
+.story-stage.letter-stage { aspect-ratio:auto; }
+.story-stage.letter-stage > .letter-scene { position:relative; inset:auto; height:auto; min-height:720px; aspect-ratio:auto; }
+.letter-scene { background:#eee0ce; color:#6d5a4e; }
+.letter-scene::after { opacity:.08; }
+.c05-sky { position:absolute; inset:0; background:linear-gradient(155deg,#e3d6daaa,#f8ebd8df 50%,#f4ddb5b0),url('assets/watercolor/dawn-sky-v1.png') center/cover; pointer-events:none; }
+.c05-landscape { position:absolute; right:-5%; bottom:0; width:55%; height:56%; pointer-events:none; opacity:.8; }
+.c05-planet { position:absolute; width:115%; left:0; bottom:-4%; }
+.c05-rose { position:absolute; width:12%; left:41%; bottom:29%; transform:rotate(-6deg); }
+.c05-dome { position:absolute; width:20%; left:37%; bottom:27%; }
+.c05-heading { position:absolute; z-index:4; left:6%; top:6%; }
+.c05-heading h1 { font-size:clamp(25px,2.7vw,38px); }
+.c05-intro { position:absolute; z-index:4; right:6%; top:6%; margin:0; font:clamp(14px,1.3vw,18px)/1.9 var(--hand); letter-spacing:.08em; color:#8e7772; }
+.c05-title-flash { display:none; position:absolute; z-index:15; left:50%; top:29%; transform:translateX(-50%); white-space:nowrap; font:30px/1.5 var(--hand); letter-spacing:.12em; color:#fff5e4; text-shadow:0 1px 15px #7b686c; text-align:center; pointer-events:none; }
+.c05-title-flash small { display:block; font:10px Georgia,serif; letter-spacing:.22em; margin-top:8px; }
+.c05-arrival .c05-title-flash { display:block; animation:c05-title 3.6s ease both; }
+.c05-petal { position:absolute; z-index:3; width:2.4%; opacity:.55; pointer-events:none; }
+.c05-petal-a { left:9%; top:59%; transform:rotate(45deg); }.c05-petal-b { right:18%; top:37%; width:1.6%; transform:rotate(-30deg); }
+.c05-content { position:relative; z-index:5; width:55%; margin-left:9%; padding:170px 0 55px; min-height:640px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.c05-envelope-wrap { width:min(440px,80%); text-align:center; transition:opacity .8s,transform 1s; }
+.c05-envelope { display:block; position:relative; width:100%; aspect-ratio:1.47; border:0; padding:0; background:none; filter:drop-shadow(0 13px 18px #826d5930); perspective:800px; }
+.c05-envelope-back { position:absolute; inset:0; border:1px solid #b9a38b; border-radius:3px; background:linear-gradient(145deg,#f4e8d2,#dbc7a9); box-shadow:inset 0 0 25px #a4825c26; }
+.c05-envelope-back::after,.c05-paper::before { content:''; position:absolute; inset:0; background:url('../assets/mailbox/paper-texture.webp') center/350px; opacity:.23; pointer-events:none; }
+.c05-envelope-flap { position:absolute; z-index:2; left:0; right:0; top:0; height:59%; background:linear-gradient(165deg,#f8efdf,#d8c4a9); clip-path:polygon(0 0,100% 0,50% 100%); transform-origin:50% 0; transition:transform 1s ease,opacity .6s; filter:drop-shadow(0 2px 1px #8e755b55); }
+.c05-envelope-fold { position:absolute; z-index:3; inset:0; background:linear-gradient(145deg,#efe2cc,#ead9be); clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%); }
+.c05-envelope-fold::after { content:''; position:absolute; inset:0; background:linear-gradient(35deg,transparent 49.6%,#b8a58a80 50%,transparent 50.4%),linear-gradient(-35deg,transparent 49.6%,#b8a58a80 50%,transparent 50.4%); }
+.c05-wax { position:absolute; z-index:4; left:50%; top:54%; width:53px; height:53px; transform:translate(-50%,-50%); border-radius:46% 52% 47% 50%; background:radial-gradient(circle at 35% 28%,#c98779,#a05c55 75%); box-shadow:0 2px 3px #74504c80,inset 0 1px 5px #f4bc9b90; transition:opacity .5s,transform .7s; }
+.c05-wax svg { width:80%; height:80%; margin:10%; fill:none; stroke:#efc6ab; stroke-width:1.2; opacity:.75; }
+.c05-prompt { margin:25px 0 0; font:clamp(16px,1.5vw,20px)/1.7 var(--hand); color:#806c61; }
+.c05-paper { position:absolute; top:190px; width:min(610px,94%); min-height:550px; opacity:0; transform:translateY(120px) scale(.57,.35); transform-origin:50% 90%; background:#fbf5e8; border:1px solid #dfcfb6; box-shadow:0 15px 35px #8c776532,0 2px 6px #8c776522; pointer-events:none; transition:transform 1.5s ease,opacity 1s ease; }
+.c05-paper-inner { position:relative; z-index:1; padding:44px 52px 30px; }
+.c05-paper-kicker { color:#b49c81; font:9px Georgia,serif; letter-spacing:.18em; }
+.c05-paper h2 { margin:20px 0 28px; color:#80675d; font:normal 26px/1.4 var(--hand); letter-spacing:.1em; }
+.c05-prose p { margin:0 0 16px; font:18px/1.85 var(--hand); color:#65544a; opacity:0; transform:translateY(4px); transition:opacity .7s ease,transform .7s ease; }
+.c05-prose p.shown { opacity:1; transform:none; }.c05-prose p:last-child { text-align:right; margin-top:24px; }
+.c05-imprint-row { display:flex; justify-content:flex-end; }
+.c05-imprint { display:grid; place-items:center; width:48px; height:48px; padding:8px; border:0; background:none; color:#b87f7b; border-radius:50%; }
+.c05-imprint svg { width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.c05-imprint.glow { filter:drop-shadow(0 0 6px #dca9a0); }
+.c05-secret { min-height:1.8em; margin:4px 0 0; text-align:right; font:17px/1.8 var(--hand); color:#a47070; opacity:0; transition:opacity .8s; }.c05-secret.shown { opacity:1; }
+.letter-scene[data-phase="opening"] .c05-wax { opacity:0; transform:translate(-50%,-90%) rotate(-12deg); }
+.letter-scene[data-phase="opening"] .c05-envelope-flap { transform:rotateX(150deg); opacity:.5; }
+.letter-scene[data-phase="opening"] .c05-envelope-wrap,.letter-scene[data-phase="reading"] .c05-envelope-wrap,.letter-scene[data-phase="complete"] .c05-envelope-wrap,.letter-scene[data-phase="returning"] .c05-envelope-wrap { opacity:0; transform:translateY(50px) scale(.85); pointer-events:none; }
+.letter-scene[data-phase="opening"] .c05-paper,.letter-scene[data-phase="reading"] .c05-paper,.letter-scene[data-phase="complete"] .c05-paper { position:relative; top:auto; opacity:1; transform:none; pointer-events:auto; }
+.letter-scene[data-phase="opening"] .c05-content,.letter-scene[data-phase="reading"] .c05-content,.letter-scene[data-phase="complete"] .c05-content,.letter-scene[data-phase="returning"] .c05-content { justify-content:flex-start; padding-top:170px; }
+.letter-scene[data-phase="opening"] .c05-envelope-wrap,.letter-scene[data-phase="reading"] .c05-envelope-wrap,.letter-scene[data-phase="complete"] .c05-envelope-wrap,.letter-scene[data-phase="returning"] .c05-envelope-wrap { position:absolute; top:240px; }
+.c05-controls { position:relative; z-index:7; width:55%; margin:-25px 0 45px 9%; text-align:center; }
+.c05-controls button { border:0; background:transparent; min-height:44px; color:#8c6b5c; font-size:13px; letter-spacing:.08em; }
+.c05-controls button:focus-visible { outline:2px solid #a27b68; outline-offset:3px; }
+.c05-end-actions { display:flex; justify-content:center; gap:45px; }
+.c05-coordinate,.c05-page { position:absolute; bottom:24px; font:9px Georgia,serif; letter-spacing:.12em; color:#a38e76; }.c05-coordinate { left:5%; }.c05-page { right:5%; }
+.c05-finale { font-size:11px; color:#9a8b78; }
+.letter-scene[data-phase="returning"] .c05-paper { position:relative; top:auto; pointer-events:none; opacity:0; transform:translateY(100px) scale(.5,.2); transition:transform 2s ease,opacity 1.8s; }
+.letter-scene[data-phase="returning"] .c05-landscape { transform:scale(.75); transform-origin:75% 70%; transition:transform 2s ease; }
+.letter-scene[data-phase="returning"] .c05-petal-a { animation:c05-float 2.2s ease both; }
+@keyframes c05-title { 0%,12% {opacity:0} 35%,65% {opacity:1} 100% {opacity:0} }
+@keyframes c05-float { from {transform:translate(0,0) rotate(30deg);opacity:.6} to {transform:translate(90px,-180px) rotate(160deg);opacity:0} }
+@media(max-width:760px) {
+ .story-stage.letter-stage > .letter-scene { min-height:720px; }
+ .c05-heading { left:7%; top:27px; }.c05-heading h1 { font-size:25px; }.c05-heading .eyebrow { margin-bottom:8px; }.c05-heading .english-title { margin-top:6px; }
+ .c05-intro { top:118px; left:8%; right:auto; font-size:14px; }
+ .c05-landscape { width:72%; height:240px; right:-19%; bottom:0; opacity:.65; }
+ .c05-rose { bottom:18%; } .c05-dome { bottom:16%; }
+ .c05-content { width:90%; margin:0 auto; padding:205px 0 75px; min-height:650px; }
+ .letter-scene[data-phase="opening"] .c05-content,.letter-scene[data-phase="reading"] .c05-content,.letter-scene[data-phase="complete"] .c05-content,.letter-scene[data-phase="returning"] .c05-content { padding-top:205px; }
+ .c05-paper { width:100%; top:220px; }.c05-paper-inner { padding:30px 25px 25px; }.c05-paper h2 { font-size:23px; margin:17px 0 24px; }.c05-prose p { font-size:17px; line-height:1.8; margin-bottom:15px; }
+ .c05-controls { width:90%; margin:-35px auto 50px; }.c05-petal { width:5%; }.c05-petal-b { width:3%; }
+ .c05-title-flash { font-size:23px; }.c05-finale { display:none; }
+}
+@media(prefers-reduced-motion:reduce) { .letter-scene *, .letter-scene *::before, .letter-scene *::after { animation:none!important; transition:none!important; } }
+.c05-arrival .c05-envelope-wrap { animation:c05-form 3.6s ease both; }
+@keyframes c05-form { 0%,45% { opacity:0; transform:translate(35%,-35%) scale(.03); filter:brightness(1.6); } 70% { opacity:.8; } 100% { opacity:1; transform:none; filter:brightness(1); } }
+.letter-scene[data-phase="opening"] .c05-envelope-wrap { animation:c05-envelope-open 1.8s ease both; }
+.letter-scene[data-phase="opening"] .c05-paper { animation:c05-paper-rise 1.8s ease both; }
+@keyframes c05-envelope-open { 0%,35% { opacity:1; transform:none; } 100% { opacity:0; transform:translateY(50px) scale(.85); } }
+@keyframes c05-paper-rise { 0%,20% { opacity:0; transform:translateY(120px) scale(.57,.35); } 45% { opacity:.9; } 100% { opacity:1; transform:none; } }
+
+/* Final-page composition: the ground and its dome share the artwork's own bounds. */
+body[data-chapter="05"] .c02-extras, body[data-chapter="05"] .c03-extras, body[data-chapter="05"] .c04-extras { display:none; }
+.c05-landscape { width:43%; height:auto; aspect-ratio:1983 / 793; right:3%; bottom:11%; opacity:.88; }
+.c05-planet { width:100%; left:0; bottom:0; -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%); mask-image:linear-gradient(to bottom,#000 0%,#000 78%,transparent 100%); }
+.c05-dome { left:40%; width:20%; bottom:66%; }
+.c05-rose { left:44%; width:12%; bottom:68%; }
+.c05-content { width:51%; margin-left:8%; padding:170px 0 35px; justify-content:flex-start; }
+.c05-envelope-wrap { position:absolute; top:235px; }
+.c05-paper { width:min(510px,94%); min-height:0; background:#f8f0df; border-color:#d6c4ac; box-shadow:0 15px 25px #826c5724, 3px 4px 8px #826c571b, inset 0 0 28px #d9c4a622; }
+.c05-paper::after { content:''; position:absolute; inset:0; pointer-events:none; z-index:0; background:linear-gradient(to bottom,transparent 32%,#b8a18b0c 33%,#fff9ef32 33.3%,transparent 34%,transparent 65%,#aa97880b 66%,#fffaf139 66.3%,transparent 67%); }
+.c05-paper-inner { padding:36px 42px 28px; }
+.c05-paper h2 { margin:17px 0 22px; font-size:24px; }
+.c05-prose p { font:16px/1.85 'Songti SC','Noto Serif CJK SC',STSong,serif; letter-spacing:.035em; margin-bottom:14px; color:#5c5047; }
+.c05-prose p:last-child { font-family:var(--hand); font-size:18px; margin-top:20px; }
+.c05-controls { width:51%; margin:0 0 48px 8%; }
+.c05-end-actions { gap:30px; }
+.c05-end-actions button { min-width:110px; padding:5px 13px; border-bottom:1px solid #b6947c91; color:#74564a; }
+.c05-extras .chapter-nav { padding-top:18px; padding-bottom:18px; }
+@media(max-width:760px) {
+ .story-stage.letter-stage > .letter-scene { padding-bottom:190px; }
+ .c05-content { width:88%; margin:0 auto; padding:205px 0 30px; min-height:580px; }
+ .c05-envelope-wrap { top:230px; }
+ .letter-scene[data-phase="opening"] .c05-envelope-wrap,.letter-scene[data-phase="reading"] .c05-envelope-wrap,.letter-scene[data-phase="complete"] .c05-envelope-wrap,.letter-scene[data-phase="returning"] .c05-envelope-wrap { top:230px; }
+ .c05-paper { width:100%; }
+ .c05-paper-inner { padding:30px 26px 25px; }
+ .c05-paper h2 { font-size:22px; }
+ .c05-prose p { font-size:16px; line-height:1.85; margin-bottom:14px; }
+ .c05-controls { width:88%; margin:0 auto 20px; }
+ .c05-landscape { width:65%; height:auto; right:3%; bottom:30px; opacity:.8; }
+ .c05-rose { bottom:68%; }.c05-dome { bottom:66%; }
+ .c05-coordinate,.c05-page { bottom:14px; }
+}
+@media(prefers-reduced-motion:reduce) { .letter-scene *, .letter-scene *::before, .letter-scene *::after { animation:none!important; transition:none!important; } }
+
+@media(min-width:761px) { .letter-scene[data-phase="opening"] .c05-envelope-wrap,.letter-scene[data-phase="reading"] .c05-envelope-wrap,.letter-scene[data-phase="complete"] .c05-envelope-wrap,.letter-scene[data-phase="returning"] .c05-envelope-wrap { top:235px; } }
+
+/* Keep the original handwritten voice and align the distant planet with the letter. */
+.c05-paper { width:min(550px,94%); }
+.c05-prose p { font:17px/1.85 var(--hand); letter-spacing:.025em; margin-bottom:14px; }
+.c05-landscape { top:43%; bottom:auto; }
+.c05-planet { z-index:0; }
+.c05-landscape::after { content:''; position:absolute; z-index:1; left:44%; top:30.1%; width:12%; height:3.2%; border-radius:50%; background:radial-gradient(ellipse, #70604a83 0%, #81705a42 52%, transparent 75%); filter:blur(2px); pointer-events:none; }
+.c05-rose { z-index:2; }
+.c05-dome { z-index:3; }
+@media(max-width:760px) {
+ .c05-paper { width:100%; }
+ .c05-prose p { font-size:16px; line-height:1.85; }
+ .c05-landscape { top:auto; bottom:30px; }
+}
+
+/* Watercolor assets remain independent: the wax and ink imprint are different layers. */
+.c05-envelope { aspect-ratio: 1.69; }
+.c05-envelope-art { position:absolute; max-width:none; pointer-events:none; }
+.c05-envelope-closed { width:109.2%; height:126.3%; left:-4.7%; top:-11%; clip-path:inset(7% 3% 9% 3%); opacity:1; transition:opacity .38s ease .42s; }
+.c05-envelope-open { width:143.2%; height:197.3%; left:-21.7%; top:-91.4%; clip-path:inset(1% 14% 2% 14%); opacity:0; transition:opacity .48s ease .45s; }
+.letter-scene[data-phase="opening"] .c05-envelope-closed { opacity:0; }
+.letter-scene[data-phase="opening"] .c05-envelope-open { opacity:1; }
+.c05-wax { width:62px; height:62px; top:68%; border-radius:0; background:none; box-shadow:none; }
+.c05-wax img { display:block; width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 2px 2px #74504c55); }
+.c05-paper { background:transparent; border:0; box-shadow:none; }
+.c05-paper::before { background:url('assets/letter/letter-paper-watercolor-v1.png') center / 100% 100% no-repeat; opacity:1; filter:drop-shadow(2px 12px 10px #826c5733); }
+.c05-paper::after { display:none; }
+.c05-imprint img { display:block; width:100%; height:100%; object-fit:contain; opacity:.72; }
+@media(prefers-reduced-motion:reduce) { .letter-scene *, .letter-scene *::before, .letter-scene *::after { animation:none!important; transition:none!important; } }
+/* Leave breathing room between the writing and the illustrated paper's deckled edges. */
+.c05-paper::before { inset:-6% -2%; }
+.c05-heading { transition:opacity .35s ease; }
+.letter-scene[data-phase="opening"] .c05-heading { opacity:0; }
+@media(prefers-reduced-motion:reduce) { .letter-scene .c05-heading { transition:none!important; } }
+
+/* Fifth-act storybook composition: one continuous horizon and a foreground letter. */
+.waiting-scene[data-leaving="true"] .c04-camera > .planet,
+.waiting-scene[data-leaving="true"] .c04-rose,
+.waiting-scene[data-leaving="true"] .c04-dome { transform:none; opacity:1; transition:none; }
+.waiting-scene[data-leaving="true"] .c04-rose { transform:rotate(-6deg); }
+.waiting-scene[data-leaving="true"] .c04-camera { transform-origin:50% 72%; transform:scale(.98); transition:transform 3s ease; }
+.c05-sky { background:linear-gradient(160deg,#d7ccd6aa,#f8ead9b8 52%,#f4d9b3a8),url('assets/watercolor/dawn-sky-v1.png') center/cover; }
+.c05-landscape { left:-6%; right:auto; top:260px; bottom:auto; width:112%; opacity:1; }
+.c05-planet { -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 75%,transparent 99%); mask-image:linear-gradient(to bottom,#000 0%,#000 75%,transparent 99%); }
+.c05-dome { width:15%; left:64%; bottom:59%; }
+.c05-rose { width:9%; left:67%; bottom:61%; }
+.c05-landscape::after { left:67%; top:37%; width:9%; height:3%; }
+.c05-content { width:51%; margin-left:7%; }
+.c05-controls { margin-left:7%; }
+.letter-scene[data-phase="opening"] .c05-landscape,
+.letter-scene[data-phase="reading"] .c05-landscape,
+.letter-scene[data-phase="complete"] .c05-landscape { opacity:.7; transition:opacity 1.4s ease; }
+.c05-envelope { filter:drop-shadow(0 18px 16px #71604a45); }
+@media(max-width:760px) {
+ .story-stage.letter-stage > .letter-scene { padding-bottom:80px; }
+ .c05-landscape { width:145%; left:-34%; right:auto; top:195px; bottom:auto; opacity:.88; }
+ .c05-dome { width:20%; left:60%; bottom:59%; }
+ .c05-rose { width:12%; left:64%; bottom:61%; }
+ .c05-landscape::after { left:64%; top:37%; width:12%; }
+ .c05-content { width:88%; margin:0 auto; min-height:730px; padding:360px 0 30px; }
+ .c05-envelope-wrap { top:395px; }
+ .letter-scene[data-phase="opening"] .c05-envelope-wrap,.letter-scene[data-phase="reading"] .c05-envelope-wrap,.letter-scene[data-phase="complete"] .c05-envelope-wrap,.letter-scene[data-phase="returning"] .c05-envelope-wrap { top:395px; }
+ .letter-scene[data-phase="opening"] .c05-content,.letter-scene[data-phase="reading"] .c05-content,.letter-scene[data-phase="complete"] .c05-content,.letter-scene[data-phase="returning"] .c05-content { padding-top:360px; }
+ .c05-controls { width:88%; margin:0 auto 20px; }
+}
+@media(prefers-reduced-motion:reduce) { .waiting-scene .c04-camera, .letter-scene .c05-landscape { transition:none!important; } }
+/* Keep the covered rose aligned while it travels from the night scene. */
+.waiting-scene[data-leaving="true"] .c04-camera { transform:none; }
+.waiting-scene[data-leaving="true"] .c04-dome,
+.waiting-scene[data-leaving="true"] .c04-rose { transform-origin:50% 100%; transition:transform 3.3s ease-in-out; }
+.waiting-scene[data-leaving="true"] .c04-dome { transform:translate(var(--c04-slide-x, 0px),var(--c04-slide-y, 0px)) scale(var(--c04-slide-scale, 1)); }
+.waiting-scene[data-leaving="true"] .c04-rose { transform:translate(var(--c04-slide-x, 0px),var(--c04-slide-y, 0px)) scale(var(--c04-slide-scale, 1)) rotate(-6deg); }
+@media(prefers-reduced-motion:reduce) { .waiting-scene[data-leaving="true"] .c04-dome,.waiting-scene[data-leaving="true"] .c04-rose { transition:none!important; } }
+.waiting-scene[data-leaving="true"] .c04-rose { animation:none !important; }
+.c05-arrival .c05-landscape { animation:c05-scene-arrival 3.6s ease both; }
+.c05-arrival .c05-heading,.c05-arrival .c05-intro { animation:c05-scene-arrival 3.6s ease both; }
+@keyframes c05-scene-arrival { 0%,65% { opacity:0; } 100% { opacity:1; } }
+@media(prefers-reduced-motion:reduce) { .c05-arrival .c05-landscape,.c05-arrival .c05-heading,.c05-arrival .c05-intro { animation:none!important; } }
+/* The planet, covered rose and dome travel as one composition. */
+.waiting-scene[data-leaving="true"] .c04-landscape { transform-origin:var(--c04-anchor-x, 30%) var(--c04-anchor-y, 70%); transform:translate(var(--c04-slide-x, 0px),var(--c04-slide-y, 0px)) scale(var(--c04-slide-scale, 1)); transition:transform 3.3s ease-in-out; }
+.waiting-scene[data-leaving="true"] .c04-dome { transform:none; transition:none; }
+.waiting-scene[data-leaving="true"] .c04-rose { transform:rotate(-6deg); transition:none; }
+@media(prefers-reduced-motion:reduce) { .waiting-scene[data-leaving="true"] .c04-landscape { transition:none!important; } }
+/* The existing ground illustration ends at the sides; soften those edges while it recedes. */
+.waiting-scene[data-leaving="true"] .c04-landscape .planet { -webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent); mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent); }
+/* The invitation leaves before the paper rises, so text never overlaps the letter. */
+.c05-prompt { transition: opacity .2s ease; }
+.letter-scene[data-phase="opening"] .c05-prompt,
+.letter-scene[data-phase="reading"] .c05-prompt,
+.letter-scene[data-phase="complete"] .c05-prompt,
+.letter-scene[data-phase="returning"] .c05-prompt { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .c05-prompt { transition: none; } }
+/* Anchor the emerging paper near the envelope rather than below the scene. */
+.letter-scene[data-phase="opening"] .c05-paper { transform-origin: 50% 0; }
+@keyframes c05-paper-rise {
+  0%,20% { opacity: 0; transform: translateY(35px) scale(.65,.28); }
+  45% { opacity: .9; }
+  100% { opacity: 1; transform: none; }
+}

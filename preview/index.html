@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f1e4">
+  <title>00 · 关于她 — 小王子互动绘本</title>
+  <link rel="icon" href="../favicon-rose.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../handwriting.css">
+  <link rel="stylesheet" href="cover.css?v=polish-20261029">
+  <script defer src="cover.js?v=soft-page-turn-v4"></script>
+</head>
+<body data-cover-phase="ready">
+  <header class="page-masthead">
+    <a class="wordmark" href="../index.html" aria-label="小王子，返回原网站">小王子 <span>THE LITTLE PRINCE</span></a>
+    <a class="back-link" href="../index.html">↖ 返回原网站</a>
+  </header>
+  <main class="cover-shell">
+    <section class="cover" id="cover" aria-labelledby="cover-title">
+      <div class="cover-wash" aria-hidden="true"></div>
+      <div class="cover-mist" aria-hidden="true"></div>
+      <div class="cover-stars" aria-hidden="true"><span>✧</span><span>✦</span><span>✧</span></div>
+      <div class="cover-copy">
+        <p class="eyebrow">B612 · THE ROSE</p>
+        <h1 id="cover-title">关于她</h1>
+        <p class="subtitle">有些话，只有靠近了才听得见。</p>
+        <a class="enter" href="first-meeting.html" data-enter-story><span>进入她的星球</span><span class="enter-arrow" aria-hidden="true">↗</span></a>
+      </div>
+      <figure class="cover-art" id="cover-art">
+        <div class="art-reveal"><div class="cover-camera" id="cover-camera">
+          <img class="planet-art" id="planet-art" src="../assets/b612-planet-completion.png" width="1536" height="1024" fetchpriority="high" alt="金发、灰绿色衣服与暖黄围巾的小王子，坐在布满陨石坑的 B612 星球上，望着金边玻璃罩中的盛开玫瑰。">
+          <span class="glass-reflection" aria-hidden="true"></span>
+        </div></div>
+      </figure>
+      <p class="art-error" id="art-error" role="status" hidden>插画暂未载入，你仍可以进入故事。</p>
+    </section>
+    <nav class="cover-nav" aria-label="六幕目录">
+      <ol class="contents">
+        <li class="is-current"><a href="index.html" aria-current="page"><span>00</span> 封面</a></li>
+        <li class="is-available"><a href="first-meeting.html" data-enter-story><span>01</span> 初见</a></li>
+        <li><span><b>02</b> 靠近</span></li>
+        <li><span><b>03</b> 告别</span></li>
+        <li><span><b>04</b> 等待</span></li>
+        <li><span><b>05</b> 没寄出的信</span></li>
+      </ol>
+      <p class="contents-hint">从初见开始，依次翻开每一幕。</p>
+    </nav>
+    <p class="sr-only" id="entry-status" role="status" aria-live="polite"></p>
+    <details class="cover-debug" id="cover-debug" hidden><summary>开发调试 · 独立封面预览</summary><p>当前插画直接复用原项目 assets/b612-planet-completion.png，未修改原图。六幕可依次体验。点击后，一页带有柔和弧度的奶油色纸面从右向左轻轻翻过，约 1.6 秒进入清晨。插画不缩放、不平移；Esc 可取消，减少动画模式直接进入。此说明仅在 ?debug=1 时显示。</p></details>
+  </main>
+  <div class="cover-transition" aria-hidden="true">
+    <svg class="page-turn" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="turn-paper-shape" d="M 8 -120 C 102 240 -138 680 8 1120 L 1600 1120 L 1600 -120 Z"/>
+        <clipPath id="turn-paper-clip"><use href="#turn-paper-shape"/></clipPath>
+        <filter id="turn-soft-shadow" x="-100%" y="-20%" width="300%" height="140%" color-interpolation-filters="sRGB">
+          <feGaussianBlur stdDeviation="13"/>
+        </filter>
+        <linearGradient id="turn-paper-light" x1="-80" y1="0" x2="165" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#b5a58b" stop-opacity=".10"/>
+          <stop offset=".32" stop-color="#fffdf4" stop-opacity=".46"/>
+          <stop offset=".67" stop-color="#fffdf4" stop-opacity=".16"/>
+          <stop offset="1" stop-color="#fffdf4" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <g class="turn-sheet">
+        <path class="turn-shadow" d="M 8 -120 C 102 240 -138 680 8 1120" fill="none" stroke="#706348" stroke-opacity=".12" stroke-width="22" filter="url(#turn-soft-shadow)"/>
+        <use href="#turn-paper-shape" fill="#f7f1e4"/>
+        <g clip-path="url(#turn-paper-clip)">
+          <image href="assets/watercolor/dawn-sky-v1.png" x="-100" y="-120" width="1700" height="1240" preserveAspectRatio="xMidYMid slice" opacity=".14"/>
+          <image href="../assets/mailbox/paper-texture.webp" x="-100" y="-120" width="1700" height="1240" preserveAspectRatio="xMidYMid slice" opacity=".10"/>
+          <rect x="-100" y="-120" width="1700" height="1240" fill="url(#turn-paper-light)"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+</body>
+</html>
