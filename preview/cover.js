@@ -15,7 +15,7 @@
     if (prefetched || navigator.connection?.saveData) return;
     prefetched = true;
     // Same-site, read-only prefetch; never starts or navigates into the story.
-    for (const href of ['first-meeting.html', 'first-meeting.css?v=watercolor-v1', 'assets/watercolor/dawn-sky-v1.png']) {
+    for (const href of ['first-meeting.html', 'first-meeting.css?v=polish-20261029', 'assets/watercolor/dawn-sky-v1.png', 'assets/watercolor/b612-ground-v1.png', 'assets/watercolor/prince-crouching-v1.png', 'assets/watercolor/rose-bud-v1.png', 'assets/watercolor/rose-half-v1.png', 'assets/watercolor/rose-open-v1.png']) {
       const link = document.createElement('link');
       link.rel = 'prefetch'; link.href = href;
       document.head.appendChild(link);

@@ -191,3 +191,14 @@ h1 i { font-size: .55em; margin: 0 19px; font-style: normal; vertical-align: 15%
   outline-offset: 4px;
   border-radius: 2px;
 }
+
+/* Keep the original dialogue presentation while leaving the artwork clear. */
+@media (min-width: 761px) {
+  #scene .dialogue[data-speaker="prince"] { left: 4%; top: 32%; width: 17%; }
+  #scene .dialogue[data-speaker="rose"] { left: 79%; top: 30%; width: 17%; }
+  #scene .dialogue .spoken-line { font-size: clamp(18px, 1.65vw, 24px); line-height: 1.5; }
+}
+@media (max-width: 760px) {
+  #scene .dialogue[data-speaker="rose"], #scene .dialogue[data-speaker="prince"] { left: 8%; top: 25%; width: 84%; }
+  #scene .dialogue .spoken-line { font-size: 19px; line-height: 1.45; min-height: 0; }
+}

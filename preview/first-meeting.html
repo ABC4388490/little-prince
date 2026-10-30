@@ -25,7 +25,7 @@
   <header class="page-masthead">
     <a class="wordmark" href="index.html" aria-label="关于她，返回故事封面">小王子 <span>THE LITTLE PRINCE</span></a>
     <span class="edition">关于她 <i>／</i> 互动绘本</span>
-    <a class="back-link" href="index.html">↖ <span>返回故事封面</span></a>
+    <a class="back-link" href="index.html"> <span>返回故事封面</span></a>
   </header>
 
   <main class="book">
@@ -64,18 +64,18 @@
         <img class="petal" data-asset="petal" alt="" style="--dx: -55px; --dy: 140px; --turn: -120deg; --delay: .35s">
         <img class="petal" data-asset="petal" alt="" style="--dx: 105px; --dy: 165px; --turn: 240deg; --delay: .75s">
       </div>
-      <div class="bloom-hint" id="bloom-hint" aria-hidden="true"><span>轻触花苞</span><small>等一朵花，慢慢醒来</small><svg viewBox="0 0 80 60"><path d="M8 5 Q75 0 62 48 M53 41 L62 49 70 38"/></svg></div>
+      <div class="bloom-hint" id="bloom-hint" aria-hidden="true"><span>轻触花苞</span><small>等一朵花，慢慢醒来</small></div>
 
       <div class="dialogue" id="dialogue" data-speaker="rose" hidden>
         <p class="speaker" id="speaker"></p>
         <p class="spoken-line" id="spoken-line" aria-hidden="true"></p>
         <p class="sr-only" id="accessible-line" aria-live="polite" aria-atomic="true"></p>
-        <button class="continue" id="continue" type="button" aria-describedby="accessible-line"><span id="continue-label">补全这句话</span><span aria-hidden="true">↗</span></button>
+        <button class="continue" id="continue" type="button" aria-describedby="accessible-line"><span id="continue-label">补全这句话</span></button>
       </div>
       <div class="heart-whisper" id="heart-whisper" hidden>
         <span>玫瑰没有说出口的话</span>
         <p>「幸好，他没有转身走开。」</p>
-        <button type="button" id="close-whisper">轻轻收起 <span aria-hidden="true">↙</span></button>
+        <button type="button" id="close-whisper">轻轻收起 </button>
       </div>
       <div class="scene-caption">
         <span class="caption-rule" aria-hidden="true"></span>
@@ -87,9 +87,9 @@
     </section>
 
     <nav class="chapter-nav" aria-label="绘本章节导航">
-      <a class="previous" href="index.html"><span aria-hidden="true">←</span><span><small>上一幕</small>00 · 故事封面</span></a>
-      <button class="replay" id="replay" type="button" disabled><span aria-hidden="true">↻</span> 重新体验本幕</button>
-      <button class="next" id="next" type="button"><span><small>下一幕</small>02 · 靠近</span><span aria-hidden="true">→</span></button>
+      <a class="previous" href="index.html"><span><small>上一幕</small>00 · 故事封面</span></a>
+      <button class="replay" id="replay" type="button" disabled> 重新体验本幕</button>
+      <button class="next" id="next" type="button"><span><small>下一幕</small>02 · 靠近</span></button>
     </nav>
     <div class="under-page"><span>一朵花的时间，也值得被认真等待。</span><span class="page-dots" aria-label="共六幕，当前第一幕"><i></i><i class="current"></i><i></i><i></i><i></i><i></i></span><span>鼠标 / 触摸 · Tab 选择 · Enter 确认</span></div>
     <p class="error-message" id="asset-error" role="alert" hidden>插画未能载入，请刷新页面；也可按说明通过本地服务器打开。</p>
