@@ -7,11 +7,11 @@
 window.FIRST_MEETING_ASSETS = Object.freeze({
   temporary: false,
   edition: 'watercolor-v1',
-  sky: 'assets/watercolor/dawn-sky-v1.png',
-  planet: 'assets/watercolor/b612-ground-v1.png',
-  prince: 'assets/watercolor/prince-crouching-v1.png',
-  bud: 'assets/watercolor/rose-bud-v1.png',
-  half: 'assets/watercolor/rose-half-v1.png',
-  open: 'assets/watercolor/rose-open-v1.png',
-  petal: 'assets/watercolor/rose-petal-v1.png'
+  sky: 'assets/watercolor/dawn-sky-v1.webp',
+  planet: 'assets/watercolor/b612-ground-v1.webp',
+  prince: 'assets/watercolor/prince-crouching-v1.webp',
+  bud: 'assets/watercolor/rose-bud-v1.webp',
+  half: 'assets/watercolor/rose-half-v1.webp',
+  open: 'assets/watercolor/rose-open-v1.webp',
+  petal: 'assets/watercolor/rose-petal-v1.webp'
 });
