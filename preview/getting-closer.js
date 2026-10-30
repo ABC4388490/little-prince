@@ -38,20 +38,20 @@
       <div class="dialogue c02-dialogue" id="c02-dialogue" data-speaker="prince" hidden>
         <p class="speaker" id="c02-speaker"></p><p class="spoken-line" id="c02-line" aria-hidden="true"></p>
         <p class="sr-only" id="c02-accessible" aria-live="polite" aria-atomic="true"></p>
-        <button class="continue" id="c02-continue" type="button" aria-describedby="c02-accessible"><span id="c02-continue-label">补全这句话</span><span aria-hidden="true">↗</span></button>
+        <button class="continue" id="c02-continue" type="button" aria-describedby="c02-accessible"><span id="c02-continue-label">补全这句话</span></button>
       </div>
-      <div class="c02-whisper" id="c02-whisper" hidden><span>玫瑰没有说出口的话</span><p>「${whisperText}」</p><button id="c02-close-whisper" type="button">轻轻收起 ↙</button></div>
+      <div class="c02-whisper" id="c02-whisper" hidden><span>玫瑰没有说出口的话</span><p>「${whisperText}」</p><button id="c02-close-whisper" type="button">轻轻收起 </button></div>
       <div class="scene-caption"><span class="caption-rule" aria-hidden="true"></span><p id="c02-status" role="status" aria-live="polite">正在准备白天的这一页……</p><span class="caption-rule" aria-hidden="true"></span></div>
       <span class="coordinate" aria-hidden="true">B612 · 白天</span><span class="page-number" aria-hidden="true">— 02 —</span>`;
     const extras = document.createElement('div'); extras.className = 'c02-extras';
     extras.innerHTML = `
       <nav class="chapter-nav c02-nav" aria-label="绘本章节导航，当前第二幕">
-        <button class="previous" id="c02-previous" type="button"><span aria-hidden="true">←</span><span><small>上一幕</small>01 · 初见</span></button>
-        <button class="replay" id="c02-replay" type="button" disabled><span aria-hidden="true">↻</span> 重新体验本幕</button>
-        <button class="next" id="c02-next" type="button" aria-describedby="c02-status"><span><small>下一幕 · 未开放</small>03 · 告别</span><span aria-hidden="true">→</span></button>
+        <button class="previous" id="c02-previous" type="button"><span><small>上一幕</small>01 · 初见</span></button>
+        <button class="replay" id="c02-replay" type="button" disabled> 重新体验本幕</button>
+        <button class="next" id="c02-next" type="button" aria-describedby="c02-status"><span><small>下一幕 · 未开放</small>03 · 告别</span></button>
       </nav>
       <div class="under-page"><span>水壶 · 玻璃罩 · 花瓣，均可轻触</span><span class="page-dots" aria-label="共六幕，当前第二幕"><i></i><i></i><i class="current"></i><i></i><i></i><i></i></span><span>鼠标 / 触摸 · Tab 选择 · Enter 确认</span></div>
-      <details class="c02-notes" hidden><summary>素材与动作说明</summary><p>星球、玫瑰、天空与原人物沿用第一幕。新增水彩水壶、空玻璃罩及同角色持壶／倾倒姿态，保留透明独立图层；双手与持壶绘在同一姿态层内，避免手与壶脱节。动作采用姿态交叉淡入，含拿起、倾倒和放回，并非连续逐帧动画。暖色天空为独立光色层。<a href="assets/closer/ART-DIRECTION.md">查看素材制作记录</a> · <button class="text-button c02-cover" type="button">返回预览入口 ↗</button></p></details>`;
+      <details class="c02-notes" hidden><summary>素材与动作说明</summary><p>星球、玫瑰、天空与原人物沿用第一幕。新增水彩水壶、空玻璃罩及同角色持壶／倾倒姿态，保留透明独立图层；双手与持壶绘在同一姿态层内，避免手与壶脱节。动作采用姿态交叉淡入，含拿起、倾倒和放回，并非连续逐帧动画。暖色天空为独立光色层。<a href="assets/closer/ART-DIRECTION.md">查看素材制作记录</a> · <button class="text-button c02-cover" type="button">返回预览入口 </button></p></details>`;
     extras.querySelector('.c02-notes').hidden = new URLSearchParams(location.search).get('debug') !== '1';
     const find = id => element.querySelector(`#${id}`) || extras.querySelector(`#${id}`);
     const water = find('c02-water'), glass = find('c02-glass'), petal = find('c02-petal');

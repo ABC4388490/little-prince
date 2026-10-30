@@ -184,12 +184,13 @@
 
   // Bind independently replaceable assets and wait for every state before enabling bloom.
   const loads = Array.from(document.querySelectorAll('[data-asset]'), img => new Promise((resolve, reject) => {
-    img.addEventListener('load', resolve, { once: true });
+    const decoded = () => img.decode().then(resolve, reject);
+    img.addEventListener('load', decoded, { once: true });
     img.addEventListener('error', reject, { once: true });
     img.loading = 'eager';
     img.src = window.FIRST_MEETING_ASSETS[img.dataset.asset];
     // Cached images can already be ready when their URL is assigned.
-    if (img.complete && img.naturalWidth > 0) resolve();
+    if (img.complete && img.naturalWidth > 0) decoded();
   }));
   const loadTimeout = later(() => {
     document.getElementById('asset-error').hidden = false;
