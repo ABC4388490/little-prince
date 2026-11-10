@@ -229,3 +229,15 @@ body.page-home .container { padding-bottom: 12px; }
   .home-atlas__planet { opacity: .12; }
   .home-atlas__route { opacity: .25; }
 }
+
+/* A quiet instruction belongs to the centered ticket, outside its artwork. */
+.story-carousel.is-ready .story-carousel__hint {
+  display: block; margin: 5px auto 0; padding: 0 12px;
+  color: #706048; font-size: 12px; line-height: 1.8; letter-spacing: .06em;
+}
+.story-carousel.is-ready .story-ticket:has(.story-ticket__stub:focus-visible) {
+  outline: 2px solid #73866a; outline-offset: 5px;
+}
+@media (max-width: 600px) {
+  .story-carousel.is-ready .story-carousel__hint { max-width: none; font-size: 11px; }
+}
